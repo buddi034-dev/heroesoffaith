@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(/C:\\Users\\HP\\AndroidStudioProjects\\ChristCommander\\herosoffaith\\lib/**)",
+      "Read(/C:\\Users\\HP\\AndroidStudioProjects\\ChristCommander\\herosoffaith\\lib\\src\\features\\common\\presentation\\screens/**)",
+      "Read(/C:\\Users\\HP\\AndroidStudioProjects\\ChristCommander\\herosoffaith\\lib\\features\\missionaries\\presentation/**)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

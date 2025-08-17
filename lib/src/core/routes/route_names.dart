@@ -1,0 +1,12 @@
+class RouteNames {
+  static const String splash = '/';
+  static const String login = '/login';
+  static const String signup = '/signup';
+  static const String home = '/home';
+  static const String profile = '/profile'; // User profile
+  static const String settings = '/settings';
+  static const String missionaryDirectory = '/missionary-directory';
+  static const String missionaryProfile = '/missionary-profile'; // New route for missionary details
+  static const String search = '/search'; // Search screen
+  static const String dataUpload = '/data-upload'; // Admin data upload screen
+}

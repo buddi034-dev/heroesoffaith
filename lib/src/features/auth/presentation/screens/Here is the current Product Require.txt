@@ -1,0 +1,72 @@
+Here is the current Product Requirements Document (PRD) for “Missionary Legacy – India”.
+
+PRODUCT REQUIREMENTS DOCUMENT (v1)
+
+Vision & Scope
+Preserve and showcase the biographies, timelines, and impact of missionaries whose work directly affected India.
+Android (Google Play) as first-launch platform; Web can follow.
+English + all Indian languages for UI and (eventually) content.
+Target Users
+Church members / pastors seeking inspiration
+Seminary students & researchers
+Christian history enthusiasts
+Curators / historians (admin role)
+MVP Feature Set
+A. Missionary Directory & Search (filters by name, century, sending country, Indian region, ministry focus)
+B. Missionary Profile (bio, timeline, media gallery, references)
+C. User Contributions (upload photos / anecdotes → curator approval queue)
+D. Favorites & Shareable Quote Cards
+E. Simple Donate page (Razorpay) to fund digitisation
+F. Admin Console (curators) for approvals & editing
+Deferred to Post-MVP: interactive map view, advanced multilingual content, analytics dashboard.
+
+Non-Functional Requirements
+Flutter + Firebase (Auth, Firestore, Storage, Functions)
+Offline read cache; responsive layout
+Role-based security via Firestore rules
+Image compression ≤1 MB upload; CDN delivery
+India-based hosting / .in domain for compliance
+Data Model (Firestore)
+missionaries/{mid} → fullName, years, bioMarkdown, tags, heroImageUrl, references[]
+timelineEvents/{id} → missionaryId, dateISO, title, desc, lat/lng
+media/{id} → missionaryId, type, storageUrl, caption, year, contributedBy, status
+favorites/{uid}/items/{mid}
+donations/{id} (via Cloud Function webhook)
+users/{uid} role (user / curator / admin)
+Key Screens / Wireframes
+WF-01 Splash & Language Picker
+WF-02 Home / Featured
+WF-03 Directory & Filters
+WF-04 Profile (Bio • Timeline • Media • References)
+WF-05 Map / Timeline (post-MVP)
+WF-06 Media Viewer
+WF-07 Add Contribution Flow
+WF-08 Favorites
+WF-09 Donate
+WF-10 Admin Console
+Tech Stack & Packages
+Flutter SDK 3.22+ • Firebase Core/Auth/Firestore/Storage • Provider • Cached-Network-Image • Google Fonts • Intl
+Schedule – Solo Developer (≈18 weeks)
+Phase A Setup & Auth       2 wks
+Phase B Directory & Search    2 wks
+Phase C Profile & Media     3 wks
+Phase D Favorites & Offline cache 2 wks
+Phase E Contributions + Queue  3 wks
+Phase F Donations & Languages  2 wks
+Buffer / polish         2 wks
+Success Metrics
+Monthly active visitors
+Avg. profile views per visitor
+Number of contributions approved
+Donation volume
+Risks & Mitigations
+Missing historical media → crowd-sourced uploads (curated)
+Copyright issues → use public-domain or licensed images
+Solo-dev bandwidth → lean MVP, leverage FlutterFlow/Boilerplates
+
+Okay, let's break down the MVP Feature Set from your PRD into smaller, incremental development features. This approach will allow for a more agile development process, where you can build, test, and iterate on each small piece.
+
+Here's a possible breakdown:
+
+A. Missionary Directory & Search
+	1.A1: Basic Missionary Data Model & Display•Define the Firestore structure for missionaries (just fullName, heroImageUrl for now).•Create a simple screen to list all missionaries, displaying their name and image.•Manually add a few sample missionary documents to Firestore for testing.2.A2: Basic Search by Name•Add a search bar to the directory screen.•Implement basic client-side or server-side search for fullName.3.A3: Expand Missionary Data Model (Core Info)•Add more fields to the missionaries model: years (e.g., "1880-1950"), a short summary or bioExcerpt.•Update the directory list item to display this additional info.4.A4: Filtering - Initial Setup•Design the UI for the filter options (e.g., a filter button opening a dialog or side panel).•Add basic filter UI for one criterion (e.g., "Century").5.A5: Implement "Century" Filter•Add century (e.g., "19th", "20th") or birthYear/deathYear fields to the missionaries model.•Implement the logic to filter missionaries by century.6.A6: Implement "Sending Country" Filter•Add sendingCountry to the model.•Add UI and logic for this filter.7.A7: Implement "Indian Region" Filter•Add indianRegion (e.g., "North", "South", "Tamil Nadu", "Kerala") to the model.•Add UI and logic for this filter.8.A8: Implement "Ministry Focus" Filter•Add ministryFocus (e.g., "Education", "Medical", "Evangelism" - could be tags/array) to the model.•Add UI and logic for this filter.9.A9: Combine Filters & Search•Ensure that search and multiple active filters work together correctly.•Refine filter UI (e.g., clear filters).B. Missionary Profile1.B1: Basic Profile Screen Layout•Create a new screen for the Missionary Profile.•Navigate from the directory to this screen, passing the missionaryId.•Display the missionary's fullName and heroImageUrl.2.B2: Display Biography•Add bioMarkdown (full biography) to the missionaries model.•Display the formatted biography on the profile screen (using a Markdown renderer package).3.B3: Timeline Data Model & Basic Display•Define the timelineEvents Firestore structure.•Create a section/tab on the profile screen for "Timeline".•Display a simple list of timeline event title and dateISO for the selected missionary.•Manually add sample timeline events.4.B4: Detailed Timeline Event View (Optional)•Allow tapping a timeline event to see its full desc.5.B5: Media Gallery - Data Model & Basic Display•Define the media Firestore structure (missionaryId, type='image', storageUrl).•Create a section/tab for "Media Gallery".•Display a grid of images for the selected missionary (using CachedNetworkImage and Firebase Storage URLs).•Manually upload sample images to Firebase Storage and add corresponding documents to Firestore.6.B6: Media Viewer•Allow tapping an image in the gallery to view it full-screen (WF-06).•Add support for caption and year in the media viewer.7.B7: Display References•Add references[] (array of strings or objects) to the missionaries model.•Create a section/tab for "References" and display them.C. User Contributions1.C1: Basic Contribution Form UI (Photos)•Create a screen/flow for users to contribute (WF-07).•Start with a form to upload a photo: image picker, caption input.2.C2: Photo Upload to Firebase Storage•Implement image picking from the device.•Implement image compression (target ≤1 MB).•Upload the image to a temporary/staging area in Firebase Storage.3.C3: Save Photo Contribution to Firestore (Awaiting Approval)•When the image is uploaded, create a new document in the media collection.•Include missionaryId (user needs to select which missionary this is for), storageUrl, caption, contributedBy (current uid), and status='pending'.4.C4: Anecdotes Contribution•Add functionality to the contribution form for text-based anecdotes (similar to photos but text instead of image URL).•These might be stored in a separate anecdotes collection or in media with type='anecdote'.D. Favorites & Shareable Quote Cards1.D1: Favorites - Data Model & Basic Toggle•Define favorites/{uid}/items/{mid} structure.•Add a "Favorite" button/icon to the Missionary Profile screen.•Implement logic to add/remove mid from the current user's favorites subcollection.2.D2: Favorites Screen•Create a screen to list all of the current user's favorited missionaries (WF-08).3.D3: Shareable Quote Cards - Concept (Deferred implementation)•Identify how quotes will be sourced (e.g., from bioMarkdown, a dedicated quotes field in missionaries). This is more design/data prep for now. Actual card generation can be later.E. Simple Donate Page1.E1: Basic Donate Screen UI•Create a simple informational screen about donations (WF-09).•Explain the purpose of donations.2.E2: Link to Razorpay Payment Page•Add a button that links out to a pre-configured Razorpay payment page/link. (Initially, this doesn't need to be a deep integration).F. Admin Console (Curators)1.F1: User Roles Setup•Implement basic user roles in users/{uid} (e.g., role: 'user' or 'curator').•Protect access to admin functions based on this role (using Firestore rules and in-app checks).2.F2: Basic Approval Queue UI•Create a simple screen for curators (WF-10).•List all media items with status='pending'. Display enough info for a curator to make a decision (e.g., thumbnail, caption, who contributed it, for which missionary).3.F3: Approve/Reject Contribution Logic•Implement "Approve" button: changes media item status to 'approved'.•Implement "Reject" button: changes status to 'rejected' or deletes the item.4.F4: Basic Missionary Data Editing (for Curators)•Allow curators to edit fields on existing missionaries documents (e.g., bioMarkdown, years). This could start with just one or two fields.General Non-Functional & Setup (Can be interwoven or done upfront)•Initial Project Setup & Firebase Integration (Part of Phase A)•Authentication Flow (Email/Password, Google Sign-In) - You've already made good progress here!•Basic App Navigation (Bottom navigation bar, drawer, routing)•Language Picker UI (WF-01) - UI first, actual translation later.•Offline Read Cache Strategy - Plan and implement basic caching for Firestore data.•Responsive Layout Foundation - Use Flutter's responsive widgets from the start.This breakdown attempts to make each step deliver a small, testable piece of functionality. 

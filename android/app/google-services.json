@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "272794951903",
+    "project_id": "herosoffaithapp",
+    "storage_bucket": "herosoffaithapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:272794951903:android:d83573321913cb4311c96a",
+        "android_client_info": {
+          "package_name": "com.example.herosoffaith"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "272794951903-qnkbt70qhnt0e2prjjhv1vmaiau452bo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.herosoffaith",
+            "certificate_hash": "180892ff7a0c69a4e37e7ae4e9cc1c4cda85d02d"
+          }
+        },
+        {
+          "client_id": "272794951903-sdkhkepqtd1dbphe44h0b5jt1ll6ivrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2YnA0L9T5Rio2UFYuCM8apxcrRpcmvjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "272794951903-798kqj23knlojbggbklg04ditf4vqcb3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

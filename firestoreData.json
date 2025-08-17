@@ -1,0 +1,571 @@
+{
+  "stThomas": {
+    "fullName": "St. Thomas the Apostle",
+    "bio": "St. Thomas, one of the twelve apostles of Jesus, is believed to have traveled to India around AD 52. He preached the Gospel in Kerala and Tamil Nadu, establishing some of the earliest Christian communities in the world.",
+    "countryOfService": [
+      "India"
+    ],
+    "fieldOfService": [
+      "Evangelism",
+      "Church planting"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f6/Saint_Thomas_the_Apostle.jpg",
+    "birthDate": "001-01-01",
+    "deathDate": "072-07-03",
+    "placesOfWork": [
+      "Kerala",
+      "Tamil Nadu"
+    ],
+    "quotes": [
+      "My Lord and my God!"
+    ],
+    "legacy": "Established early Christian communities in India; revered as the Apostle of India."
+  },
+  "panditaRamabai": {
+    "fullName": "Pandita Ramabai",
+    "bio": "Pandita Ramabai (1858–1922) was an Indian social reformer, educator, and Christian convert. She worked for the upliftment of widows and marginalized women and founded the Mukti Mission in Pune.",
+    "countryOfService": [
+      "India"
+    ],
+    "fieldOfService": [
+      "Women's empowerment",
+      "Education",
+      "Social reform"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/1/13/Pandita_Ramabai.jpg",
+    "birthDate": "1858-04-23",
+    "deathDate": "1922-04-05",
+    "placesOfWork": [
+      "Maharashtra"
+    ],
+    "quotes": [
+      "The same power that raised Christ from the dead is working in me."
+    ],
+    "legacy": "Pioneer of women's education and social justice; founder of Mukti Mission."
+  },
+  "williamCarey": {
+    "fullName": "William Carey",
+    "bio": "William Carey (1761–1834), known as the 'Father of Modern Missions', was an English Baptist missionary to India. He founded Serampore College, translated the Bible into several Indian languages, and advocated social reforms like ending sati.",
+    "countryOfService": [
+      "India"
+    ],
+    "fieldOfService": [
+      "Bible translation",
+      "Education",
+      "Social reform"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/d/d6/William_Carey.jpg",
+    "birthDate": "1761-08-17",
+    "deathDate": "1834-06-09",
+    "placesOfWork": [
+      "Serampore",
+      "Calcutta"
+    ],
+    "quotes": [
+      "Expect great things from God; attempt great things for God."
+    ],
+    "legacy": "Bible translator, educator, and social reformer in India."
+  },
+  "amyCarmichael": {
+    "fullName": "Amy Carmichael",
+    "bio": "Amy Carmichael (1867–1951) was an Irish missionary who served in India for 55 years. She founded the Dohnavur Fellowship, rescuing children from temple prostitution.",
+    "countryOfService": [
+      "India"
+    ],
+    "fieldOfService": [
+      "Child rescue",
+      "Education",
+      "Women's ministry"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Amy_Carmichael.jpg",
+    "birthDate": "1867-12-16",
+    "deathDate": "1951-01-18",
+    "placesOfWork": [
+      "Tamil Nadu"
+    ],
+    "quotes": [
+      "You can give without loving, but you cannot love without giving."
+    ],
+    "legacy": "Founded Dohnavur Fellowship; rescued hundreds of children."
+  },
+  "sadhuSundarSingh": {
+    "fullName": "Sadhu Sundar Singh",
+    "bio": "Sadhu Sundar Singh (1889–1929) was a Sikh convert to Christianity who became a traveling evangelist in India and Tibet, known as the 'Apostle with the Bleeding Feet'.",
+    "countryOfService": [
+      "India",
+      "Tibet"
+    ],
+    "fieldOfService": [
+      "Evangelism",
+      "Teaching"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/50/Sundar_Singh_1922.jpg",
+    "birthDate": "1889-09-03",
+    "deathDate": "1929-04-17",
+    "placesOfWork": [
+      "Punjab",
+      "Tibet"
+    ],
+    "quotes": [
+      "Jesus is not a memory; He is a living presence."
+    ],
+    "legacy": "Christian mystic and evangelist."
+  },
+  "idaScudder": {
+    "fullName": "Ida Scudder",
+    "bio": "Dr. Ida Scudder (1870–1960) was an American medical missionary who founded the Christian Medical College in Vellore, transforming healthcare in India.",
+    "countryOfService": [
+      "India"
+    ],
+    "fieldOfService": [
+      "Medicine",
+      "Education"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/4a/Ida_Scudder.jpg",
+    "birthDate": "1870-12-09",
+    "deathDate": "1960-05-24",
+    "placesOfWork": [
+      "Vellore"
+    ],
+    "quotes": [
+      "Life is a mission, not a career."
+    ],
+    "legacy": "Founded CMC Vellore; pioneer in medical education."
+  },
+  "henryMartyn": {
+    "fullName": "Henry Martyn",
+    "bio": "Henry Martyn (1781–1812) was an Anglican missionary who translated the New Testament into Hindi, Urdu, and Persian.",
+    "countryOfService": [
+      "India",
+      "Persia"
+    ],
+    "fieldOfService": [
+      "Bible translation",
+      "Education"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/25/Henry_Martyn.jpg",
+    "birthDate": "1781-02-18",
+    "deathDate": "1812-10-16",
+    "placesOfWork": [
+      "Calcutta",
+      "Persia"
+    ],
+    "quotes": [
+      "Let me burn out for God."
+    ],
+    "legacy": "Pioneer Bible translator in South Asia."
+  },
+  "motherTeresa": {
+    "fullName": "Mother Teresa",
+    "bio": "Mother Teresa (1910–1997) founded the Missionaries of Charity in Kolkata, serving the poorest of the poor and receiving the Nobel Peace Prize in 1979.",
+    "countryOfService": [
+      "India"
+    ],
+    "fieldOfService": [
+      "Humanitarian aid",
+      "Healthcare"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/6/63/MotherTeresa_1.jpg",
+    "birthDate": "1910-08-26",
+    "deathDate": "1997-09-05",
+    "placesOfWork": [
+      "Kolkata"
+    ],
+    "quotes": [
+      "Do small things with great love."
+    ],
+    "legacy": "Served the destitute and sick; Nobel laureate."
+  },
+  "johnEliot": {
+    "fullName": "John Eliot",
+    "bio": "John Eliot (1604–1690) was a Puritan missionary in Massachusetts, known as the 'Apostle to the Indians' for translating the Bible into Algonquin.",
+    "countryOfService": [
+      "United States"
+    ],
+    "fieldOfService": [
+      "Bible translation",
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/79/John_Eliot.jpg",
+    "birthDate": "1604-08-05",
+    "deathDate": "1690-05-21",
+    "placesOfWork": [
+      "Massachusetts"
+    ],
+    "quotes": [
+      "Prayers and pains, through faith in Christ Jesus, will do anything."
+    ],
+    "legacy": "First Bible in Native American language."
+  },
+  "francisXavier": {
+    "fullName": "Francis Xavier",
+    "bio": "St. Francis Xavier (1506–1552) was a Spanish Jesuit missionary who evangelized in India, Japan, and Southeast Asia.",
+    "countryOfService": [
+      "India",
+      "Japan"
+    ],
+    "fieldOfService": [
+      "Evangelism",
+      "Education"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/3/37/Francis_Xavier.jpg",
+    "birthDate": "1506-04-07",
+    "deathDate": "1552-12-03",
+    "placesOfWork": [
+      "Goa",
+      "Japan"
+    ],
+    "quotes": [
+      "Give me the children until they are seven and anyone may have them afterwards."
+    ],
+    "legacy": "Spread Christianity across Asia."
+  },
+  "ctStudd": {
+    "fullName": "C. T. Studd",
+    "bio": "C. T. Studd (1860–1931) was a British cricketer turned missionary who served in China, India, and Africa.",
+    "countryOfService": [
+      "China",
+      "India",
+      "Congo"
+    ],
+    "fieldOfService": [
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c5/CT_Studd.jpg",
+    "birthDate": "1860-12-02",
+    "deathDate": "1931-07-16",
+    "placesOfWork": [
+      "China",
+      "Punjab",
+      "Congo"
+    ],
+    "quotes": [
+      "Only one life, ’twill soon be past; only what’s done for Christ will last."
+    ],
+    "legacy": "Founded Worldwide Evangelization Crusade."
+  },
+  "jimElliot": {
+    "fullName": "Jim Elliot",
+    "bio": "Jim Elliot (1927–1956) was an American missionary martyred while reaching the Huaorani tribe in Ecuador.",
+    "countryOfService": [
+      "Ecuador"
+    ],
+    "fieldOfService": [
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/8/82/Jim_Elliot.jpg",
+    "birthDate": "1927-10-08",
+    "deathDate": "1956-01-08",
+    "placesOfWork": [
+      "Ecuador"
+    ],
+    "quotes": [
+      "He is no fool who gives what he cannot keep to gain what he cannot lose."
+    ],
+    "legacy": "Inspired modern mission movements."
+  },
+  "adoniramJudson": {
+    "fullName": "Adoniram Judson",
+    "bio": "Adoniram Judson (1788–1850) was the first American missionary to Burma. He translated the Bible into Burmese.",
+    "countryOfService": [
+      "Myanmar"
+    ],
+    "fieldOfService": [
+      "Bible translation",
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Adoniram_Judson.jpg",
+    "birthDate": "1788-08-09",
+    "deathDate": "1850-04-12",
+    "placesOfWork": [
+      "Burma"
+    ],
+    "quotes": [
+      "The future is as bright as the promises of God."
+    ],
+    "legacy": "Translated Bible into Burmese; father of American missions."
+  },
+  "hudsonTaylor": {
+    "fullName": "Hudson Taylor",
+    "bio": "Hudson Taylor (1832–1905) was a British missionary to China and founder of the China Inland Mission. He pioneered contextual missions by adopting Chinese dress and customs.",
+    "countryOfService": [
+      "China"
+    ],
+    "fieldOfService": [
+      "Evangelism",
+      "Church planting"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Hudson_Taylor.jpg",
+    "birthDate": "1832-05-21",
+    "deathDate": "1905-06-03",
+    "placesOfWork": [
+      "China"
+    ],
+    "quotes": [
+      "God’s work done in God’s way will never lack God’s supply."
+    ],
+    "legacy": "Founded China Inland Mission; model of cultural adaptation in missions."
+  },
+  "davidLivingstone": {
+    "fullName": "David Livingstone",
+    "bio": "David Livingstone (1813–1873) was a Scottish missionary and explorer in Africa, combining evangelism with geography and anti-slavery advocacy.",
+    "countryOfService": [
+      "Africa"
+    ],
+    "fieldOfService": [
+      "Exploration",
+      "Evangelism",
+      "Medicine"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0b/David_Livingstone_1.jpg",
+    "birthDate": "1813-03-19",
+    "deathDate": "1873-05-01",
+    "placesOfWork": [
+      "Southern Africa",
+      "Central Africa"
+    ],
+    "quotes": [
+      "God had only one Son, and He made Him a missionary."
+    ],
+    "legacy": "Opened Africa to missions; fought against slave trade."
+  },
+  "adorniramJudson": {
+    "fullName": "Adoniram Judson",
+    "bio": "Adoniram Judson (1788–1850) was the first American missionary to Burma. He translated the Bible into Burmese and planted lasting churches.",
+    "countryOfService": [
+      "Myanmar (Burma)"
+    ],
+    "fieldOfService": [
+      "Bible translation",
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/9/9d/Adoniram_Judson.jpg",
+    "birthDate": "1788-08-09",
+    "deathDate": "1850-04-12",
+    "placesOfWork": [
+      "Burma"
+    ],
+    "quotes": [
+      "The prospects are as bright as the promises of God."
+    ],
+    "legacy": "Bible translation into Burmese; pioneer of American missions."
+  },
+  "williamBooth": {
+    "fullName": "William Booth",
+    "bio": "William Booth (1829–1912) was a British Methodist preacher who founded the Salvation Army, serving the poor in body and soul.",
+    "countryOfService": [
+      "United Kingdom",
+      "Worldwide"
+    ],
+    "fieldOfService": [
+      "Evangelism",
+      "Social reform"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f9/William_Booth.jpg",
+    "birthDate": "1829-04-10",
+    "deathDate": "1912-08-20",
+    "placesOfWork": [
+      "London",
+      "Worldwide"
+    ],
+    "quotes": [
+      "Go for souls, and go for the worst."
+    ],
+    "legacy": "Founded Salvation Army; combined Gospel with social action."
+  },
+  "georgeMuller": {
+    "fullName": "George Müller",
+    "bio": "George Müller (1805–1898) was a German-born Christian evangelist and director of orphanages in England, caring for over 10,000 orphans in his lifetime.",
+    "countryOfService": [
+      "England"
+    ],
+    "fieldOfService": [
+      "Orphan care",
+      "Faith ministry"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/ea/George_Muller.jpg",
+    "birthDate": "1805-09-27",
+    "deathDate": "1898-03-10",
+    "placesOfWork": [
+      "Bristol"
+    ],
+    "quotes": [
+      "Faith begins where man’s power ends."
+    ],
+    "legacy": "Cared for thousands of orphans by faith alone; inspired faith missions worldwide."
+  },
+  "davidBrainerd": {
+    "fullName": "David Brainerd",
+    "bio": "David Brainerd (1718–1747) was an American missionary to Native Americans in New Jersey and Pennsylvania. His diary inspired generations of missionaries.",
+    "countryOfService": [
+      "United States"
+    ],
+    "fieldOfService": [
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/5/52/David_Brainerd.jpg",
+    "birthDate": "1718-04-20",
+    "deathDate": "1747-10-09",
+    "placesOfWork": [
+      "New Jersey",
+      "Pennsylvania"
+    ],
+    "quotes": [
+      "I love to live on the brink of eternity."
+    ],
+    "legacy": "His journals deeply influenced missions and piety."
+  },
+  "lottieMoon": {
+    "fullName": "Lottie Moon",
+    "bio": "Charlotte Digges 'Lottie' Moon (1840–1912) was a Southern Baptist missionary to China who advocated for missions giving and women’s role in mission work.",
+    "countryOfService": [
+      "China"
+    ],
+    "fieldOfService": [
+      "Evangelism",
+      "Education"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/4/49/Lottie_Moon.jpg",
+    "birthDate": "1840-12-12",
+    "deathDate": "1912-12-24",
+    "placesOfWork": [
+      "China"
+    ],
+    "quotes": [
+      "If I had a thousand lives, I would give them all for China."
+    ],
+    "legacy": "Namesake of the Lottie Moon Christmas Offering for missions."
+  },
+  "jonathanGoforth": {
+    "fullName": "Jonathan Goforth",
+    "bio": "Jonathan Goforth (1859–1936) was a Canadian Presbyterian missionary to China and Manchuria, known for revival preaching.",
+    "countryOfService": [
+      "China"
+    ],
+    "fieldOfService": [
+      "Evangelism",
+      "Revival"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c4/Jonathan_Goforth.jpg",
+    "birthDate": "1859-02-10",
+    "deathDate": "1936-10-08",
+    "placesOfWork": [
+      "China",
+      "Manchuria"
+    ],
+    "quotes": [
+      "If revival is being withheld from us, it is because some idol still remains enthroned."
+    ],
+    "legacy": "Instrumental in revivals in China; inspired missionary zeal."
+  },
+  "marySlessor": {
+    "fullName": "Mary Slessor",
+    "bio": "Mary Slessor (1848–1915) was a Scottish missionary to Nigeria, known for protecting children and stopping the practice of killing twins.",
+    "countryOfService": [
+      "Nigeria"
+    ],
+    "fieldOfService": [
+      "Social reform",
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Mary_Slessor.jpg",
+    "birthDate": "1848-12-02",
+    "deathDate": "1915-01-13",
+    "placesOfWork": [
+      "Calabar, Nigeria"
+    ],
+    "quotes": [
+      "Christ sent me to preach the Gospel and He will look after the results."
+    ],
+    "legacy": "Saved lives of twins; advanced women’s role in missions."
+  },
+  "samuelZwemer": {
+    "fullName": "Samuel Zwemer",
+    "bio": "Samuel Zwemer (1867–1952) was an American missionary known as the 'Apostle to Islam'. He served in the Middle East and promoted mission work among Muslims.",
+    "countryOfService": [
+      "Bahrain",
+      "Egypt",
+      "Middle East"
+    ],
+    "fieldOfService": [
+      "Evangelism",
+      "Writing"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/0/0e/Samuel_Zwemer.jpg",
+    "birthDate": "1867-04-12",
+    "deathDate": "1952-04-02",
+    "placesOfWork": [
+      "Arabia",
+      "Egypt"
+    ],
+    "quotes": [
+      "The kingdoms and governments of this world have frontiers, but the Gospel of Jesus Christ knows no frontier."
+    ],
+    "legacy": "Pioneer in Muslim missions; prolific writer and mobilizer."
+  },
+  "johnPaton": {
+    "fullName": "John G. Paton",
+    "bio": "John Gibson Paton (1824–1907) was a Scottish missionary to the New Hebrides (Vanuatu). He persevered through danger to bring the Gospel to cannibal tribes.",
+    "countryOfService": [
+      "Vanuatu"
+    ],
+    "fieldOfService": [
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b5/John_Gibson_Paton.jpg",
+    "birthDate": "1824-05-24",
+    "deathDate": "1907-01-28",
+    "placesOfWork": [
+      "New Hebrides (Vanuatu)"
+    ],
+    "quotes": [
+      "I confess to you, that if I had not felt certain that every trial was ordered by infinite love and mercy, I could not have survived."
+    ],
+    "legacy": "Brought Christianity to cannibal tribes in the South Pacific."
+  },
+  "johnWycliffe": {
+    "fullName": "John Wycliffe",
+    "bio": "John Wycliffe (c.1320s–1384) was an English theologian and early translator of the Bible into English. Known as the ‘Morning Star of the Reformation’.",
+    "countryOfService": [
+      "England"
+    ],
+    "fieldOfService": [
+      "Bible translation",
+      "Reform"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/2/23/Wycliffe_by_Ford_Madox_Brown.jpg",
+    "birthDate": "1328-01-01",
+    "deathDate": "1384-12-31",
+    "placesOfWork": [
+      "Oxford",
+      "England"
+    ],
+    "quotes": [
+      "The Scriptures are the property of the people, and one which no party should be allowed to wrest from them."
+    ],
+    "legacy": "Laid groundwork for English Bible translation; influenced Reformation."
+  },
+  "johnWesley": {
+    "fullName": "John Wesley",
+    "bio": "John Wesley (1703–1791) was an Anglican cleric, theologian, and founder of Methodism. He emphasized evangelism, discipleship, and social holiness.",
+    "countryOfService": [
+      "England",
+      "United States"
+    ],
+    "fieldOfService": [
+      "Preaching",
+      "Evangelism"
+    ],
+    "heroImageUrl": "https://upload.wikimedia.org/wikipedia/commons/7/7d/John_Wesley.jpg",
+    "birthDate": "1703-06-28",
+    "deathDate": "1791-03-02",
+    "placesOfWork": [
+      "England",
+      "Georgia (USA)"
+    ],
+    "quotes": [
+      "The world is my parish."
+    ],
+    "legacy": "Founded Methodism; inspired global revival movements."
+  }
+}
