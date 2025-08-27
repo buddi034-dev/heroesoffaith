@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:math' as math;
-import '../../../models/missionary.dart';
+import 'missionary_profile_screen.dart';
+import '../../../models/enhanced_missionary.dart';
 import '../../../src/core/routes/route_names.dart';
+import '../../../src/core/services/missionary_api_service.dart';
+import '../../../src/core/services/cache_service.dart';
+import '../../../src/core/constants/spiritual_strings.dart';
 
 class MissionaryListScreen extends StatefulWidget {
   const MissionaryListScreen({super.key});
@@ -30,6 +33,13 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
   final Map<String, LinearGradient> _cardColors = {};
   PageController? _pageController;
   
+  // API service and data
+  final MissionaryApiService _apiService = MissionaryApiService();
+  final CacheService _cacheService = CacheService();
+  List<ProfileSummary> _profiles = [];
+  bool _isLoading = true;
+  String? _error;
+  
   // Available filter options
   final List<String> _filters = [
     'Most Viewed',
@@ -38,70 +48,96 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadProfiles();
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     _pageController?.dispose();
     super.dispose();
   }
 
-  List<Missionary> _filterMissionaries(List<Missionary> missionaries) {
-    var filtered = missionaries;
+  Future<void> _loadProfiles() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    final result = await _apiService.getProfiles(limit: 50);
+    result.onSuccess((response) {
+      setState(() {
+        _profiles = response.profiles;
+        _isLoading = false;
+      });
+    });
+
+    result.onFailure((error) {
+      setState(() {
+        _error = error;
+        _isLoading = false;
+      });
+    });
+  }
+
+  List<ProfileSummary> _filterProfiles(List<ProfileSummary> profiles) {
+    var filtered = profiles;
     
     // Apply search filter
     if (_searchQuery.isNotEmpty) {
-      filtered = filtered.where((missionary) {
-        final nameMatch = missionary.fullName.toLowerCase().contains(_searchQuery.toLowerCase());
-        final bioMatch = missionary.bio?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
-        final fieldMatch = missionary.fieldOfService?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
-        final countryMatch = missionary.countryOfService?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
-        final centuryMatch = missionary.century?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
+      filtered = filtered.where((profile) {
+        final nameMatch = profile.name.toLowerCase().contains(_searchQuery.toLowerCase());
+        final summaryMatch = profile.summary.toLowerCase().contains(_searchQuery.toLowerCase());
+        final categoryMatch = profile.categories.any((cat) => cat.toLowerCase().contains(_searchQuery.toLowerCase()));
         
-        return nameMatch || bioMatch || fieldMatch || countryMatch || centuryMatch;
+        return nameMatch || summaryMatch || categoryMatch;
       }).toList();
     }
     
-    // Apply advanced filters
+    // Apply category filter (using categories from API instead of old fields)
     if (_selectedCountry != null) {
-      filtered = filtered.where((missionary) {
-        return missionary.countryOfService?.toLowerCase() == _selectedCountry!.toLowerCase();
+      filtered = filtered.where((profile) {
+        return profile.categories.any((cat) => cat.toLowerCase().contains(_selectedCountry!.toLowerCase()));
       }).toList();
     }
     
     if (_selectedCentury != null) {
-      filtered = filtered.where((missionary) {
-        return missionary.century?.toLowerCase().contains(_selectedCentury!.toLowerCase()) ?? false;
+      filtered = filtered.where((profile) {
+        final birthYear = profile.dates.birth;
+        if (birthYear == null) return false;
+        final century = (birthYear ~/ 100) + 1;
+        return century.toString().contains(_selectedCentury!.replaceAll(RegExp(r'[^0-9]'), ''));
       }).toList();
     }
     
     if (_selectedFieldOfService != null) {
-      filtered = filtered.where((missionary) {
-        return missionary.fieldOfService?.toLowerCase().contains(_selectedFieldOfService!.toLowerCase()) ?? false;
+      filtered = filtered.where((profile) {
+        return profile.categories.any((cat) => cat.toLowerCase().contains(_selectedFieldOfService!.toLowerCase()));
       }).toList();
     }
     
     // Apply sorting based on selected filter
     switch (_selectedFilter) {
       case 'Most Viewed':
-        // Sort by name length as a proxy for "popularity" since we don't have view count data
+        // Sort by summary length as proxy for rich content
         filtered.sort((a, b) {
-          final aScore = a.fullName.length + (a.bio?.length ?? 0);
-          final bScore = b.fullName.length + (b.bio?.length ?? 0);
+          final aScore = a.name.length + a.summary.length;
+          final bScore = b.name.length + b.summary.length;
           return bScore.compareTo(aScore);
         });
         break;
       case 'Recent':
-        // Sort by century (most recent first), then alphabetically
+        // Sort by birth year (most recent first)
         filtered.sort((a, b) {
-          final aCentury = _getCenturyOrder(a.century);
-          final bCentury = _getCenturyOrder(b.century);
-          if (aCentury != bCentury) {
-            return bCentury.compareTo(aCentury); // Most recent first
-          }
-          return a.fullName.compareTo(b.fullName);
+          final aBirth = a.dates.birth ?? 0;
+          final bBirth = b.dates.birth ?? 0;
+          return bBirth.compareTo(aBirth);
         });
         break;
       case 'Alphabetical':
-        filtered.sort((a, b) => a.fullName.compareTo(b.fullName));
+        filtered.sort((a, b) => a.name.compareTo(b.name));
         break;
     }
     
@@ -203,7 +239,7 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Popular missionaries',
+                          SpiritualStrings.faithfulServants,
                           style: GoogleFonts.lato(
                             fontSize: 18,
                             color: Colors.white,
@@ -246,7 +282,7 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                           fontSize: 14, // Smaller font size
                         ),
                         decoration: InputDecoration(
-                          hintText: 'Search missionaries...',
+                          hintText: SpiritualStrings.searchHint,
                           hintStyle: GoogleFonts.lato(
                             color: Colors.white.withValues(alpha: 0.7),
                             fontSize: 14, // Smaller hint text
@@ -359,24 +395,17 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                     
                     // Search results count
                     if (_searchQuery.isNotEmpty) ...[
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance.collection('missionaries').limit(50).snapshots(), // Limit results
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            final allMissionaries = snapshot.data!.docs
-                                .map((doc) => Missionary.fromFirestore(doc))
-                                .toList();
-                            final filteredCount = _filterMissionaries(allMissionaries).length;
-                            return Text(
-                              'Found $filteredCount result${filteredCount != 1 ? 's' : ''} for "$_searchQuery"',
-                              style: GoogleFonts.lato(
-                                fontSize: 12,
-                                color: Colors.white.withValues(alpha: 0.8),
-                                fontWeight: FontWeight.w400,
-                              ),
-                            );
-                          }
-                          return const SizedBox.shrink();
+                      Builder(
+                        builder: (context) {
+                          final filteredCount = _filterProfiles(_profiles).length;
+                          return Text(
+                            'Found $filteredCount faithful servant${filteredCount != 1 ? 's' : ''} for "$_searchQuery"',
+                            style: GoogleFonts.lato(
+                              fontSize: 12,
+                              color: Colors.white.withValues(alpha: 0.8),
+                              fontWeight: FontWeight.w400,
+                            ),
+                          );
                         },
                       ),
                     ],
@@ -386,28 +415,69 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
               
               // Cards Section
               Expanded(
-                child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance.collection('missionaries').limit(50).snapshots(), // Limit results for performance
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
+                child: Builder(
+                  builder: (context) {
+                    if (_error != null) {
                       return Center(
-                        child: Text(
-                          'Error: ${snapshot.error}',
-                          style: GoogleFonts.lato(color: Colors.white),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.cloud_off,
+                              size: 64,
+                              color: Colors.white,
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              'Connection Challenge',
+                              style: GoogleFonts.lato(
+                                fontSize: 18,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              _error!,
+                              style: GoogleFonts.lato(
+                                fontSize: 14,
+                                color: Colors.white.withValues(alpha: 0.8),
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 16),
+                            ElevatedButton(
+                              onPressed: _loadProfiles,
+                              child: Text(SpiritualStrings.seekAgain),
+                            ),
+                          ],
                         ),
                       );
                     }
                     
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(color: Colors.white),
+                    if (_isLoading) {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const CircularProgressIndicator(color: Colors.white),
+                            const SizedBox(height: 16),
+                            Text(
+                              SpiritualStrings.randomLoadingMessage,
+                              style: GoogleFonts.lato(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
                       );
                     }
                     
-                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    if (_profiles.isEmpty) {
                       return Center(
                         child: Text(
-                          'No missionaries found.',
+                          'No faithful servants found.',
                           style: GoogleFonts.lato(
                             color: Colors.white,
                             fontSize: 16,
@@ -415,14 +485,10 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                         ),
                       );
                     }
-
-                    final allMissionaries = snapshot.data!.docs
-                        .map((doc) => Missionary.fromFirestore(doc))
-                        .toList();
                         
-                    final filteredMissionaries = _filterMissionaries(allMissionaries);
+                    final filteredProfiles = _filterProfiles(_profiles);
                     
-                    if (filteredMissionaries.isEmpty) {
+                    if (filteredProfiles.isEmpty) {
                       return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -434,7 +500,7 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              'No missionaries found',
+                              'No faithful servants found',
                               style: GoogleFonts.lato(
                                 fontSize: 18,
                                 color: Colors.white,
@@ -454,7 +520,7 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                     }
 
                     // Vertical scrolling carousel
-                    return _buildVerticalCarousel(filteredMissionaries);
+                    return _buildVerticalCarouselFromApi(filteredProfiles);
                   },
                 ),
               ),
@@ -632,290 +698,7 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
   }
 
 
-  Widget _buildPortraitCardLayout(Missionary missionary, int index) {
-    return Column(
-      children: [
-              // Image section - 55%
-              Expanded(
-                flex: 55,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0), // 2% padding for frame effect
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16),
-                    ),
-                    child: Container(
-                      width: double.infinity,
-                      child: missionary.heroImageUrl.isNotEmpty
-                          ? CachedNetworkImage(
-                              imageUrl: missionary.heroImageUrl,
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
-                              memCacheHeight: 300, // Cache optimization
-                              memCacheWidth: 300, // Cache optimization
-                              placeholder: (context, url) => Container(
-                                decoration: BoxDecoration(
-                                  gradient: _getCardGradient(missionary.fullName, index),
-                                ),
-                                child: const Center(
-                                  child: CircularProgressIndicator(
-                                    color: Colors.white,
-                                    strokeWidth: 2,
-                                  ),
-                                ),
-                              ),
-                              errorWidget: (context, url, error) => Container(
-                                decoration: BoxDecoration(
-                                  gradient: _getCardGradient(missionary.fullName, index),
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.person,
-                                    size: 60,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ),
-                            )
-                          : Container(
-                              decoration: BoxDecoration(
-                                gradient: _getCardGradient(missionary.fullName, index),
-                              ),
-                              child: Center(
-                                child: Icon(
-                                  Icons.person,
-                                  size: 60,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                    ),
-                  ),
-                ),
-              ),
-              
-              // Text section - 35% for more text space
-              Expanded(
-                flex: 35,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 4), // No top padding
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start, // Align to top
-                    children: [
-                      // Missionary name - BOLD and prominent
-                      Text(
-                        _toTitleCase(missionary.fullName),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.lato(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900, // Extra bold
-                          color: Colors.white,
-                          height: 1.1,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 12), // Increased spacing after name
-                      
-                      // Field of Service
-                      Text(
-                        missionary.fieldOfService ?? 'Missionary Work',
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.lato(
-                          fontSize: 14,
-                          color: Colors.white.withValues(alpha: 0.95),
-                          fontWeight: FontWeight.w600,
-                          height: 1.2,
-                        ),
-                      ),
-                      
-                      const SizedBox(height: 10), // Increased spacing after field of service
-                      
-                      // Bio - readable but smaller
-                      if (missionary.bio != null && missionary.bio!.isNotEmpty)
-                        Text(
-                          missionary.bio!.length > 120 
-                            ? '${missionary.bio!.substring(0, 120)}...'
-                            : missionary.bio!,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.lato(
-                            fontSize: 13,
-                            color: Colors.white.withValues(alpha: 0.85),
-                            fontWeight: FontWeight.w400,
-                            height: 1.3,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              
-              // Icons section - 10%
-              Expanded(
-                flex: 10,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      // Left group: Author info
-                      Expanded(
-                        flex: 2,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                gradient: _getCardGradient(missionary.fullName, index),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Center(
-                                child: Text(
-                                  missionary.fullName.isNotEmpty ? missionary.fullName[0] : 'M',
-                                  style: GoogleFonts.lato(
-                                    fontSize: 10,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Flexible(
-                              child: Text(
-                                _toSentenceCase(missionary.century ?? 'Historical'),
-                                style: GoogleFonts.lato(
-                                  fontSize: 12,
-                                  color: Colors.white.withValues(alpha: 0.8),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      
-                      // Center: Heroes of Faith branding
-                      Expanded(
-                        flex: 2,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Heroes of Faith',
-                            style: GoogleFonts.lato(
-                              fontSize: 10,
-                              color: Colors.white.withValues(alpha: 0.7),
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                      
-                      // Right group: Action icons
-                      Expanded(
-                        flex: 1,
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.bookmark_border,
-                              size: 18,
-                              color: Colors.white.withValues(alpha: 0.8),
-                            ),
-                            const SizedBox(width: 8),
-                            Icon(
-                              Icons.headphones_outlined,
-                              size: 18,
-                              color: Colors.white.withValues(alpha: 0.8),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          );
-  }
-
-  // Build vertical carousel with sneak peek animation
-  Widget _buildVerticalCarousel(List<Missionary> missionaries) {
-    _pageController ??= PageController(
-      viewportFraction: 1.0, // Full height for cards
-      initialPage: 0,
-    );
-    final PageController pageController = _pageController!;
-
-    return PageView.builder(
-      controller: pageController,
-      scrollDirection: Axis.vertical, // Vertical scrolling
-      itemCount: missionaries.length,
-      physics: const BouncingScrollPhysics(),
-      itemBuilder: (context, index) {
-        return AnimatedBuilder(
-          animation: pageController,
-          builder: (context, child) {
-            double value = 1.0;
-            if (pageController.position.haveDimensions) {
-              value = pageController.page! - index;
-              // More dramatic scaling: main card = 1.0, side cards = 0.85
-              value = (1 - (value.abs() * 0.15)).clamp(0.85, 1.0);
-            }
-            return _buildAnimatedCard(missionaries[index], value, pageController, index);
-          },
-        );
-      },
-    );
-  }
-
-  // Build animated card with scaling effect
-  Widget _buildAnimatedCard(Missionary missionary, double scale, PageController pageController, int index) {
-    return GestureDetector(
-      onTap: () => _navigateToProfile(missionary),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
-            height: constraints.maxHeight,
-            decoration: BoxDecoration(
-              gradient: pageController.page?.round() == index ? _getCardGradient(missionary.fullName, index) : const LinearGradient(
-                colors: [Colors.grey, Colors.grey],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              borderRadius: BorderRadius.circular(25),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: 0.15),
-                  blurRadius: 15,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: _buildPortraitCardLayout(missionary, index),
-            ),
-          );
-        },
-      ),
-    );
-  }
+  // LEGACY METHODS REMOVED - replaced with API versions
 
 
   // Generate stable gradient colors for cards - dark backgrounds for better white text readability
@@ -972,10 +755,14 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
     return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
 
-  void _navigateToProfile(Missionary missionary) {
-    Navigator.of(context).pushNamed(
-      RouteNames.missionaryProfile,
-      arguments: missionary,
+  void _navigateToProfile(ProfileSummary profile) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MissionaryProfileScreen(
+          missionaryId: profile.id,
+        ),
+      ),
     );
   }
 
@@ -1063,35 +850,31 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
           
           // Filter options
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('missionaries').snapshots(),
+            child: FutureBuilder<List<ProfileSummary>>(
+              future: _loadAllProfilesForFilters(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return const Center(child: CircularProgressIndicator());
                 }
                 
-                final missionaries = snapshot.data!.docs
-                    .map((doc) => Missionary.fromFirestore(doc))
-                    .toList();
+                final profiles = snapshot.data!;
                 
-                final countries = missionaries
-                    .map((m) => m.countryOfService)
-                    .where((c) => c != null && c.isNotEmpty)
-                    .cast<String>()
+                // Extract filter options from API data
+                final countries = profiles
+                    .expand((p) => p.categories) // Use categories as country equivalents
+                    .where((c) => c.isNotEmpty)
                     .toSet()
                     .toList()..sort();
                 
-                final centuries = missionaries
-                    .map((m) => m.century)
-                    .where((c) => c != null && c.isNotEmpty)
-                    .cast<String>()
+                final centuries = profiles
+                    .map((p) => _extractCentury(p.dates.display))
+                    .where((c) => c.isNotEmpty)
                     .toSet()
                     .toList()..sort();
                 
-                final fieldsOfService = missionaries
-                    .map((m) => m.fieldOfService)
-                    .where((f) => f != null && f.isNotEmpty)
-                    .cast<String>()
+                final fieldsOfService = profiles
+                    .expand((p) => p.categories)
+                    .where((f) => f.isNotEmpty)
                     .toSet()
                     .toList()..sort();
                 
@@ -1100,7 +883,7 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildFilterSection('Country', countries, _selectedCountry, (value) {
+                      _buildFilterSection('Category', countries, _selectedCountry, (value) {
                         setState(() {
                           _selectedCountry = value;
                         });
@@ -1197,6 +980,319 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
           ],
         ),
       ],
+    );
+  }
+
+  // NEW API VERSION METHODS
+
+  Widget _buildVerticalCarouselFromApi(List<ProfileSummary> profiles) {
+    _pageController ??= PageController(
+      viewportFraction: 1.0,
+      initialPage: 0,
+    );
+    final PageController pageController = _pageController!;
+
+    return PageView.builder(
+      controller: pageController,
+      scrollDirection: Axis.vertical,
+      itemCount: profiles.length,
+      physics: const BouncingScrollPhysics(),
+      itemBuilder: (context, index) {
+        return AnimatedBuilder(
+          animation: pageController,
+          builder: (context, child) {
+            double value = 1.0;
+            if (pageController.position.haveDimensions) {
+              value = pageController.page! - index;
+              value = (1 - (value.abs() * 0.15)).clamp(0.85, 1.0);
+            }
+            return _buildAnimatedCardFromApi(profiles[index], value, pageController, index);
+          },
+        );
+      },
+    );
+  }
+
+  Future<List<ProfileSummary>> _loadAllProfilesForFilters() async {
+    final result = await _apiService.getProfiles(limit: 100);
+    if (result.isSuccess && result.data != null) {
+      return result.data!.profiles;
+    }
+    return [];
+  }
+
+  String _extractCentury(String dateDisplay) {
+    final regex = RegExp(r'\b(\d{4})\b');
+    final matches = regex.allMatches(dateDisplay);
+    if (matches.isNotEmpty) {
+      final year = int.parse(matches.first.group(0)!);
+      final century = ((year - 1) ~/ 100) + 1;
+      return '${century}th Century';
+    }
+    return '';
+  }
+
+  Widget _buildAnimatedCardFromApi(ProfileSummary profile, double scale, PageController pageController, int index) {
+    return GestureDetector(
+      onTap: () => _navigateToProfile(profile),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+            height: constraints.maxHeight,
+            decoration: BoxDecoration(
+              gradient: pageController.page?.round() == index ? _getCardGradient(profile.name, index) : const LinearGradient(
+                colors: [Colors.grey, Colors.grey],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withValues(alpha: 0.15),
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: _buildPortraitCardLayoutFromApi(profile, index),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildPortraitCardLayoutFromApi(ProfileSummary profile, int index) {
+    return Column(
+      children: [
+        // Image section - 55%
+        Expanded(
+          flex: 55,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Container(
+                width: double.infinity,
+                child: profile.image != null && profile.image!.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: profile.image!,
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: double.infinity,
+                        memCacheHeight: 300,
+                        memCacheWidth: 300,
+                        placeholder: (context, url) => Container(
+                          decoration: BoxDecoration(
+                            gradient: _getCardGradient(profile.name, index),
+                          ),
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          ),
+                        ),
+                        errorWidget: (context, url, error) => Container(
+                          decoration: BoxDecoration(
+                            gradient: _getCardGradient(profile.name, index),
+                          ),
+                          child: const Center(
+                            child: Icon(
+                              Icons.person,
+                              size: 60,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(
+                        decoration: BoxDecoration(
+                          gradient: _getCardGradient(profile.name, index),
+                        ),
+                        child: const Center(
+                          child: Icon(
+                            Icons.person,
+                            size: 60,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+              ),
+            ),
+          ),
+        ),
+        
+        // Text section - 35%
+        Expanded(
+          flex: 35,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 0, bottom: 4),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                // Name
+                Text(
+                  _toTitleCase(profile.name),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.lato(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                    color: Colors.white,
+                    height: 1.1,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                
+                const SizedBox(height: 12),
+                
+                // Categories
+                Text(
+                  profile.categories.isNotEmpty ? profile.categories.join(', ') : 'Faithful Service',
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.lato(
+                    fontSize: 14,
+                    color: Colors.white.withValues(alpha: 0.95),
+                    fontWeight: FontWeight.w600,
+                    height: 1.2,
+                  ),
+                ),
+                
+                const SizedBox(height: 10),
+                
+                // Summary
+                if (profile.summary.isNotEmpty)
+                  Text(
+                    profile.summary.length > 120 
+                      ? '${profile.summary.substring(0, 120)}...'
+                      : profile.summary,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.lato(
+                      fontSize: 13,
+                      color: Colors.white.withValues(alpha: 0.85),
+                      fontWeight: FontWeight.w400,
+                      height: 1.3,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        
+        // Icons section - 10%
+        Expanded(
+          flex: 10,
+          child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Left group
+                Expanded(
+                  flex: 2,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 24,
+                        height: 24,
+                        decoration: BoxDecoration(
+                          gradient: _getCardGradient(profile.name, index),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Text(
+                            profile.name.isNotEmpty ? profile.name[0] : 'M',
+                            style: GoogleFonts.lato(
+                              fontSize: 10,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Flexible(
+                        child: Text(
+                          _toSentenceCase(profile.dates.display),
+                          style: GoogleFonts.lato(
+                            fontSize: 12,
+                            color: Colors.white.withValues(alpha: 0.8),
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                // Center: Branding
+                Expanded(
+                  flex: 2,
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Heroes of Faith',
+                      style: GoogleFonts.lato(
+                        fontSize: 10,
+                        color: Colors.white.withValues(alpha: 0.7),
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 0.5,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+                
+                // Right group: Action icons
+                Expanded(
+                  flex: 1,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Icon(
+                        Icons.bookmark_border,
+                        size: 18,
+                        color: Colors.white.withValues(alpha: 0.8),
+                      ),
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.headphones_outlined,
+                        size: 18,
+                        color: Colors.white.withValues(alpha: 0.8),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _navigateToApiProfile(ProfileSummary profile) {
+    // For now, show a message - later we'll create enhanced profile screen
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${SpiritualStrings.witnessTestament} ${profile.name} - Enhanced profile coming soon!'),
+        backgroundColor: const Color(0xFF667eea),
+      ),
     );
   }
 }

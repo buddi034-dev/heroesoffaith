@@ -46,6 +46,16 @@ dependencies:
   share_plus: ^7.2.2 # For sharing functionality
   file_picker: ^8.0.0+1 # For file selection from local storage
   http: ^1.1.0 # For URL validation
+  
+  # New dependencies for API integration
+  dio: ^5.4.0 # Better HTTP client for API calls
+  shared_preferences: ^2.2.3 # Local storage for caching
+  google_maps_flutter: ^2.5.3 # Maps integration
+  shimmer: ^3.0.0 # Loading states
+  connectivity_plus: ^5.0.2 # Network connectivity check
+  hive: ^2.2.3 # Local database for offline storage
+  hive_flutter: ^1.1.0 # Hive Flutter integration
+  equatable: ^2.0.5 # Object equality comparisons
 
 
 dev_dependencies:

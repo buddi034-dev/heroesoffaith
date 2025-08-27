@@ -3,16 +3,18 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../models/missionary.dart';
+import '../../../models/enhanced_missionary.dart';
+import '../../../src/core/services/missionary_api_service.dart';
+import '../../../src/core/constants/spiritual_strings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MissionaryProfileScreen extends StatefulWidget {
-  final Missionary missionary;
+  final String missionaryId;
 
   const MissionaryProfileScreen({
     super.key,
-    required this.missionary,
+    required this.missionaryId,
   });
 
   @override
@@ -29,6 +31,11 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
   bool _isAudioPlaying = false;
   int _selectedTimelineIndex = 0;
   PageController _galleryController = PageController();
+  
+  final MissionaryApiService _apiService = MissionaryApiService();
+  EnhancedMissionary? _missionary;
+  bool _isLoading = true;
+  String? _error;
 
   @override
   void initState() {
@@ -53,18 +60,43 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
       }
     });
     
+    _loadMissionaryProfile();
     _checkFavoriteStatus();
     _timelineAnimationController.forward();
   }
 
+  Future<void> _loadMissionaryProfile() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    final result = await _apiService.getProfile(widget.missionaryId);
+    result.onSuccess((missionary) {
+      setState(() {
+        _missionary = missionary;
+        _isLoading = false;
+      });
+    });
+
+    result.onFailure((error) {
+      setState(() {
+        _error = error;
+        _isLoading = false;
+      });
+    });
+  }
+
   Future<void> _checkFavoriteStatus() async {
+    if (_missionary == null) return;
+    
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       final doc = await FirebaseFirestore.instance
           .collection('users')
           .doc(user.uid)
           .collection('favorites')
-          .doc(widget.missionary.fullName)
+          .doc(_missionary!.name)
           .get();
       
       setState(() {
@@ -84,6 +116,171 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF667eea),
+                Color(0xFF764ba2),
+              ],
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          borderRadius: BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: const Icon(Icons.close, color: Colors.black87),
+                          iconSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CircularProgressIndicator(color: Colors.white),
+                        const SizedBox(height: 16),
+                        Text(
+                          SpiritualStrings.randomLoadingMessage,
+                          style: GoogleFonts.lato(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    
+    if (_error != null) {
+      return Scaffold(
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFF667eea),
+                Color(0xFF764ba2),
+              ],
+            ),
+          ),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 36,
+                        height: 36,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.9),
+                          borderRadius: BorderRadius.circular(18),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.1),
+                              blurRadius: 6,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () => Navigator.of(context).pop(),
+                          icon: const Icon(Icons.close, color: Colors.black87),
+                          iconSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.cloud_off,
+                          size: 64,
+                          color: Colors.white,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          'Connection Challenge',
+                          style: GoogleFonts.lato(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          _error!,
+                          style: GoogleFonts.lato(
+                            fontSize: 14,
+                            color: Colors.white.withValues(alpha: 0.8),
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: _loadMissionaryProfile,
+                          child: Text(SpiritualStrings.seekAgain),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    
+    if (_missionary == null) {
+      return const Scaffold(
+        body: Center(
+          child: Text('Missionary not found'),
+        ),
+      );
+    }
+
     return Scaffold(
       body: Stack(
         children: [
@@ -104,9 +301,9 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
                     fit: StackFit.expand,
                     children: [
                       // Hero Image
-                      widget.missionary.heroImageUrl.isNotEmpty
+                      (_missionary!.image?.isNotEmpty ?? false)
                           ? CachedNetworkImage(
-                              imageUrl: widget.missionary.heroImageUrl,
+                              imageUrl: _missionary!.image!,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Container(
                                 decoration: const BoxDecoration(
@@ -178,7 +375,7 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              widget.missionary.fullName,
+                              _missionary!.name,
                               style: GoogleFonts.lato(
                                 fontSize: 32,
                                 fontWeight: FontWeight.bold,
@@ -200,7 +397,7 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
                                 const SizedBox(width: 6),
                                 Flexible(
                                   child: Text(
-                                    widget.missionary.countryOfService ?? 'Unknown Location',
+                                    _missionary!.locations.isNotEmpty ? _missionary!.locations.first.name : 'Unknown Location',
                                     style: GoogleFonts.lato(
                                       fontSize: 16,
                                       color: Colors.white.withValues(alpha: 0.9),
@@ -214,7 +411,7 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              '${widget.missionary.fieldOfService ?? 'Missionary Work'} • ${widget.missionary.century ?? 'Historical Period'}',
+                              '${_missionary!.categories.isNotEmpty ? _missionary!.categories.first : 'Missionary Work'} • ${_missionary!.dates.display}',
                               style: GoogleFonts.lato(
                                 fontSize: 14,
                                 color: Colors.white.withValues(alpha: 0.8),
@@ -425,8 +622,8 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
           ),
           const SizedBox(height: 16),
           Text(
-            widget.missionary.bio?.isNotEmpty == true 
-                ? widget.missionary.bio!
+            _missionary!.biography.isNotEmpty
+                ? _missionary!.biography.map((section) => section.content).join('\n\n')
                 : 'This missionary dedicated their life to spreading the Gospel and serving communities. Their work has left a lasting impact on the regions they served, bringing hope and faith to countless individuals.',
             style: GoogleFonts.lato(
               fontSize: 16,
@@ -440,36 +637,56 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
   }
 
   Widget _buildTimelineSection() {
-    final timelineEvents = [
-      {
-        'year': '1800',
-        'title': 'Early Life',
-        'description': 'Born and raised in a Christian family, showing early signs of calling to missionary work.',
-        'color': const Color(0xFF667eea),
-        'icon': Icons.child_care,
-      },
-      {
-        'year': '1825', 
-        'title': 'Ministry Begins',
-        'description': 'Started missionary work and began spreading the Gospel to local communities.',
-        'color': const Color(0xFF764ba2),
-        'icon': Icons.church,
-      },
-      {
-        'year': '1830',
-        'title': 'Major Impact', 
-        'description': 'Established churches and educational institutions that continue to serve today.',
-        'color': const Color(0xFFf093fb),
-        'icon': Icons.star,
-      },
-      {
-        'year': '1840',
-        'title': 'Legacy',
-        'description': 'Their influence spread across regions, inspiring generations of future missionaries.',
-        'color': const Color(0xFFf5576c),
-        'icon': Icons.favorite,
-      },
-    ];
+    final timelineEvents = _missionary!.timeline.isNotEmpty 
+        ? _missionary!.timeline.asMap().entries.map((entry) {
+            final index = entry.key;
+            final event = entry.value;
+            final colors = [
+              const Color(0xFF667eea),
+              const Color(0xFF764ba2),
+              const Color(0xFFf093fb),
+              const Color(0xFFf5576c),
+            ];
+            final icons = [Icons.child_care, Icons.church, Icons.star, Icons.favorite];
+            
+            return {
+              'year': event.year.toString(),
+              'title': event.event,
+              'description': event.description,
+              'color': colors[index % colors.length],
+              'icon': icons[index % icons.length],
+            };
+          }).toList()
+        : [
+            {
+              'year': _missionary!.dates.birth?.toString() ?? '1800',
+              'title': 'Early Life',
+              'description': 'Born and raised in a Christian family, showing early signs of calling to missionary work.',
+              'color': const Color(0xFF667eea),
+              'icon': Icons.child_care,
+            },
+            {
+              'year': (_missionary!.dates.birth != null ? (_missionary!.dates.birth! + 25).toString() : '1825'), 
+              'title': 'Ministry Begins',
+              'description': 'Started missionary work and began spreading the Gospel to local communities.',
+              'color': const Color(0xFF764ba2),
+              'icon': Icons.church,
+            },
+            {
+              'year': (_missionary!.dates.birth != null ? (_missionary!.dates.birth! + 30).toString() : '1830'),
+              'title': 'Major Impact', 
+              'description': 'Established churches and educational institutions that continue to serve today.',
+              'color': const Color(0xFFf093fb),
+              'icon': Icons.star,
+            },
+            {
+              'year': _missionary!.dates.death?.toString() ?? '1840',
+              'title': 'Legacy',
+              'description': 'Their influence spread across regions, inspiring generations of future missionaries.',
+              'color': const Color(0xFFf5576c),
+              'icon': Icons.favorite,
+            },
+          ];
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -674,13 +891,18 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
   }
 
   Widget _buildGallerySection() {
+    final galleryImages = <String>[];
+    
     final sampleImages = [
-      widget.missionary.heroImageUrl.isNotEmpty ? widget.missionary.heroImageUrl : null,
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300',
-      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300', 
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300',
-      'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300',
-    ].where((url) => url != null).cast<String>().toList();
+      if (_missionary!.image?.isNotEmpty ?? false) _missionary!.image!,
+      ...galleryImages,
+      if (galleryImages.isEmpty) ...[  // Fallback images only if no gallery
+        'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300',
+        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300', 
+        'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300',
+        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300',
+      ],
+    ];
 
     return Container(
       padding: const EdgeInsets.all(24),
@@ -730,7 +952,7 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
                 return Container(
                   margin: const EdgeInsets.symmetric(horizontal: 8),
                   child: GestureDetector(
-                    onTap: () => _showImageZoom(sampleImages, index),
+                    onTap: () => _showImageZoom(sampleImages.cast<String>(), index),
                     child: Hero(
                       tag: 'gallery_image_$index',
                       child: Container(
@@ -890,16 +1112,16 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
 
   void _shareMissionary() {
     final missionaryInfo = '''
-🙏 *${widget.missionary.fullName}* - A Hero of Faith
+🙏 *${_missionary!.name}* - A Hero of Faith
 
-📍 Served in: ${widget.missionary.countryOfService ?? 'Unknown'}
-⛪ Ministry: ${widget.missionary.fieldOfService ?? 'Missionary Work'}
-📅 Era: ${widget.missionary.century ?? 'Historical Period'}
+📍 Served in: ${_missionary!.locations.isNotEmpty ? _missionary!.locations.first.name : 'Unknown'}
+⛪ Ministry: ${_missionary!.categories.isNotEmpty ? _missionary!.categories.first : 'Missionary Work'}
+📅 Era: ${_missionary!.dates.display}
 
-${widget.missionary.bio?.isNotEmpty == true ? 
-  '📖 ${widget.missionary.bio!.length > 150 ? 
-    '${widget.missionary.bio!.substring(0, 150)}...' : 
-    widget.missionary.bio!}' : 
+${_missionary!.biography.isNotEmpty ? 
+  '📖 ${_getBiographyText(_missionary!.biography).length > 150 ? 
+    '${_getBiographyText(_missionary!.biography).substring(0, 150)}...' : 
+    _getBiographyText(_missionary!.biography)}' : 
   'A dedicated servant of God who made a lasting impact through their missionary work.'}
 
 🔥 Discover more Heroes of Faith in our app!
@@ -910,7 +1132,7 @@ ${widget.missionary.bio?.isNotEmpty == true ?
     
     Share.share(
       missionaryInfo,
-      subject: '${widget.missionary.fullName} - Hero of Faith',
+      subject: '${_missionary!.name} - Hero of Faith',
     );
   }
 
@@ -931,7 +1153,7 @@ ${widget.missionary.bio?.isNotEmpty == true ?
           .collection('users')
           .doc(user.uid)
           .collection('favorites')
-          .doc(widget.missionary.fullName);
+          .doc(_missionary!.name);
 
       if (_isFavorited) {
         // Remove from favorites
@@ -944,7 +1166,7 @@ ${widget.missionary.bio?.isNotEmpty == true ?
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Removed ${widget.missionary.fullName} from favorites'),
+              content: Text('Removed ${_missionary!.name} from favorites'),
               backgroundColor: Colors.grey[600],
               duration: const Duration(seconds: 2),
             ),
@@ -953,11 +1175,12 @@ ${widget.missionary.bio?.isNotEmpty == true ?
       } else {
         // Add to favorites
         await favoritesRef.set({
-          'missionaryName': widget.missionary.fullName,
-          'heroImageUrl': widget.missionary.heroImageUrl,
-          'countryOfService': widget.missionary.countryOfService,
-          'fieldOfService': widget.missionary.fieldOfService,
-          'century': widget.missionary.century,
+          'missionaryId': widget.missionaryId,
+          'missionaryName': _missionary!.name,
+          'heroImageUrl': _missionary!.image,
+          'summary': _getBiographyText(_missionary!.biography).length > 100 ? '${_getBiographyText(_missionary!.biography).substring(0, 100)}...' : _getBiographyText(_missionary!.biography),
+          'categories': _missionary!.categories,
+          'dates': _missionary!.dates.display,
           'dateAdded': FieldValue.serverTimestamp(),
         });
         
@@ -969,7 +1192,7 @@ ${widget.missionary.bio?.isNotEmpty == true ?
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Added ${widget.missionary.fullName} to favorites'),
+              content: Text('Added ${_missionary!.name} to favorites'),
               backgroundColor: const Color(0xFF667eea),
               duration: const Duration(seconds: 2),
               action: SnackBarAction(
@@ -1080,9 +1303,14 @@ ${widget.missionary.bio?.isNotEmpty == true ?
   void _handleLike() {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Liked ${widget.missionary.fullName}'),
+        content: Text('Liked ${_missionary!.name}'),
         backgroundColor: Colors.red,
       ),
     );
+  }
+
+  String _getBiographyText(List<BiographySection> biography) {
+    if (biography.isEmpty) return '';
+    return biography.map((section) => section.content).join('\n\n');
   }
 }

@@ -5,27 +5,48 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:herosoffaith/src/core/theme/app_theme.dart';
 import 'package:herosoffaith/src/core/routes/app_routes.dart';
 import 'package:herosoffaith/src/core/routes/route_names.dart';
+import 'package:herosoffaith/src/core/services/missionary_api_service.dart';
+import 'package:herosoffaith/src/core/services/cache_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-  // Initialize Firebase in background immediately without blocking
-  unawaited(_initializeFirebase());
+  // Initialize services in background
+  unawaited(_initializeServices());
   
   // Start the app immediately
   runApp(const MyApp());
 }
 
-// Initialize Firebase in background
-Future<void> _initializeFirebase() async {
+// Initialize all services in background
+Future<void> _initializeServices() async {
   try {
+    // Initialize Firebase
     await Firebase.initializeApp();
     await FirebaseAppCheck.instance.activate(
       androidProvider: AndroidProvider.debug,
     );
-    // Firebase initialized successfully
+    print('✅ Firebase initialized successfully');
+    
+    // Initialize Cache Service
+    await CacheManager().initialize();
+    print('✅ Cache service initialized successfully');
+    
+    // Initialize API Service
+    MissionaryApiService().initialize();
+    print('✅ API service initialized successfully');
+    
+    // Test API health
+    final healthResult = await MissionaryApiService().healthCheck();
+    healthResult.onSuccess((data) {
+      print('✅ API health check passed: ${data['status']}');
+    });
+    healthResult.onFailure((error) {
+      print('⚠️ API health check failed: $error');
+    });
+    
   } catch (e) {
-    // Firebase initialization error: $e
+    print('❌ Service initialization error: $e');
   }
 }
 

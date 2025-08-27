@@ -212,6 +212,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 const Color(0xFF9C27B0),
                                 () => _showComprehensiveUploadOptions(context),
                               ),
+                              _buildServiceCard(
+                                'API Test',
+                                FontAwesomeIcons.flask,
+                                const Color(0xFF00BCD4),
+                                () => Navigator.pushNamed(context, '/api-test'),
+                              ),
                             ],
                           ),
                         ),

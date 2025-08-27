@@ -17,6 +17,8 @@ import 'package:herosoffaith/features/missionaries/presentation/missionary_profi
 import 'package:herosoffaith/src/features/common/presentation/screens/splash_screen.dart'; // <<< CORRECT IMPORT
 // Import the SearchScreen
 import 'package:herosoffaith/src/features/search/presentation/screens/search_screen.dart';
+// Import the ApiTestScreen
+import 'package:herosoffaith/src/features/api_test/api_test_screen.dart';
 // Import the Missionary model
 import 'package:herosoffaith/models/missionary.dart';
 
@@ -37,14 +39,14 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const MissionaryListScreen());
 
       case RouteNames.missionaryProfile:
-        final missionary = settings.arguments as Missionary?;
-        if (missionary != null) {
-          return MaterialPageRoute(builder: (_) => MissionaryProfileScreen(missionary: missionary));
+        final missionaryId = settings.arguments as String?;
+        if (missionaryId != null) {
+          return MaterialPageRoute(builder: (_) => MissionaryProfileScreen(missionaryId: missionaryId));
         } else {
           return MaterialPageRoute(
             builder: (_) => Scaffold(
               appBar: AppBar(title: const Text("Error")),
-              body: const Center(child: Text('Missionary data not found')),
+              body: const Center(child: Text('Missionary ID not provided')),
             ),
           );
         }
@@ -60,6 +62,9 @@ class AppRoutes {
           appBar: AppBar(title: const Text("Upload Coming Soon")),
           body: const Center(child: Text('Advanced upload screen coming soon!\nUse the simple upload from home screen.')),
         ));
+
+      case '/api-test':
+        return MaterialPageRoute(builder: (_) => const ApiTestScreen());
 
       default:
         return MaterialPageRoute(

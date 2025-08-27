@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../../../models/missionary.dart';
+import '../../../../../models/enhanced_missionary.dart';
+import '../../../../core/services/missionary_api_service.dart';
+import '../../../../core/constants/spiritual_strings.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -18,6 +19,12 @@ class _SearchScreenState extends State<SearchScreen> {
   String _selectedFilter = 'Most Viewed';
   int _selectedIndex = 0;
   
+  // API service and data
+  final MissionaryApiService _apiService = MissionaryApiService();
+  List<ProfileSummary> _profiles = [];
+  bool _isLoading = false;
+  String? _error;
+  
   // Available filter options
   final List<String> _filters = [
     'Most Viewed',
@@ -26,23 +33,77 @@ class _SearchScreenState extends State<SearchScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadProfiles();
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
   }
 
-  List<Missionary> _filterMissionaries(List<Missionary> missionaries) {
-    var filtered = missionaries;
+  Future<void> _loadProfiles() async {
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    final result = await _apiService.getProfiles(limit: 50);
+    result.onSuccess((response) {
+      setState(() {
+        _profiles = response.profiles;
+        _isLoading = false;
+      });
+    });
+
+    result.onFailure((error) {
+      setState(() {
+        _error = error;
+        _isLoading = false;
+      });
+    });
+  }
+
+  Future<void> _performSearch() async {
+    if (_searchQuery.isEmpty) {
+      await _loadProfiles();
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _error = null;
+    });
+
+    final result = await _apiService.searchProfiles(_searchQuery);
+    result.onSuccess((results) {
+      setState(() {
+        _profiles = results;
+        _isLoading = false;
+      });
+    });
+
+    result.onFailure((error) {
+      setState(() {
+        _error = error;
+        _isLoading = false;
+      });
+    });
+  }
+
+  List<ProfileSummary> _filterProfiles(List<ProfileSummary> profiles) {
+    var filtered = profiles;
     
     // Apply search filter
     if (_searchQuery.isNotEmpty) {
-      filtered = filtered.where((missionary) {
-        final nameMatch = missionary.fullName.toLowerCase().contains(_searchQuery.toLowerCase());
-        final bioMatch = missionary.bio?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
-        final fieldMatch = missionary.fieldOfService?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
-        final countryMatch = missionary.countryOfService?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false;
+      filtered = filtered.where((profile) {
+        final nameMatch = profile.name.toLowerCase().contains(_searchQuery.toLowerCase());
+        final summaryMatch = profile.summary.toLowerCase().contains(_searchQuery.toLowerCase());
+        final categoryMatch = profile.categories.any((cat) => cat.toLowerCase().contains(_searchQuery.toLowerCase()));
         
-        return nameMatch || bioMatch || fieldMatch || countryMatch;
+        return nameMatch || summaryMatch || categoryMatch;
       }).toList();
     }
     
@@ -52,11 +113,15 @@ class _SearchScreenState extends State<SearchScreen> {
         // For now, just return as is since we don't have view count data
         break;
       case 'Recent':
-        // Sort by some criteria - for now just reverse alphabetical
-        filtered.sort((a, b) => b.fullName.compareTo(a.fullName));
+        // Sort by birth year (most recent first)
+        filtered.sort((a, b) {
+          final aBirth = a.dates.birth ?? 0;
+          final bBirth = b.dates.birth ?? 0;
+          return bBirth.compareTo(aBirth);
+        });
         break;
       case 'Alphabetical':
-        filtered.sort((a, b) => a.fullName.compareTo(b.fullName));
+        filtered.sort((a, b) => a.name.compareTo(b.name));
         break;
     }
     
@@ -139,8 +204,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       child: TextField(
                         controller: _searchController,
                         autofocus: true,
+                        onChanged: (value) {
+                          setState(() {
+                            _searchQuery = value;
+                          });
+                          _performSearch();
+                        },
                         decoration: InputDecoration(
-                          hintText: 'Search by name, country, field...',
+                          hintText: SpiritualStrings.searchHint,
                           hintStyle: GoogleFonts.lato(
                             color: Colors.grey[500],
                             fontSize: 16,
@@ -166,11 +237,6 @@ class _SearchScreenState extends State<SearchScreen> {
                             vertical: 16,
                           ),
                         ),
-                        onChanged: (value) {
-                          setState(() {
-                            _searchQuery = value;
-                          });
-                        },
                       ),
                     ),
                     
@@ -236,28 +302,69 @@ class _SearchScreenState extends State<SearchScreen> {
                       topRight: Radius.circular(24),
                     ),
                   ),
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance.collection('missionaries').snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
+                  child: Builder(
+                    builder: (context) {
+                      if (_error != null) {
                         return Center(
-                          child: Text(
-                            'Error: ${snapshot.error}',
-                            style: GoogleFonts.lato(color: Colors.grey[600]),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.cloud_off,
+                                size: 64,
+                                color: Colors.grey,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Connection Challenge',
+                                style: GoogleFonts.lato(
+                                  fontSize: 18,
+                                  color: Colors.grey[600],
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              Text(
+                                _error!,
+                                style: GoogleFonts.lato(
+                                  fontSize: 14,
+                                  color: Colors.grey[500],
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                              const SizedBox(height: 16),
+                              ElevatedButton(
+                                onPressed: _loadProfiles,
+                                child: Text(SpiritualStrings.seekAgain),
+                              ),
+                            ],
                           ),
                         );
                       }
                       
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(
-                          child: CircularProgressIndicator(color: Color(0xFF667eea)),
+                      if (_isLoading) {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const CircularProgressIndicator(color: Color(0xFF667eea)),
+                              const SizedBox(height: 16),
+                              Text(
+                                SpiritualStrings.randomLoadingMessage,
+                                style: GoogleFonts.lato(
+                                  color: Colors.grey[600],
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         );
                       }
                       
-                      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      if (_profiles.isEmpty) {
                         return Center(
                           child: Text(
-                            'No missionaries found.',
+                            'No faithful servants found.',
                             style: GoogleFonts.lato(
                               color: Colors.grey[600],
                               fontSize: 16,
@@ -266,13 +373,9 @@ class _SearchScreenState extends State<SearchScreen> {
                         );
                       }
 
-                      final allMissionaries = snapshot.data!.docs
-                          .map((doc) => Missionary.fromFirestore(doc))
-                          .toList();
-                          
-                      final filteredMissionaries = _filterMissionaries(allMissionaries);
+                      final filteredProfiles = _filterProfiles(_profiles);
                       
-                      if (filteredMissionaries.isEmpty && _searchQuery.isNotEmpty) {
+                      if (filteredProfiles.isEmpty && _searchQuery.isNotEmpty) {
                         return Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -306,9 +409,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
                       return ListView.builder(
                         padding: const EdgeInsets.all(20),
-                        itemCount: filteredMissionaries.length,
+                        itemCount: filteredProfiles.length,
                         itemBuilder: (context, index) {
-                          final missionary = filteredMissionaries[index];
+                          final profile = filteredProfiles[index];
                           return Card(
                             margin: const EdgeInsets.only(bottom: 12),
                             elevation: 2,
@@ -322,9 +425,9 @@ class _SearchScreenState extends State<SearchScreen> {
                                 child: SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: missionary.heroImageUrl.isNotEmpty
+                                  child: profile.image != null && profile.image!.isNotEmpty
                                       ? CachedNetworkImage(
-                                          imageUrl: missionary.heroImageUrl,
+                                          imageUrl: profile.image!,
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) => Container(
                                             color: Colors.grey[300],
@@ -352,7 +455,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                               ),
                               title: Text(
-                                missionary.fullName,
+                                profile.name,
                                 style: GoogleFonts.lato(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
@@ -362,20 +465,34 @@ class _SearchScreenState extends State<SearchScreen> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  if (missionary.fieldOfService?.isNotEmpty == true)
-                                    Text(
-                                      missionary.fieldOfService!,
-                                      style: GoogleFonts.lato(
-                                        fontSize: 14,
-                                        color: Colors.grey[600],
-                                      ),
+                                  Text(
+                                    profile.dates.display,
+                                    style: GoogleFonts.lato(
+                                      fontSize: 14,
+                                      color: Colors.grey[600],
+                                      fontWeight: FontWeight.w500,
                                     ),
-                                  if (missionary.countryOfService?.isNotEmpty == true)
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    profile.summary.length > 80 
+                                      ? '${profile.summary.substring(0, 80)}...'
+                                      : profile.summary,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.lato(
+                                      fontSize: 12,
+                                      color: Colors.grey[500],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  if (profile.categories.isNotEmpty)
                                     Text(
-                                      missionary.countryOfService!,
+                                      profile.categories.join(', '),
                                       style: GoogleFonts.lato(
-                                        fontSize: 12,
-                                        color: Colors.grey[500],
+                                        fontSize: 11,
+                                        color: const Color(0xFF667eea),
+                                        fontWeight: FontWeight.w500,
                                       ),
                                     ),
                                 ],
