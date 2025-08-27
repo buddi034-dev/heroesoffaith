@@ -570,8 +570,15 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
                       ),
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: () => _handleLike(),
-                        icon: const Icon(Icons.favorite_border, color: Colors.black87),
+                        onPressed: _handleBookmark,
+                        icon: AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 300),
+                          child: Icon(
+                            _isFavorited ? Icons.favorite : Icons.favorite_border,
+                            color: _isFavorited ? Colors.red : Colors.black87,
+                            key: ValueKey(_isFavorited),
+                          ),
+                        ),
                         iconSize: 18,
                       ),
                     ),
@@ -1169,11 +1176,14 @@ ${_missionary!.biography.isNotEmpty ?
               content: Text('Removed ${_missionary!.name} from favorites'),
               backgroundColor: Colors.grey[600],
               duration: const Duration(seconds: 2),
+              behavior: SnackBarBehavior.floating,
+              dismissDirection: DismissDirection.horizontal,
             ),
           );
         }
       } else {
         // Add to favorites
+        print('📝 Adding ${_missionary!.name} to favorites...');
         await favoritesRef.set({
           'missionaryId': widget.missionaryId,
           'missionaryName': _missionary!.name,
@@ -1181,27 +1191,44 @@ ${_missionary!.biography.isNotEmpty ?
           'summary': _getBiographyText(_missionary!.biography).length > 100 ? '${_getBiographyText(_missionary!.biography).substring(0, 100)}...' : _getBiographyText(_missionary!.biography),
           'categories': _missionary!.categories,
           'dates': _missionary!.dates.display,
-          'dateAdded': FieldValue.serverTimestamp(),
+          'addedAt': FieldValue.serverTimestamp(),
         });
         
         setState(() {
           _isFavorited = true;
         });
         
+        print('✅ Successfully added ${_missionary!.name} to favorites');
+        
         HapticFeedback.mediumImpact();
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('Added ${_missionary!.name} to favorites'),
-              backgroundColor: const Color(0xFF667eea),
-              duration: const Duration(seconds: 2),
-              action: SnackBarAction(
-                label: 'VIEW',
-                textColor: Colors.white,
-                onPressed: () {
-                  // Navigate to favorites screen (to be implemented)
-                },
+              content: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text('Added ${_missionary!.name} to favorites'),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      Navigator.pushNamed(context, '/favorites');
+                    },
+                    child: const Text(
+                      'VIEW',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
+              backgroundColor: const Color(0xFF667eea),
+              duration: const Duration(seconds: 3),
+              dismissDirection: DismissDirection.horizontal,
+              behavior: SnackBarBehavior.floating,
             ),
           );
         }
@@ -1300,14 +1327,6 @@ ${_missionary!.biography.isNotEmpty ?
     }
   }
 
-  void _handleLike() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Liked ${_missionary!.name}'),
-        backgroundColor: Colors.red,
-      ),
-    );
-  }
 
   String _getBiographyText(List<BiographySection> biography) {
     if (biography.isEmpty) return '';

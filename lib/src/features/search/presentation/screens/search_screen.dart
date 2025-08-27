@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import '../../../../../models/enhanced_missionary.dart';
 import '../../../../core/services/missionary_api_service.dart';
 import '../../../../core/constants/spiritual_strings.dart';
+import '../../../../core/widgets/missionary_image.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -425,33 +426,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                 child: SizedBox(
                                   width: 50,
                                   height: 50,
-                                  child: profile.image != null && profile.image!.isNotEmpty
-                                      ? CachedNetworkImage(
-                                          imageUrl: profile.image!,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) => Container(
-                                            color: Colors.grey[300],
-                                            child: const Center(
-                                              child: CircularProgressIndicator(),
-                                            ),
-                                          ),
-                                          errorWidget: (context, url, error) => Container(
-                                            color: const Color(0xFF667eea),
-                                            child: const Icon(
-                                              Icons.person,
-                                              color: Colors.white,
-                                              size: 30,
-                                            ),
-                                          ),
-                                        )
-                                      : Container(
-                                          color: const Color(0xFF667eea),
-                                          child: const Icon(
-                                            Icons.person,
-                                            color: Colors.white,
-                                            size: 30,
-                                          ),
-                                        ),
+                                  child: MissionaryImage(
+                                    primaryImageUrl: profile.image,
+                                    missionaryId: profile.id,
+                                    width: 50,
+                                    height: 50,
+                                    fit: BoxFit.cover,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
                                 ),
                               ),
                               title: Text(

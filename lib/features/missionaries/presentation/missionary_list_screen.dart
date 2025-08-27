@@ -10,6 +10,7 @@ import '../../../src/core/routes/route_names.dart';
 import '../../../src/core/services/missionary_api_service.dart';
 import '../../../src/core/services/cache_service.dart';
 import '../../../src/core/constants/spiritual_strings.dart';
+import '../../../src/core/widgets/missionary_image.dart';
 
 class MissionaryListScreen extends StatefulWidget {
   const MissionaryListScreen({super.key});
@@ -1078,52 +1079,12 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
-              child: Container(
+              child: MissionaryImage(
+                primaryImageUrl: profile.image,
+                missionaryId: profile.id,
                 width: double.infinity,
-                child: profile.image != null && profile.image!.isNotEmpty
-                    ? CachedNetworkImage(
-                        imageUrl: profile.image!,
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
-                        memCacheHeight: 300,
-                        memCacheWidth: 300,
-                        placeholder: (context, url) => Container(
-                          decoration: BoxDecoration(
-                            gradient: _getCardGradient(profile.name, index),
-                          ),
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                              strokeWidth: 2,
-                            ),
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => Container(
-                          decoration: BoxDecoration(
-                            gradient: _getCardGradient(profile.name, index),
-                          ),
-                          child: const Center(
-                            child: Icon(
-                              Icons.person,
-                              size: 60,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(
-                        decoration: BoxDecoration(
-                          gradient: _getCardGradient(profile.name, index),
-                        ),
-                        child: const Center(
-                          child: Icon(
-                            Icons.person,
-                            size: 60,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                height: double.infinity,
+                fit: BoxFit.cover,
               ),
             ),
           ),

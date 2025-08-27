@@ -19,6 +19,8 @@ import 'package:herosoffaith/src/features/common/presentation/screens/splash_scr
 import 'package:herosoffaith/src/features/search/presentation/screens/search_screen.dart';
 // Import the ApiTestScreen
 import 'package:herosoffaith/src/features/api_test/api_test_screen.dart';
+// Import the FavoritesScreen
+import 'package:herosoffaith/src/features/favorites/presentation/screens/favorites_screen.dart';
 // Import the Missionary model
 import 'package:herosoffaith/models/missionary.dart';
 
@@ -65,6 +67,9 @@ class AppRoutes {
 
       case '/api-test':
         return MaterialPageRoute(builder: (_) => const ApiTestScreen());
+
+      case '/favorites':
+        return MaterialPageRoute(builder: (_) => const FavoritesScreen());
 
       default:
         return MaterialPageRoute(

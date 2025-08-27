@@ -189,10 +189,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                 () => _showComingSoon(context, 'Timeline Events'),
                               ),
                               _buildServiceCard(
-                                'Favorites',
+                                'Treasured\nSaints',
                                 FontAwesomeIcons.heart,
                                 const Color(0xFFf5576c),
-                                () => _showComingSoon(context, 'Favorites'),
+                                () => Navigator.pushNamed(context, '/favorites'),
                               ),
                               _buildServiceCard(
                                 'Donations',
@@ -205,18 +205,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 FontAwesomeIcons.camera,
                                 const Color(0xFFFF7043),
                                 () => _showComingSoon(context, 'Contribute'),
-                              ),
-                              _buildServiceCard(
-                                'Admin\nUpload',
-                                FontAwesomeIcons.upload,
-                                const Color(0xFF9C27B0),
-                                () => _showComprehensiveUploadOptions(context),
-                              ),
-                              _buildServiceCard(
-                                'API Test',
-                                FontAwesomeIcons.flask,
-                                const Color(0xFF00BCD4),
-                                () => Navigator.pushNamed(context, '/api-test'),
                               ),
                             ],
                           ),
@@ -342,124 +330,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showComprehensiveUploadOptions(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(FontAwesomeIcons.upload, color: const Color(0xFF9C27B0), size: 20),
-            const SizedBox(width: 8),
-            const Expanded(
-              child: Text(
-                'Admin Upload Center',
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Comprehensive missionary data management:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 12),
-            Text('📂 Upload from JSON files'),
-            Text('🔍 Validate image URLs'),
-            Text('✅ Check data format'),
-            Text('🚀 Batch upload to Firestore'),
-            SizedBox(height: 12),
-            Text(
-              'Built-in data includes 28 missionaries:\nWilliam Carey, Mother Teresa, Amy Carmichael,\nHudson Taylor, David Livingstone, and 23 more.',
-              style: TextStyle(fontSize: 12, color: Colors.grey),
-            ),
-          ],
-        ),
-        actions: [
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () => Navigator.of(context).pop(),
-                      child: const Text('Cancel'),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        DirectUploader.showTestUpload(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Test Upload'),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        FileUploader.showFileUpload(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Upload File'),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        ImageUrlValidator.showValidation(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        foregroundColor: Colors.white,
-                      ),
-                      child: const Text('Check Images'),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    DirectUploader.showDirectUpload(context);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF9C27B0),
-                    foregroundColor: Colors.white,
-                  ),
-                  child: const Text('Upload All Built-in Data'),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
 }
