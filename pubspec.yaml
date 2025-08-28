@@ -47,6 +47,7 @@ dependencies:
   file_picker: ^8.0.0+1 # For file selection from local storage
   image_picker: ^1.0.7 # For camera and gallery image selection
   http: ^1.1.0 # For URL validation
+  path_provider: ^2.1.0 # For accessing file system directories
   
   # New dependencies for API integration
   dio: ^5.4.0 # Better HTTP client for API calls
