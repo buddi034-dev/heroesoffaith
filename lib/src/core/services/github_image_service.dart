@@ -2,11 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
 
 class GitHubImageService {
   static const String _contributionsPath = 'contributions/images';
   
-  /// Save image to GitHub repository and return the GitHub raw URL
+  /// Save image to local app directory and return a placeholder URL
+  /// (For now, we'll store locally and implement GitHub sync later)
   static Future<String> saveImageToGitHub({
     required File imageFile,
     required String userId,
@@ -14,29 +16,33 @@ class GitHubImageService {
     required String contributionType,
   }) async {
     try {
+      // Get app documents directory
+      final appDir = await getApplicationDocumentsDirectory();
+      
       // Generate unique filename with user info
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final sanitizedMissionaryName = missionaryName.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '_');
       final fileName = '${userId}_${sanitizedMissionaryName}_${timestamp}.jpg';
       
-      // Create contributions directory if it doesn't exist
-      final contributionsDir = Directory('$_contributionsPath');
+      // Create contributions directory in app documents
+      final contributionsDir = Directory(path.join(appDir.path, 'contributions', 'images'));
       if (!await contributionsDir.exists()) {
         await contributionsDir.create(recursive: true);
       }
       
-      // Copy image to contributions directory
-      final destPath = '$_contributionsPath/$fileName';
+      // Copy image to app directory
+      final destPath = path.join(contributionsDir.path, fileName);
       final destFile = File(destPath);
       await imageFile.copy(destPath);
       
       // Create metadata file for tracking
-      final metadataPath = '$_contributionsPath/${fileName}.json';
+      final metadataPath = path.join(contributionsDir.path, '$fileName.json');
       final metadata = {
         'userId': userId,
         'missionaryName': missionaryName,
         'contributionType': contributionType,
-        'originalFileName': imageFile.path.split('/').last,
+        'originalFileName': path.basename(imageFile.path),
+        'localPath': destPath,
         'uploadedAt': DateTime.now().toIso8601String(),
         'status': 'pending_approval',
       };
@@ -44,12 +50,11 @@ class GitHubImageService {
       final metadataFile = File(metadataPath);
       await metadataFile.writeAsString(jsonEncode(metadata));
       
-      // Return GitHub raw URL (will be available after commit/push)
-      const repoUrl = 'https://raw.githubusercontent.com/your-username/herosoffaith/main';
-      return '$repoUrl/$_contributionsPath/$fileName';
+      // Return local file path for now (GitHub sync to be implemented)
+      return destPath;
       
     } catch (e) {
-      throw Exception('Failed to save image to GitHub: $e');
+      throw Exception('Failed to save image locally: $e');
     }
   }
   

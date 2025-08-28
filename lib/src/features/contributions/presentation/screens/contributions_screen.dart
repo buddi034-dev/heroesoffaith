@@ -121,20 +121,20 @@ class _ContributionsScreenState extends State<ContributionsScreen>
         return;
       }
 
-      // Save image to GitHub repository
-      final imageUrl = await GitHubImageService.saveImageToGitHub(
+      // Save image locally using our service  
+      final localImagePath = await GitHubImageService.saveImageToGitHub(
         imageFile: _selectedImage!,
         userId: user.uid,
         missionaryName: _selectedMissionaryName,
         contributionType: 'photo',
       );
 
-      // Save contribution to Firestore with GitHub image URL
+      // Save contribution to Firestore with local image path
       await FirebaseFirestore.instance.collection('contributions').add({
         'type': 'photo',
         'missionaryId': _selectedMissionaryId,
         'missionaryName': _selectedMissionaryName,
-        'imageUrl': imageUrl,
+        'localImagePath': localImagePath,
         'originalFileName': _selectedImage!.path.split('/').last,
         'caption': _captionController.text.trim(),
         'title': _titleController.text.trim(),
@@ -145,11 +145,6 @@ class _ContributionsScreenState extends State<ContributionsScreen>
         'submittedAt': FieldValue.serverTimestamp(),
         'createdAt': FieldValue.serverTimestamp(),
       });
-      
-      // Commit images to GitHub (in background)
-      GitHubImageService.commitAndPushImages(
-        'Add sacred image contribution from ${user.displayName ?? 'faithful servant'}'
-      ).catchError((e) => debugPrint('GitHub commit failed: $e'));
 
       _showSuccessSnackBar('${SpiritualStrings.wellDone} Your photo has been submitted for blessing');
       _resetPhotoForm();
