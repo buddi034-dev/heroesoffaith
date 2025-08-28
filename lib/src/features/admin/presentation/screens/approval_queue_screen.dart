@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'dart:convert';
+import 'dart:typed_data';
 import '../../../../core/constants/spiritual_strings.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/services/admin_notification_service.dart';
 import '../../../common/presentation/widgets/loading_widget.dart';
 
 class ApprovalQueueScreen extends StatefulWidget {
@@ -30,6 +33,43 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen>
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  Widget _buildBase64Image(String base64String) {
+    try {
+      final bytes = base64Decode(base64String);
+      return Image.memory(
+        bytes,
+        fit: BoxFit.cover,
+        errorBuilder: (context, error, stackTrace) => Container(
+          color: Colors.grey[200],
+          child: const Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.broken_image, color: Colors.grey, size: 48),
+                SizedBox(height: 8),
+                Text('Failed to load image', style: TextStyle(color: Colors.grey)),
+              ],
+            ),
+          ),
+        ),
+      );
+    } catch (e) {
+      return Container(
+        color: Colors.grey[200],
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.error_outline, color: Colors.red, size: 48),
+              SizedBox(height: 8),
+              Text('Invalid image format', style: TextStyle(color: Colors.red)),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   Future<void> _checkUserRole() async {
@@ -273,7 +313,7 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen>
             // Content
             if (isPhoto) ...[
               // Photo contribution
-              if (data['imageUrl'] != null)
+              if (data['imageData'] != null || data['imageUrl'] != null)
                 Container(
                   height: 200,
                   width: double.infinity,
@@ -283,22 +323,24 @@ class _ApprovalQueueScreenState extends State<ApprovalQueueScreen>
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: CachedNetworkImage(
-                      imageUrl: data['imageUrl'],
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(
-                        color: Colors.grey[200],
-                        child: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                      ),
-                      errorWidget: (context, url, error) => Container(
-                        color: Colors.grey[200],
-                        child: const Center(
-                          child: Icon(Icons.error, color: Colors.red),
-                        ),
-                      ),
-                    ),
+                    child: data['imageData'] != null
+                        ? _buildBase64Image(data['imageData'])
+                        : CachedNetworkImage(
+                            imageUrl: data['imageUrl'] ?? '',
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Container(
+                              color: Colors.grey[200],
+                              child: const Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            ),
+                            errorWidget: (context, url, error) => Container(
+                              color: Colors.grey[200],
+                              child: const Center(
+                                child: Icon(Icons.error, color: Colors.red),
+                              ),
+                            ),
+                          ),
                   ),
                 ),
               const SizedBox(height: 8),

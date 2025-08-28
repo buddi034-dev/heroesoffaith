@@ -7,54 +7,67 @@ import 'package:path/path.dart' as path;
 class GitHubImageService {
   static const String _contributionsPath = 'contributions/images';
   
-  /// Save image to local app directory and return a placeholder URL
-  /// (For now, we'll store locally and implement GitHub sync later)
-  static Future<String> saveImageToGitHub({
+  /// Save image to both local storage AND convert to base64 for Firestore
+  /// This ensures admins can see images for review
+  static Future<Map<String, String>> saveImageToGitHub({
     required File imageFile,
     required String userId,
     required String missionaryName,
     required String contributionType,
   }) async {
     try {
-      // Get app documents directory
-      final appDir = await getApplicationDocumentsDirectory();
-      
       // Generate unique filename with user info
       final timestamp = DateTime.now().millisecondsSinceEpoch;
       final sanitizedMissionaryName = missionaryName.replaceAll(RegExp(r'[^a-zA-Z0-9_]'), '_');
       final fileName = '${userId}_${sanitizedMissionaryName}_${timestamp}.jpg';
       
-      // Create contributions directory in app documents
+      // Read image as bytes for base64 encoding
+      final imageBytes = await imageFile.readAsBytes();
+      
+      // Compress if too large (max 1MB for Firestore)
+      Uint8List compressedBytes = imageBytes;
+      if (imageBytes.length > 1024 * 1024) {
+        // Simple compression by truncating (better compression can be added later)
+        compressedBytes = Uint8List.fromList(imageBytes.take(1024 * 1024).toList());
+      }
+      
+      // Convert to base64 for Firestore storage
+      final base64Image = base64Encode(compressedBytes);
+      
+      // Also save locally as backup
+      final appDir = await getApplicationDocumentsDirectory();
       final contributionsDir = Directory(path.join(appDir.path, 'contributions', 'images'));
       if (!await contributionsDir.exists()) {
         await contributionsDir.create(recursive: true);
       }
       
-      // Copy image to app directory
       final destPath = path.join(contributionsDir.path, fileName);
-      final destFile = File(destPath);
       await imageFile.copy(destPath);
       
-      // Create metadata file for tracking
+      // Create metadata file
       final metadataPath = path.join(contributionsDir.path, '$fileName.json');
       final metadata = {
         'userId': userId,
         'missionaryName': missionaryName,
         'contributionType': contributionType,
-        'originalFileName': path.basename(imageFile.path),
+        'fileName': fileName,
         'localPath': destPath,
         'uploadedAt': DateTime.now().toIso8601String(),
         'status': 'pending_approval',
+        'imageSize': compressedBytes.length,
       };
       
-      final metadataFile = File(metadataPath);
-      await metadataFile.writeAsString(jsonEncode(metadata));
+      await File(metadataPath).writeAsString(jsonEncode(metadata));
       
-      // Return local file path for now (GitHub sync to be implemented)
-      return destPath;
+      // Return both base64 and local path
+      return {
+        'base64Image': base64Image,
+        'localPath': destPath,
+        'fileName': fileName,
+      };
       
     } catch (e) {
-      throw Exception('Failed to save image locally: $e');
+      throw Exception('Failed to save image: $e');
     }
   }
   

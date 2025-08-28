@@ -6,6 +6,7 @@ import 'dart:io';
 import '../../../../core/constants/spiritual_strings.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/services/github_image_service.dart';
+import '../../../../core/services/admin_notification_service.dart';
 import '../../../common/presentation/widgets/loading_widget.dart';
 
 class ContributionsScreen extends StatefulWidget {
@@ -121,20 +122,22 @@ class _ContributionsScreenState extends State<ContributionsScreen>
         return;
       }
 
-      // Save image locally using our service  
-      final localImagePath = await GitHubImageService.saveImageToGitHub(
+      // Save image with base64 encoding for admin review  
+      final imageData = await GitHubImageService.saveImageToGitHub(
         imageFile: _selectedImage!,
         userId: user.uid,
         missionaryName: _selectedMissionaryName,
         contributionType: 'photo',
       );
 
-      // Save contribution to Firestore with local image path
+      // Save contribution to Firestore with base64 image for admin review
       await FirebaseFirestore.instance.collection('contributions').add({
         'type': 'photo',
         'missionaryId': _selectedMissionaryId,
         'missionaryName': _selectedMissionaryName,
-        'localImagePath': localImagePath,
+        'imageData': imageData['base64Image'], // Base64 for admin review
+        'localImagePath': imageData['localPath'], // Local backup
+        'fileName': imageData['fileName'],
         'originalFileName': _selectedImage!.path.split('/').last,
         'caption': _captionController.text.trim(),
         'title': _titleController.text.trim(),
@@ -145,6 +148,13 @@ class _ContributionsScreenState extends State<ContributionsScreen>
         'submittedAt': FieldValue.serverTimestamp(),
         'createdAt': FieldValue.serverTimestamp(),
       });
+
+      // Notify admins of new contribution
+      AdminNotificationService.notifyAdminsOfNewContribution(
+        contributionType: 'Sacred Image',
+        missionaryName: _selectedMissionaryName,
+        contributorName: user.displayName ?? 'A faithful servant',
+      );
 
       _showSuccessSnackBar('${SpiritualStrings.wellDone} Your photo has been submitted for blessing');
       _resetPhotoForm();
@@ -188,6 +198,13 @@ class _ContributionsScreenState extends State<ContributionsScreen>
         'submittedAt': FieldValue.serverTimestamp(),
         'createdAt': FieldValue.serverTimestamp(),
       });
+
+      // Notify admins of new contribution
+      AdminNotificationService.notifyAdminsOfNewContribution(
+        contributionType: 'Story of Faith',
+        missionaryName: _selectedMissionaryName,
+        contributorName: user.displayName ?? 'A faithful servant',
+      );
 
       _showSuccessSnackBar('${SpiritualStrings.wellDone} Your story has been submitted for blessing');
       _resetAnecdoteForm();

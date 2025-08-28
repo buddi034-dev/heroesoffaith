@@ -9,6 +9,7 @@ import 'package:herosoffaith/src/core/utils/direct_uploader.dart';
 import 'package:herosoffaith/src/core/utils/file_uploader.dart';
 import 'package:herosoffaith/src/core/utils/image_url_validator.dart';
 import '../../../contributions/presentation/widgets/submission_status_widget.dart';
+import '../../../../core/services/admin_notification_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -308,11 +309,14 @@ class _HomeScreenState extends State<HomeScreen> {
     // Add admin/curator specific cards
     if (_canApprove) {
       cards.add(
-        _buildServiceCard(
-          'Curator\'s\nReview',
-          FontAwesomeIcons.gavel,
-          const Color(0xFF9C27B0),
-          () => Navigator.pushNamed(context, RouteNames.approvalQueue),
+        AdminNotificationService.buildAdminNotificationBadge(
+          context: context,
+          child: _buildServiceCard(
+            'Curator\'s\nReview',
+            FontAwesomeIcons.gavel,
+            const Color(0xFF9C27B0),
+            () => Navigator.pushNamed(context, RouteNames.approvalQueue),
+          ),
         ),
       );
     } else {
