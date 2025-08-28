@@ -312,10 +312,21 @@ class _ContributionsScreenState extends State<ContributionsScreen>
             const SizedBox(height: 16),
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Title (Optional)',
                 hintText: 'e.g., William Carey at Serampore',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(color: AppColors.primaryColor, width: 2.0),
+                ),
               ),
               maxLength: 100,
             ),
@@ -323,10 +334,21 @@ class _ContributionsScreenState extends State<ContributionsScreen>
             const SizedBox(height: 16),
             TextFormField(
               controller: _captionController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Caption & Description',
                 hintText: 'Describe the image and its significance...',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(color: AppColors.primaryColor, width: 2.0),
+                ),
               ),
               maxLines: 4,
               validator: (value) {
@@ -411,10 +433,21 @@ class _ContributionsScreenState extends State<ContributionsScreen>
             const SizedBox(height: 16),
             TextFormField(
               controller: _titleController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Story Title',
                 hintText: 'e.g., My Grandmother\'s Account of Amy Carmichael',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(color: AppColors.primaryColor, width: 2.0),
+                ),
               ),
               validator: (value) {
                 if (value == null || value.trim().isEmpty) {
@@ -427,10 +460,21 @@ class _ContributionsScreenState extends State<ContributionsScreen>
             const SizedBox(height: 16),
             TextFormField(
               controller: _anecdoteController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Your Story',
                 hintText: 'Share your story, memory, or historical account...',
-                border: OutlineInputBorder(),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(color: Colors.grey[400]!, width: 1.5),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: const BorderSide(color: AppColors.primaryColor, width: 2.0),
+                ),
               ),
               maxLines: 8,
               validator: (value) {
