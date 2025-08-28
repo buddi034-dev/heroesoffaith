@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -7,6 +8,7 @@ import 'package:herosoffaith/src/features/common/presentation/widgets/animated_a
 import 'package:herosoffaith/src/core/utils/direct_uploader.dart';
 import 'package:herosoffaith/src/core/utils/file_uploader.dart';
 import 'package:herosoffaith/src/core/utils/image_url_validator.dart';
+import '../../../contributions/presentation/widgets/submission_status_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,7 +19,36 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  String _userRole = '';
+  bool _isLoadingRole = true;
 
+  @override
+  void initState() {
+    super.initState();
+    _checkUserRole();
+  }
+
+  Future<void> _checkUserRole() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final userDoc = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(user.uid)
+            .get();
+        
+        if (userDoc.exists) {
+          _userRole = userDoc.data()?['role'] ?? 'user';
+        }
+      }
+    } catch (e) {
+      debugPrint('Error checking user role: $e');
+    } finally {
+      setState(() => _isLoadingRole = false);
+    }
+  }
+
+  bool get _canApprove => _userRole == 'curator' || _userRole == 'admin';
 
   String _getGreeting() {
     final hour = DateTime.now().hour;
@@ -142,7 +173,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       topRight: Radius.circular(24),
                     ),
                   ),
-                  child: Padding(
+                  child: SingleChildScrollView(
                     padding: const EdgeInsets.all(20.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -163,52 +194,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 20),
                         
                         // Services grid
-                        Expanded(
+                        SizedBox(
+                          height: 400, // Fixed height for the grid
                           child: GridView.count(
+                            physics: const NeverScrollableScrollPhysics(),
                             crossAxisCount: 2,
                             mainAxisSpacing: 16,
                             crossAxisSpacing: 16,
                             childAspectRatio: 1.0,
-                            children: [
-                              _buildServiceCard(
-                                'Missionary\nDirectory',
-                                FontAwesomeIcons.users,
-                                const Color(0xFF667eea),
-                                () => Navigator.pushNamed(context, RouteNames.missionaryDirectory),
-                              ),
-                              _buildServiceCard(
-                                'Biographies',
-                                FontAwesomeIcons.book,
-                                const Color(0xFF764ba2),
-                                () => _showComingSoon(context, 'Biographies'),
-                              ),
-                              _buildServiceCard(
-                                'Timeline\nEvents',
-                                FontAwesomeIcons.clock,
-                                const Color(0xFFf093fb),
-                                () => _showComingSoon(context, 'Timeline Events'),
-                              ),
-                              _buildServiceCard(
-                                'Treasured\nSaints',
-                                FontAwesomeIcons.heart,
-                                const Color(0xFFf5576c),
-                                () => Navigator.pushNamed(context, '/favorites'),
-                              ),
-                              _buildServiceCard(
-                                'Donations',
-                                FontAwesomeIcons.handHoldingHeart,
-                                const Color(0xFF43A047),
-                                () => _showComingSoon(context, 'Donations'),
-                              ),
-                              _buildServiceCard(
-                                'Contribute',
-                                FontAwesomeIcons.camera,
-                                const Color(0xFFFF7043),
-                                () => _showComingSoon(context, 'Contribute'),
-                              ),
-                            ],
+                            children: _buildServiceCards(),
                           ),
                         ),
+                        
+                        const SizedBox(height: 20),
+                        
+                        // Submission status widget
+                        const SubmissionStatusWidget(),
+                        
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -266,6 +269,64 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildServiceCards() {
+    List<Widget> cards = [
+      _buildServiceCard(
+        'Missionary\nDirectory',
+        FontAwesomeIcons.users,
+        const Color(0xFF667eea),
+        () => Navigator.pushNamed(context, RouteNames.missionaryDirectory),
+      ),
+      _buildServiceCard(
+        'Biographies',
+        FontAwesomeIcons.book,
+        const Color(0xFF764ba2),
+        () => _showComingSoon(context, 'Biographies'),
+      ),
+      _buildServiceCard(
+        'Timeline\nEvents',
+        FontAwesomeIcons.clock,
+        const Color(0xFFf093fb),
+        () => _showComingSoon(context, 'Timeline Events'),
+      ),
+      _buildServiceCard(
+        'Treasured\nSaints',
+        FontAwesomeIcons.heart,
+        const Color(0xFFf5576c),
+        () => Navigator.pushNamed(context, '/favorites'),
+      ),
+      _buildServiceCard(
+        'Share Sacred\nTestimonies',
+        FontAwesomeIcons.camera,
+        const Color(0xFFFF7043),
+        () => Navigator.pushNamed(context, RouteNames.contributions),
+      ),
+    ];
+
+    // Add admin/curator specific cards
+    if (_canApprove) {
+      cards.add(
+        _buildServiceCard(
+          'Curator\'s\nReview',
+          FontAwesomeIcons.gavel,
+          const Color(0xFF9C27B0),
+          () => Navigator.pushNamed(context, RouteNames.approvalQueue),
+        ),
+      );
+    } else {
+      cards.add(
+        _buildServiceCard(
+          'Donations',
+          FontAwesomeIcons.handHoldingHeart,
+          const Color(0xFF43A047),
+          () => _showComingSoon(context, 'Donations'),
+        ),
+      );
+    }
+
+    return cards;
   }
 
   Widget _buildServiceCard(String title, IconData icon, Color color, VoidCallback onTap) {

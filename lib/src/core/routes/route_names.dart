@@ -9,4 +9,6 @@ class RouteNames {
   static const String missionaryProfile = '/missionary-profile'; // New route for missionary details
   static const String search = '/search'; // Search screen
   static const String dataUpload = '/data-upload'; // Admin data upload screen
+  static const String contributions = '/contributions'; // User contributions screen
+  static const String approvalQueue = '/approval-queue'; // Curator approval queue
 }

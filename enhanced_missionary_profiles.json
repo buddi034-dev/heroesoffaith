@@ -1,0 +1,480 @@
+[
+  {
+    "id": "ida-scudder",
+    "name": "Ida Sophia Scudder",
+    "displayName": "Dr. Ida Scudder - Pioneer of Women's Medical Education in India",
+    "dates": {
+      "birth": 1870,
+      "death": 1960,
+      "display": "1870-1960"
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Ida_S._Scudder_1899.jpg",
+    "images": [
+      "https://upload.wikimedia.org/wikipedia/commons/6/6d/Ida_S._Scudder_1899.jpg"
+    ],
+    "summary": "American missionary physician who founded the Christian Medical College & Hospital in Vellore, India, revolutionizing medical education for women in South India.",
+    "biography": [
+      {
+        "title": "Early Life and Calling",
+        "content": "Born in Ranipet, Tamil Nadu, India, to missionary parents, Ida initially resisted following in their footsteps. However, in 1894, she experienced her famous 'three knocks in the night' when three men came seeking medical help for their wives in childbirth. All three women died because no female doctor was available to treat them, as local customs forbade male doctors from attending to women. This profound experience became her divine calling to medicine."
+      },
+      {
+        "title": "Medical Education and Return",
+        "content": "Determined to address the critical need for women's healthcare, Ida enrolled at the Woman's Medical College of Pennsylvania in 1895, completing her final year at Cornell University Medical College in 1899 as part of the first class to accept women. She immediately returned to India to begin her medical ministry in Vellore, South India."
+      },
+      {
+        "title": "Establishing Medical Infrastructure",
+        "content": "Starting with a tiny dispensary in her father's bungalow, Ida treated 5,000 patients in her first two years. In 1902, she established the Mary Taber Schell Hospital, a 40-bed facility for women. She also pioneered 'roadside clinics' that brought medical care directly to rural villages, revolutionizing healthcare delivery in remote areas."
+      },
+      {
+        "title": "Educational Pioneer",
+        "content": "In 1918, Ida founded the Christian Medical College & Hospital, establishing the first medical school in India exclusively for women. The school received 151 applications in its first year, demonstrating the tremendous need. In 1928, Mahatma Gandhi visited the medical school, recognizing its significant contribution to India's development."
+      },
+      {
+        "title": "Legacy and Recognition",
+        "content": "Under Ida's leadership, the institution grew into one of India's premier medical colleges. In 1945, the college opened its doors to men as well. By 2003, the Vellore Christian Medical Center had become the largest Christian hospital in the world with 2,000 beds. In 2023, it was ranked the third-best medical college in India by the National Institute Ranking Framework."
+      }
+    ],
+    "timeline": [
+      {
+        "year": 1870,
+        "title": "Birth in India",
+        "description": "Born in Ranipet, Tamil Nadu, to American missionary parents Dr. John Scudder Jr. and Sophia Weld Scudder.",
+        "type": "birth",
+        "significance": "Born into a family of medical missionaries but initially resisted the calling."
+      },
+      {
+        "year": 1894,
+        "title": "The Three Knocks",
+        "description": "Experienced her famous calling when three women died in childbirth due to lack of female medical care.",
+        "type": "calling",
+        "significance": "The pivotal moment that led her to pursue medical education and dedicate her life to women's healthcare in India."
+      },
+      {
+        "year": 1899,
+        "title": "Medical Graduation",
+        "description": "Graduated from Cornell University Medical College, New York, as part of the first class to accept women.",
+        "type": "education",
+        "significance": "Prepared her for medical ministry with the best training available to women at the time."
+      },
+      {
+        "year": 1902,
+        "title": "Schell Hospital Founded",
+        "description": "Established the Mary Taber Schell Hospital, a 40-bed facility for women in Vellore.",
+        "type": "ministry",
+        "significance": "First permanent medical facility addressing women's healthcare needs in the region."
+      },
+      {
+        "year": 1918,
+        "title": "Medical College Established",
+        "description": "Founded the Christian Medical College & Hospital, India's first medical school for women.",
+        "type": "education",
+        "significance": "Revolutionized medical education in India by training Indian women as doctors and nurses."
+      },
+      {
+        "year": 1928,
+        "title": "Gandhi's Visit",
+        "description": "Mahatma Gandhi visited the medical school, acknowledging its contribution to India's progress.",
+        "type": "recognition",
+        "significance": "National recognition of the institution's importance in India's development."
+      },
+      {
+        "year": 1945,
+        "title": "Co-educational Expansion",
+        "description": "The medical college opened its doors to male students, expanding its impact.",
+        "type": "expansion",
+        "significance": "Doubled the institution's capacity to train medical professionals for India."
+      },
+      {
+        "year": 1960,
+        "title": "Death and Legacy",
+        "description": "Died in Vellore at age 89, leaving behind a medical institution serving millions.",
+        "type": "death",
+        "significance": "Her work established a lasting institution that continues to serve India's healthcare needs."
+      }
+    ],
+    "locations": [
+      {
+        "name": "Vellore, Tamil Nadu",
+        "coordinates": [12.9165, 79.1325],
+        "type": "primary_ministry",
+        "description": "Location of her life's work - the Christian Medical College & Hospital.",
+        "years": "1900-1960",
+        "significance": "Became the center of medical education and women's healthcare in South India."
+      },
+      {
+        "name": "Ranipet, Tamil Nadu",
+        "coordinates": [12.9342, 79.3370],
+        "type": "birthplace",
+        "description": "Birthplace where she was born to missionary parents.",
+        "years": "1870",
+        "significance": "Shaped her early understanding of missionary work and India's needs."
+      }
+    ],
+    "categories": ["missionary", "physician", "educator", "women's rights"],
+    "achievements": [
+      "Founded India's first medical college for women",
+      "Pioneered rural healthcare delivery through roadside clinics",
+      "Trained thousands of Indian women as doctors and nurses",
+      "Established one of the world's largest Christian hospitals"
+    ],
+    "quiz": [
+      {
+        "question": "What was the 'three knocks in the night' that called Ida Scudder to medicine?",
+        "options": [
+          "Three dreams she had about becoming a doctor",
+          "Three women who died in childbirth because no female doctor was available",
+          "Three patients who knocked on her door for help",
+          "Three letters she received asking for medical help"
+        ],
+        "correct": 1,
+        "explanation": "The 'three knocks' refers to three separate occasions in one night when men came seeking medical help for their wives in childbirth. All three women died because cultural customs prevented male doctors from attending to them, and no female doctor was available."
+      },
+      {
+        "question": "What made Ida Scudder's medical college unique when it was founded in 1918?",
+        "options": [
+          "It was the first medical college in India",
+          "It was exclusively for women students",
+          "It offered free education to all students",
+          "It was the largest medical college in Asia"
+        ],
+        "correct": 1,
+        "explanation": "The Christian Medical College was India's first medical school exclusively for women, addressing the critical need for female healthcare providers in a society where women could not be treated by male doctors."
+      }
+    ],
+    "source": "wikimedia",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Ida_S._Scudder",
+    "attribution": "Based on Wikipedia and historical sources",
+    "lastModified": "2025-01-27T22:00:00Z",
+    "lang": "en"
+  },
+  {
+    "id": "alexander-duff",
+    "name": "Alexander Duff",
+    "displayName": "Alexander Duff - Pioneer of English Christian Education in India",
+    "dates": {
+      "birth": 1806,
+      "death": 1878,
+      "display": "1806-1878"
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/en/4/44/Alexduff.jpeg",
+    "images": [
+      "https://upload.wikimedia.org/wikipedia/en/4/44/Alexduff.jpeg"
+    ],
+    "summary": "Scottish missionary and educator who revolutionized Christian education in India by introducing English-language instruction and establishing the foundation for modern higher education in Bengal.",
+    "biography": [
+      {
+        "title": "Early Life and Calling",
+        "content": "Born on April 25, 1806, in Moulin, Perthshire, Scotland, to a farming family, Alexander Duff excelled in his studies at the University of St. Andrews. Influenced by Professor Thomas Chalmers, he felt called to missionary service and became the first official missionary of the Church of Scotland to India in 1829."
+      },
+      {
+        "title": "Arrival and Educational Innovation",
+        "content": "After surviving two shipwrecks during his voyage, Duff arrived in Calcutta on May 27, 1830. Recognizing that traditional missionary approaches had limited success with upper-caste Hindus, he pioneered a revolutionary strategy: offering quality English education combined with Christian instruction. This approach attracted the Bengali elite who desired Western education for their children."
+      },
+      {
+        "title": "Founding Educational Institutions",
+        "content": "On July 13, 1830, Duff founded the General Assembly's Institution (now Scottish Church College) in Calcutta. His educational model emphasized teaching through English rather than local languages, covering a broad curriculum including sciences, literature, and Christian theology. This approach proved so successful that it became the template for missionary education across India."
+      },
+      {
+        "title": "University Development",
+        "content": "Duff played a crucial role in establishing the University of Calcutta, drawing up its constitution and insisting on the inclusion of physical sciences in the curriculum. He was the first to advocate for comprehensive scientific education in Indian universities, believing that all knowledge, properly understood, led to God."
+      },
+      {
+        "title": "Lasting Impact on Indian Education",
+        "content": "Through his three periods of service in India (1830-1834, 1840-1851, 1855-1863), Duff established a educational philosophy that influenced generations. His emphasis on English-language higher education became the standard for missionary institutions and significantly influenced the development of modern Indian education system."
+      }
+    ],
+    "timeline": [
+      {
+        "year": 1806,
+        "title": "Birth in Scotland",
+        "description": "Born in Moulin, Perthshire, Scotland, to James Duff, a farmer and gardener.",
+        "type": "birth",
+        "significance": "Grew up in a devout Christian farming family that valued education and faith."
+      },
+      {
+        "year": 1824,
+        "title": "University Graduation",
+        "description": "Graduated with M.A. (Hons) from University of St. Andrews after only two years.",
+        "type": "education",
+        "significance": "Demonstrated exceptional academic ability that would serve him in his educational mission."
+      },
+      {
+        "year": 1829,
+        "title": "Missionary Ordination",
+        "description": "Ordained as the first official missionary of the Church of Scotland to India.",
+        "type": "calling",
+        "significance": "Marked the beginning of a systematic Scottish missionary effort in India."
+      },
+      {
+        "year": 1830,
+        "title": "Arrival in Calcutta",
+        "description": "Arrived in Calcutta after surviving two shipwrecks during his voyage to India.",
+        "type": "arrival",
+        "significance": "The dramatic journey demonstrated his commitment to his calling despite severe obstacles."
+      },
+      {
+        "year": 1830,
+        "title": "Educational Institution Founded",
+        "description": "Founded the General Assembly's Institution (now Scottish Church College) in Calcutta.",
+        "type": "ministry",
+        "significance": "Revolutionary approach of combining English education with Christian instruction."
+      },
+      {
+        "year": 1843,
+        "title": "Church Disruption",
+        "description": "Joined the Free Church of Scotland during the Disruption, maintaining his missionary work.",
+        "type": "church",
+        "significance": "Chose principle over security, aligning with the Free Church movement."
+      },
+      {
+        "year": 1851,
+        "title": "First Moderatorship",
+        "description": "Elected Moderator of the Free Church of Scotland General Assembly for the first time.",
+        "type": "recognition",
+        "significance": "Recognition of his contributions to both missions and church leadership."
+      },
+      {
+        "year": 1873,
+        "title": "Second Moderatorship",
+        "description": "Became the only person to serve twice as Moderator of the Free Church of Scotland.",
+        "type": "recognition",
+        "significance": "Unique honor reflecting his extraordinary contribution to Scottish Christianity."
+      },
+      {
+        "year": 1878,
+        "title": "Death and Legacy",
+        "description": "Died in Sidmouth, Devon, leaving behind a transformed educational landscape in India.",
+        "type": "death",
+        "significance": "His educational philosophy continued to influence Indian higher education for generations."
+      }
+    ],
+    "locations": [
+      {
+        "name": "Calcutta (Kolkata), West Bengal",
+        "coordinates": [22.5726, 88.3639],
+        "type": "primary_ministry",
+        "description": "Center of his educational mission and home to his pioneering institution.",
+        "years": "1830-1863",
+        "significance": "Became the model for English Christian education across British India."
+      },
+      {
+        "name": "Moulin, Perthshire, Scotland",
+        "coordinates": [56.7023, -3.7398],
+        "type": "birthplace",
+        "description": "Rural Scottish village where he was born and raised.",
+        "years": "1806-1824",
+        "significance": "Shaped his character with Scottish Presbyterian values and love of learning."
+      }
+    ],
+    "categories": ["missionary", "educator", "theologian", "reformer"],
+    "achievements": [
+      "First official missionary of Church of Scotland to India",
+      "Pioneered English-language Christian education in India",
+      "Founded Scottish Church College, Calcutta",
+      "Helped establish University of Calcutta",
+      "Served twice as Moderator of Free Church of Scotland"
+    ],
+    "quiz": [
+      {
+        "question": "What was Alexander Duff's revolutionary approach to missionary work in India?",
+        "options": [
+          "Learning all local languages and customs",
+          "Providing English education combined with Christian instruction",
+          "Establishing hospitals and medical clinics",
+          "Converting lower-caste people first"
+        ],
+        "correct": 1,
+        "explanation": "Duff recognized that offering quality English education would attract upper-caste Hindus who desired Western education for their children, creating opportunities to share Christian teaching with influential members of society."
+      },
+      {
+        "question": "What happened to Alexander Duff during his journey to India?",
+        "options": [
+          "He was delayed by storms for three months",
+          "He was attacked by pirates",
+          "He survived two shipwrecks",
+          "He became seriously ill with tropical fever"
+        ],
+        "correct": 2,
+        "explanation": "During his voyage to India in 1829-1830, Duff's ship was wrecked twice, but he persevered and finally reached Calcutta, seeing these trials as confirmation of his calling."
+      }
+    ],
+    "source": "wikimedia",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Alexander_Duff_(missionary)",
+    "attribution": "Based on Wikipedia and historical sources",
+    "lastModified": "2025-01-27T22:00:00Z",
+    "lang": "en"
+  },
+  {
+    "id": "pandita-ramabai",
+    "name": "Pandita Ramabai Sarasvati",
+    "displayName": "Pandita Ramabai - Pioneer of Women's Education and Rights in India",
+    "dates": {
+      "birth": 1858,
+      "death": 1922,
+      "display": "1858-1922"
+    },
+    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a1/Pandita_Ramabai_Sarasvati_1858-1922_front-page-portrait.jpg",
+    "images": [
+      "https://upload.wikimedia.org/wikipedia/commons/a/a1/Pandita_Ramabai_Sarasvati_1858-1922_front-page-portrait.jpg"
+    ],
+    "summary": "Indian social reformer, scholar, and Christian convert who championed women's education and rights, founded institutions for widows and orphans, and translated the Bible into Marathi.",
+    "biography": [
+      {
+        "title": "Early Life and Scholarly Recognition",
+        "content": "Born into a high-caste Chitpavan Brahmin family in Karnataka, Ramabai received an unusual education in Sanskrit from her father Anant Shastri Dongre, who believed in women's education. Orphaned at 16 during the Great Famine of 1876-78, she traveled with her brother reciting Sanskrit scriptures. Her exceptional knowledge earned her the rare titles of 'Pandita' and 'Sarasvati' from Calcutta University in 1878."
+      },
+      {
+        "title": "Marriage and Social Reform Beginnings",
+        "content": "Breaking social conventions, Ramabai married Bengali lawyer Bipin Behari Medhvi in 1880 in a civil ceremony that crossed caste lines. Widowed after just two years when her husband died of cholera, she emerged as an independent woman and single mother, founding the Arya Mahila Samaj (Arya Women's Society) in Pune to educate women and combat child marriage."
+      },
+      {
+        "title": "Christian Conversion and International Advocacy",
+        "content": "In 1883, while in England, Ramabai converted to Christianity after intensive Bible study, finding in Jesus her 'best Liberator.' She toured the United States extensively, raising funds for destitute Indian women and publishing 'The High Caste Hindu Woman' (1887), considered India's first feminist manifesto, which exposed the suffering of Indian women."
+      },
+      {
+        "title": "Founding Educational Institutions",
+        "content": "In 1889, Ramabai established Sharada Sadan (Home for Learning) in Mumbai for young Hindu widows, providing education and security. She later moved the institution to Kedgaon, renaming it Mukti Mission. During the 1896 famine, she rescued thousands of outcast children, child widows, and destitute women, expanding her mission significantly."
+      },
+      {
+        "title": "Biblical Translation and Legacy",
+        "content": "A polyglot knowing seven languages, Ramabai undertook the monumental task of translating the Bible into Marathi directly from Hebrew and Greek texts, completing this work in 1924. She received the Kaiser-i-Hind Medal in 1919 for her social service and continued working until her death in 1922, leaving behind institutions that continue to serve thousands."
+      }
+    ],
+    "timeline": [
+      {
+        "year": 1858,
+        "title": "Birth in Karnataka",
+        "description": "Born as Ramabai Dongre into a Chitpavan Brahmin family in Karnataka.",
+        "type": "birth",
+        "significance": "Born into privilege but would dedicate her life to helping India's most marginalized women."
+      },
+      {
+        "year": 1876,
+        "title": "Orphaned in Famine",
+        "description": "Parents died during the Great Famine of 1876-78, leaving her and her brother to fend for themselves.",
+        "type": "tragedy",
+        "significance": "Early experience of hardship shaped her empathy for suffering women."
+      },
+      {
+        "year": 1878,
+        "title": "Scholarly Recognition",
+        "description": "Received the titles 'Pandita' and 'Sarasvati' from Calcutta University for Sanskrit scholarship.",
+        "type": "recognition",
+        "significance": "Rare honor for a woman, establishing her intellectual credentials."
+      },
+      {
+        "year": 1880,
+        "title": "Revolutionary Marriage",
+        "description": "Married Bengali lawyer Bipin Behari Medhvi in a civil ceremony crossing caste lines.",
+        "type": "personal",
+        "significance": "Challenged orthodox Hindu marriage customs, asserting women's right to choose."
+      },
+      {
+        "year": 1882,
+        "title": "Widowhood and Independence",
+        "description": "Husband died of cholera, leaving her a widow with infant daughter Manorama.",
+        "type": "tragedy",
+        "significance": "Became independent single mother, understanding firsthand the plight of Indian widows."
+      },
+      {
+        "year": 1883,
+        "title": "Christian Conversion",
+        "description": "Converted to Christianity in England after intensive study of the Bible.",
+        "type": "spiritual",
+        "significance": "Found in Christianity the liberation and equality she sought for women."
+      },
+      {
+        "year": 1887,
+        "title": "Feminist Manifesto Published",
+        "description": "Published 'The High Caste Hindu Woman' in the United States.",
+        "type": "advocacy",
+        "significance": "First comprehensive expose of Indian women's suffering, launching international awareness."
+      },
+      {
+        "year": 1889,
+        "title": "Educational Institution Founded",
+        "description": "Established Sharada Sadan (Home for Learning) in Mumbai for Hindu widows.",
+        "type": "ministry",
+        "significance": "First institution specifically for educating and empowering young widows."
+      },
+      {
+        "year": 1896,
+        "title": "Famine Relief Work",
+        "description": "Rescued thousands of destitute women and children during severe famine in Maharashtra.",
+        "type": "service",
+        "significance": "Demonstrated practical Christian compassion on massive scale."
+      },
+      {
+        "year": 1922,
+        "title": "Death and Continuing Legacy",
+        "description": "Died at age 64, leaving behind thriving institutions serving thousands of women.",
+        "type": "death",
+        "significance": "Her Mukti Mission continues operating today, testimony to her lasting impact."
+      }
+    ],
+    "locations": [
+      {
+        "name": "Kedgaon, Maharashtra",
+        "coordinates": [18.6707, 74.1553],
+        "type": "primary_ministry",
+        "description": "Location of her Mukti Mission, serving thousands of women and children.",
+        "years": "1896-1922",
+        "significance": "Became a haven for India's most marginalized women and children."
+      },
+      {
+        "name": "Mumbai, Maharashtra",
+        "coordinates": [19.0760, 72.8777],
+        "type": "educational_work",
+        "description": "Site of her first institution, Sharada Sadan.",
+        "years": "1889-1896",
+        "significance": "Pioneered women's education and widow rehabilitation in urban India."
+      },
+      {
+        "name": "Pune, Maharashtra",
+        "coordinates": [18.5204, 73.8567],
+        "type": "reform_work",
+        "description": "Where she founded the Arya Mahila Samaj for women's rights.",
+        "years": "1882-1889",
+        "significance": "Center of her early women's rights advocacy."
+      }
+    ],
+    "categories": ["social_reformer", "educator", "translator", "women's_rights", "christian_convert"],
+    "achievements": [
+      "First woman to receive 'Pandita' title from Calcutta University",
+      "Authored India's first feminist manifesto",
+      "Founded institutions serving thousands of destitute women",
+      "Translated the Bible into Marathi from original languages",
+      "Pioneered widow rehabilitation and women's education"
+    ],
+    "quiz": [
+      {
+        "question": "What rare honor did Pandita Ramabai receive from Calcutta University in 1878?",
+        "options": [
+          "The first honorary doctorate given to a woman",
+          "The titles 'Pandita' and 'Sarasvati' for Sanskrit scholarship",
+          "Appointment as the first female professor",
+          "Recognition as the greatest woman scholar of India"
+        ],
+        "correct": 1,
+        "explanation": "Calcutta University conferred the prestigious titles 'Pandita' (learned one) and 'Sarasvati' (goddess of learning) on Ramabai in recognition of her exceptional knowledge of Sanskrit scriptures, a rare honor for any woman in that era."
+      },
+      {
+        "question": "What was groundbreaking about 'The High Caste Hindu Woman' published in 1887?",
+        "options": [
+          "It was the first book written by an Indian woman in English",
+          "It was India's first feminist manifesto exposing women's suffering",
+          "It was the first Sanskrit text translated by a woman",
+          "It was the first book advocating for Indian independence"
+        ],
+        "correct": 1,
+        "explanation": "The book was considered India's first feminist manifesto, providing a comprehensive and shocking expose of the suffering endured by Indian women, particularly high-caste Hindu women, and launching international awareness of their plight."
+      }
+    ],
+    "source": "wikimedia",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pandita_Ramabai",
+    "attribution": "Based on Wikipedia and historical sources",
+    "lastModified": "2025-01-27T22:00:00Z",
+    "lang": "en"
+  }
+]

@@ -1,0 +1,295 @@
+Launching lib\main.dart on moto g 60 (wireless) in debug mode...
+Running Gradle task 'assembleDebug'...                             10.9s
+√ Built build\app\outputs\flutter-apk\app-debug.apk
+Installing build\app\outputs\flutter-apk\app-debug.apk...          17.9s
+D/FlutterJNI(17842): Beginning load of flutter...
+D/FlutterJNI(17842): flutter (null) was loaded normally!
+I/flutter (17842): [IMPORTANT:flutter/shell/platform/android/android_context_vk_impeller.cc(62)] Using the Impeller rendering backend (Vulkan).
+Syncing files to device moto g 60 (wireless)...                 
+I/Choreographer(17842): Skipped 339 frames!  The application may be doing too much work on its main thread.
+I/AdrenoGLES-0(17842): QUALCOMM build                   : 223000e821, I12e4aa4c5c
+I/AdrenoGLES-0(17842): Build Date                       : 01/22/22
+I/AdrenoGLES-0(17842): OpenGL ES Shader Compiler Version: EV031.32.02.17
+I/AdrenoGLES-0(17842): Local Branch                     : 
+I/AdrenoGLES-0(17842): Remote Branch                    : 
+I/AdrenoGLES-0(17842): Remote Branch                    : 
+I/AdrenoGLES-0(17842): Reconstruct Branch               : 
+I/AdrenoGLES-0(17842): Build Config                     : S P 10.0.7 AArch64
+I/AdrenoGLES-0(17842): Driver Path                      : /vendor/lib64/egl/libGLESv2_adreno.so
+I/AdrenoGLES-0(17842): PFP: 0x016ee190, ME: 0x00000000
+D/hw-ProcessState(17842): Binder ioctl to enable oneway spam detection failed: Invalid argument
+Syncing files to device moto g 60 (wireless)...                    160ms
+
+Flutter run key commands.
+r Hot reload. 
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on moto g 60 (wireless) is available at: http://127.0.0.1:58148/LPh0Lv4e0ms=/
+The Flutter DevTools debugger and profiler on moto g 60 (wireless) is available at: http://127.0.0.1:9100?uri=http://127.0.0.1:58148/LPh0Lv4e0ms=/
+I/Choreographer(17842): Skipped 38 frames!  The application may be doing too much work on its main thread.
+I/OpenGLRenderer(17842): Davey! duration=9223072913433ms; Flags=1, FrameTimelineVsyncId=22948217, IntendedVsync=299123421395095, Vsync=299124054728403, InputEventId=0, HandleInputStart=299124063481296, AnimationStart=299124063483379, PerformTraversalsStart=299124063484265, DrawStart=299124073911453, FrameDeadline=299123438061761, FrameInterval=299124063316817, FrameStartTime=16666666, SyncQueued=299124074794787, SyncStart=299124074894735, IssueDrawCommandsStart=299124075913693, SwapBuffers=299124094407861, FrameCompleted=9223372036854775807, DequeueBufferDuration=6530522, QueueBufferDuration=796354, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299124095734841, DisplayPresentTime=0, 
+D/FirebaseAuth(17842): Notifying id token listeners about user ( mHz6WqDx6tSE6mRpDcIVSOvKTmr1 ).
+D/com.google.firebase.appcheck.debug.internal.DebugAppCheckProvider(17842): Enter this debug secret into the allow list in the Firebase Console for your project: b43065fc-bd9f-47f0-ae6d-e0cb2667f118
+I/flutter (17842): ✅ Firebase initialized successfully
+I/flutter (17842): ✅ Cache service initialized successfully
+I/flutter (17842): ✅ Cache service initialized successfully
+I/flutter (17842): ✅ API service initialized successfully
+I/flutter (17842): *** Request ***
+I/flutter (17842): uri: https://missionary-profiles-api.jbr01061981.workers.dev/health
+I/flutter (17842): method: GET
+I/flutter (17842): responseType: ResponseType.json
+I/flutter (17842): followRedirects: true
+I/flutter (17842): persistentConnection: true
+I/flutter (17842): connectTimeout: 0:00:15.000000
+I/flutter (17842): sendTimeout: 0:00:15.000000
+I/flutter (17842): receiveTimeout: 0:00:30.000000
+I/flutter (17842): receiveDataWhenStatusError: true
+I/flutter (17842): extra: {}
+I/flutter (17842): 
+I/flutter (17842): 🌐 API Request: GET /health
+I/flutter (17842): *** Response ***
+I/flutter (17842): uri: https://missionary-profiles-api.jbr01061981.workers.dev/health
+I/flutter (17842): 
+I/flutter (17842): ✅ API Response: 200 /health
+I/flutter (17842): ✅ API health check passed: healthy
+D/ProfileInstaller(17842): Installing profile for com.example.herosoffaith
+W/System  (17842): Ignoring header X-Firebase-Locale because its value was null.
+W/System  (17842): Ignoring header X-Firebase-Locale because its value was null.
+D/FirebaseAuth(17842): Notifying id token listeners about user ( mHz6WqDx6tSE6mRpDcIVSOvKTmr1 ).
+W/DynamiteModule(17842): Local module descriptor class for com.google.android.gms.providerinstaller.dynamite not found.
+I/DynamiteModule(17842): Considering local module com.google.android.gms.providerinstaller.dynamite:0 and remote module com.google.android.gms.providerinstaller.dynamite:0
+W/ProviderInstaller(17842): Failed to load providerinstaller module: No acceptable module com.google.android.gms.providerinstaller.dynamite found. Local version is 0 and remote version is 0.
+D/nativeloader(17842): Configuring clns-6 for other apk /apex/com.android.extservices/javalib/android.ext.adservices.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/lib/arm64:/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+D/nativeloader(17842): Extending system_exposed_libraries: libvraudio_client.qti.so:libbinauralrenderer_wrapper.qti.so:libhoaeffects.qti.so:libjni_helper.motocameradesktop.so:libimgTuner_jni.motoimagetuner.so:libmcf_native_window_helper.motocamera.so:libupdateprof.qti.so:libdiag_system.qti.so:libqape.qti.so:libqesdk_ndk_platform.qti.so:liblistenjni.qti.so
+D/nativeloader(17842): InitApexLibraries:
+D/nativeloader(17842):   com_android_appsearch: libicing.so
+D/nativeloader(17842):   com_android_art: libartservice.so
+D/nativeloader(17842):   com_android_conscrypt: libjavacrypto.so
+D/nativeloader(17842):   com_android_extservices: libtflite_support_classifiers_native.so
+D/nativeloader(17842):   com_android_mediaprovider: libpdfclient.so
+D/nativeloader(17842):   com_android_os_statsd: libstats_jni.so
+D/nativeloader(17842):   com_android_tethering: libandroid_net_connectivity_com_android_net_module_util_jni.so:libframework-connectivity-jni.so:libframework-connectivity-tiramisu-jni.so:libmainlinecronet.136.0.7091.2.so:libservice-connectivity.so:libservice-thread-jni.so:stable_cronet_libcrypto.so:stable_cronet_libssl.so
+D/nativeloader(17842):   com_android_wifi: libservice-wifi-jni.so
+D/nativeloader(17842): Configuring clns-7 for other apk /system/framework/com.android.media.remotedisplay.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/lib/arm64:/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+D/nativeloader(17842): Extending system_exposed_libraries: libvraudio_client.qti.so:libbinauralrenderer_wrapper.qti.so:libhoaeffects.qti.so:libjni_helper.motocameradesktop.so:libimgTuner_jni.motoimagetuner.so:libmcf_native_window_helper.motocamera.so:libupdateprof.qti.so:libdiag_system.qti.so:libqape.qti.so:libqesdk_ndk_platform.qti.so:liblistenjni.qti.so
+W/le.herosoffait(17842): Loading /data/misc/apexdata/com.android.art/dalvik-cache/arm64/system@framework@com.android.location.provider.jar@classes.odex non-executable as it requires an image which we failed to load
+D/nativeloader(17842): Configuring clns-8 for other apk /system/framework/com.android.location.provider.jar. target_sdk_version=36, uses_libraries=ALL, library_path=/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/lib/arm64:/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+D/nativeloader(17842): Extending system_exposed_libraries: libvraudio_client.qti.so:libbinauralrenderer_wrapper.qti.so:libhoaeffects.qti.so:libjni_helper.motocameradesktop.so:libimgTuner_jni.motoimagetuner.so:libmcf_native_window_helper.motocamera.so:libupdateprof.qti.so:libdiag_system.qti.so:libqape.qti.so:libqesdk_ndk_platform.qti.so:liblistenjni.qti.so
+D/nativeloader(17842): Configuring clns-9 for other apk /data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/base.apk. target_sdk_version=36, uses_libraries=, library_path=/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/lib/arm64:/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/com.google.android.gms
+W/ProviderInstaller(17842): Failed to report request stats: com.google.android.gms.common.security.ProviderInstallerImpl.reportRequestStats [class android.content.Context, long, long]
+I/le.herosoffait(17842): Waiting for a blocking GC ClassLinker
+I/le.herosoffait(17842): Waiting for a blocking GC ClassLinker
+W/le.herosoffait(17842): Cleared Reference was only reachable from finalizer (only reported once)
+I/le.herosoffait(17842): WaitForGcToComplete blocked ClassLinker on Background for 32.258ms
+I/le.herosoffait(17842): WaitForGcToComplete blocked ClassLinker on ClassLinker for 30.026ms
+I/le.herosoffait(17842): hiddenapi: Accessing hidden method Ldalvik/system/VMStack;->getStackClass2()Ljava/lang/Class; (runtime_flags=0, domain=core-platform, api=unsupported) from Lgepa; (domain=app) using reflection: allowed
+E/GoogleApiManager(17842): Failed to get service from broker. 
+E/GoogleApiManager(17842): java.lang.SecurityException: Unknown calling package name 'com.google.android.gms'.
+E/GoogleApiManager(17842): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:2426)
+E/GoogleApiManager(17842): 	at android.os.Parcel.createException(Parcel.java:2410)
+E/GoogleApiManager(17842): 	at android.os.Parcel.readException(Parcel.java:2393)
+E/GoogleApiManager(17842): 	at android.os.Parcel.readException(Parcel.java:2335)
+E/GoogleApiManager(17842): 	at azza.a(:com.google.android.gms@253133029@25.31.33 (190400-795226510):36)
+E/GoogleApiManager(17842): 	at azxh.z(:com.google.android.gms@253133029@25.31.33 (190400-795226510):143)
+E/GoogleApiManager(17842): 	at azed.run(:com.google.android.gms@253133029@25.31.33 (190400-795226510):42)
+E/GoogleApiManager(17842): 	at android.os.Handler.handleCallback(Handler.java:978)
+E/GoogleApiManager(17842): 	at android.os.Handler.dispatchMessage(Handler.java:104)
+E/GoogleApiManager(17842): 	at ckhi.mH(:com.google.android.gms@253133029@25.31.33 (190400-795226510):1)
+E/GoogleApiManager(17842): 	at ckhi.dispatchMessage(:com.google.android.gms@253133029@25.31.33 (190400-795226510):5)
+E/GoogleApiManager(17842): 	at android.os.Looper.loopOnce(Looper.java:238)
+E/GoogleApiManager(17842): 	at android.os.Looper.loop(Looper.java:357)
+E/GoogleApiManager(17842): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+W/FlagRegistrar(17842): Failed to register com.google.android.gms.providerinstaller#com.example.herosoffaith
+W/FlagRegistrar(17842): fnjb: 17: 17: API: Phenotype.API is not available on this device. Connection failed with: ConnectionResult{statusCode=DEVELOPER_ERROR, resolution=null, message=null}
+W/FlagRegistrar(17842): 	at fnjd.a(:com.google.android.gms@253133029@25.31.33 (190400-795226510):13)
+W/FlagRegistrar(17842): 	at gjqt.d(:com.google.android.gms@253133029@25.31.33 (190400-795226510):3)
+W/FlagRegistrar(17842): 	at gjqv.run(:com.google.android.gms@253133029@25.31.33 (190400-795226510):130)
+W/FlagRegistrar(17842): 	at gjtc.execute(:com.google.android.gms@253133029@25.31.33 (190400-795226510):1)
+W/FlagRegistrar(17842): 	at gjrd.f(:com.google.android.gms@253133029@25.31.33 (190400-795226510):1)
+W/FlagRegistrar(17842): 	at gjrd.m(:com.google.android.gms@253133029@25.31.33 (190400-795226510):99)
+W/FlagRegistrar(17842): 	at gjrd.r(:com.google.android.gms@253133029@25.31.33 (190400-795226510):17)
+W/FlagRegistrar(17842): 	at ffrj.hM(:com.google.android.gms@253133029@25.31.33 (190400-795226510):35)
+W/FlagRegistrar(17842): 	at etts.run(:com.google.android.gms@253133029@25.31.33 (190400-795226510):12)
+W/FlagRegistrar(17842): 	at gjtc.execute(:com.google.android.gms@253133029@25.31.33 (190400-795226510):1)
+W/FlagRegistrar(17842): 	at ettt.b(:com.google.android.gms@253133029@25.31.33 (190400-795226510):18)
+W/FlagRegistrar(17842): 	at etui.b(:com.google.android.gms@253133029@25.31.33 (190400-795226510):36)
+W/FlagRegistrar(17842): 	at etuk.d(:com.google.android.gms@253133029@25.31.33 (190400-795226510):25)
+W/FlagRegistrar(17842): 	at azbm.c(:com.google.android.gms@253133029@25.31.33 (190400-795226510):9)
+W/FlagRegistrar(17842): 	at azeb.q(:com.google.android.gms@253133029@25.31.33 (190400-795226510):48)
+W/FlagRegistrar(17842): 	at azeb.d(:com.google.android.gms@253133029@25.31.33 (190400-795226510):10)
+W/FlagRegistrar(17842): 	at azeb.g(:com.google.android.gms@253133029@25.31.33 (190400-795226510):185)
+W/FlagRegistrar(17842): 	at azeb.onConnectionFailed(:com.google.android.gms@253133029@25.31.33 (190400-795226510):2)
+W/FlagRegistrar(17842): 	at azed.run(:com.google.android.gms@253133029@25.31.33 (190400-795226510):70)
+W/FlagRegistrar(17842): 	at android.os.Handler.handleCallback(Handler.java:978)
+W/FlagRegistrar(17842): 	at android.os.Handler.dispatchMessage(Handler.java:104)
+W/FlagRegistrar(17842): 	at ckhi.mH(:com.google.android.gms@253133029@25.31.33 (190400-795226510):1)
+W/FlagRegistrar(17842): 	at ckhi.dispatchMessage(:com.google.android.gms@253133029@25.31.33 (190400-795226510):5)
+W/FlagRegistrar(17842): 	at android.os.Looper.loopOnce(Looper.java:238)
+W/FlagRegistrar(17842): 	at android.os.Looper.loop(Looper.java:357)
+W/FlagRegistrar(17842): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+W/FlagRegistrar(17842): Caused by: azaa: 17: API: Phenotype.API is not available on this device. Connection failed with: ConnectionResult{statusCode=DEVELOPER_ERROR, resolution=null, message=null}
+W/FlagRegistrar(17842): 	at azwt.a(:com.google.android.gms@253133029@25.31.33 (190400-795226510):15)
+W/FlagRegistrar(17842): 	at azbp.a(:com.google.android.gms@253133029@25.31.33 (190400-795226510):1)
+W/FlagRegistrar(17842): 	at azbm.c(:com.google.android.gms@253133029@25.31.33 (190400-795226510):5)
+W/FlagRegistrar(17842): 	... 12 more
+D/nativeloader(17842): Load /data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/base.apk!/lib/arm64-v8a/libconscrypt_gmscore_jni.so using class loader ns clns-9 (caller=/data/app/~~K1iwV9O4xPwHV5jDBKUskQ==/com.google.android.gms-OL-uFN6-WUfvjzmMdJdIWQ==/base.apk): ok
+V/NativeCrypto(17842): Registering com/google/android/gms/org/conscrypt/NativeCrypto's 319 native methods...
+I/le.herosoffait(17842): hiddenapi: Accessing hidden method Ljava/security/spec/ECParameterSpec;->getCurveName()Ljava/lang/String; (runtime_flags=0, domain=core-platform, api=unsupported) from Lcom/google/android/gms/org/conscrypt/Platform; (domain=app) using reflection: allowed
+I/ProviderInstaller(17842): Installed default security provider GmsCore_OpenSSL
+
+══╡ EXCEPTION CAUGHT BY RENDERING LIBRARY ╞═════════════════════════════════════════════════════════
+The following assertion was thrown during layout:
+A RenderFlex overflowed by 76 pixels on the right.
+
+The relevant error-causing widget was:
+  Row
+  Row:file:///C:/Users/HP/AndroidStudioProjects/ChristCommander/herosoffaith/lib/src/features/contributions/presentation/widgets/submission_status_widget.dart:119:17
+
+To inspect this widget in Flutter DevTools, visit:
+http://127.0.0.1:9100/#/inspector?uri=http%3A%2F%2F127.0.0.1%3A58148%2FLPh0Lv4e0ms%3D%2F&inspectorRef=inspector-0
+
+The overflowing RenderFlex has an orientation of Axis.horizontal.
+The edge of the RenderFlex that is overflowing has been marked in the rendering with a yellow and
+black striped pattern. This is usually caused by the contents being too big for the RenderFlex.
+Consider applying a flex factor (e.g. using an Expanded widget) to force the children of the
+RenderFlex to fit within the available space instead of being sized to their natural size.
+This is considered an error condition because it indicates that there is content that cannot be
+seen. If the content is legitimately bigger than the available space, consider clipping it with a
+ClipRect widget before putting it in the flex, or using a scrollable container rather than a Flex,
+like a ListView.
+The specific RenderFlex in question is: RenderFlex#bee19 relayoutBoundary=up11 OVERFLOWING:
+  creator: Row ← Column ← Padding ← Semantics ← DefaultTextStyle ← AnimatedDefaultTextStyle ←
+    _InkFeatures-[GlobalKey#235b5 ink renderer] ← NotificationListener<LayoutChangedNotification> ←
+    CustomPaint ← _ShapeBorderPaint ← PhysicalShape ← _MaterialInterior ← ⋯
+  parentData: offset=Offset(0.0, 0.0); flex=null; fit=null (can use size)
+  constraints: BoxConstraints(0.0<=w<=283.4, 0.0<=h<=Infinity)
+  size: Size(283.4, 48.0)
+  direction: horizontal
+  mainAxisAlignment: start
+  mainAxisSize: max
+  crossAxisAlignment: center
+  textDirection: ltr
+  verticalDirection: down
+  spacing: 0.0
+◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+I/le.herosoffait(17842): hiddenapi: Accessing hidden field Ljava/net/Socket;->impl:Ljava/net/SocketImpl; (runtime_flags=0, domain=core-platform, api=unsupported) from Lcom/google/android/gms/org/conscrypt/Platform; (domain=app) using reflection: allowed
+I/le.herosoffait(17842): hiddenapi: Accessing hidden method Ljava/security/spec/ECParameterSpec;->setCurveName(Ljava/lang/String;)V (runtime_flags=0, domain=core-platform, api=unsupported) from Lcom/google/android/gms/org/conscrypt/Platform; (domain=app) using reflection: allowed
+E/GoogleApiManager(17842): Failed to get service from broker. 
+E/GoogleApiManager(17842): java.lang.SecurityException: Unknown calling package name 'com.google.android.gms'.
+E/GoogleApiManager(17842): 	at android.os.Parcel.createExceptionOrNull(Parcel.java:2426)
+E/GoogleApiManager(17842): 	at android.os.Parcel.createException(Parcel.java:2410)
+E/GoogleApiManager(17842): 	at android.os.Parcel.readException(Parcel.java:2393)
+E/GoogleApiManager(17842): 	at android.os.Parcel.readException(Parcel.java:2335)
+E/GoogleApiManager(17842): 	at azza.a(:com.google.android.gms@253133029@25.31.33 (190400-795226510):36)
+E/GoogleApiManager(17842): 	at azxh.z(:com.google.android.gms@253133029@25.31.33 (190400-795226510):143)
+E/GoogleApiManager(17842): 	at azed.run(:com.google.android.gms@253133029@25.31.33 (190400-795226510):42)
+E/GoogleApiManager(17842): 	at android.os.Handler.handleCallback(Handler.java:978)
+E/GoogleApiManager(17842): 	at android.os.Handler.dispatchMessage(Handler.java:104)
+E/GoogleApiManager(17842): 	at ckhi.mH(:com.google.android.gms@253133029@25.31.33 (190400-795226510):1)
+E/GoogleApiManager(17842): 	at ckhi.dispatchMessage(:com.google.android.gms@253133029@25.31.33 (190400-795226510):5)
+E/GoogleApiManager(17842): 	at android.os.Looper.loopOnce(Looper.java:238)
+E/GoogleApiManager(17842): 	at android.os.Looper.loop(Looper.java:357)
+E/GoogleApiManager(17842): 	at android.os.HandlerThread.run(HandlerThread.java:67)
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F....ID 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+I/OpenGLRenderer(17842): Davey! duration=9223072858375ms; Flags=0, FrameTimelineVsyncId=22951809, IntendedVsync=299178479112139, Vsync=299178512445471, InputEventId=1029901933, HandleInputStart=299178514791564, AnimationStart=299178514793126, PerformTraversalsStart=299178514794324, DrawStart=299178515062606, FrameDeadline=299178494778805, FrameInterval=299178514787554, FrameStartTime=8333333, SyncQueued=299178515201043, SyncStart=299178515253647, IssueDrawCommandsStart=299178515299377, SwapBuffers=299178515676095, FrameCompleted=9223372036854775807, DequeueBufferDuration=15313, QueueBufferDuration=527917, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299178516570470, DisplayPresentTime=0, 
+D/InsetsController(17842): show(ime(), fromIme=true)
+I/OpenGLRenderer(17842): Davey! duration=9223072858182ms; Flags=0, FrameTimelineVsyncId=22951837, IntendedVsync=299178670738677, Vsync=299178670738677, InputEventId=0, HandleInputStart=299178677678924, AnimationStart=299178677680174, PerformTraversalsStart=299178678924080, DrawStart=299178679044132, FrameDeadline=299178694738676, FrameInterval=299178677675330, FrameStartTime=8333333, SyncQueued=299178679145695, SyncStart=299178680679237, IssueDrawCommandsStart=299178680805903, SwapBuffers=299178694626426, FrameCompleted=9223372036854775807, DequeueBufferDuration=13033491, QueueBufferDuration=1082709, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299178695945436, DisplayPresentTime=0, 
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(17842): show(ime(), fromIme=true)
+D/InsetsController(17842): show(ime(), fromIme=true)
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(17842): show(ime(), fromIme=true)
+D/InsetsController(17842): show(ime(), fromIme=true)
+I/OpenGLRenderer(17842): Davey! duration=9223072842634ms; Flags=0, FrameTimelineVsyncId=22952886, IntendedVsync=299194220563281, Vsync=299194270563279, InputEventId=0, HandleInputStart=299194274755321, AnimationStart=299194274756519, PerformTraversalsStart=299194276150061, DrawStart=299194276274228, FrameDeadline=299194236229947, FrameInterval=299194274750790, FrameStartTime=8333333, SyncQueued=299194276380270, SyncStart=299194276428238, IssueDrawCommandsStart=299194276510947, SwapBuffers=299194277017561, FrameCompleted=9223372036854775807, DequeueBufferDuration=21875, QueueBufferDuration=593542, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299194277947926, DisplayPresentTime=0, 
+I/OpenGLRenderer(17842): Davey! duration=9223072842567ms; Flags=0, FrameTimelineVsyncId=22952907, IntendedVsync=299194287213508, Vsync=299194320546840, InputEventId=0, HandleInputStart=299194325871264, AnimationStart=299194325872514, PerformTraversalsStart=299194327096368, DrawStart=299194327226473, FrameDeadline=299194311213507, FrameInterval=299194325866889, FrameStartTime=8333333, SyncQueued=299194327330327, SyncStart=299194327393035, IssueDrawCommandsStart=299194327456681, SwapBuffers=299194327946473, FrameCompleted=9223372036854775807, DequeueBufferDuration=24375, QueueBufferDuration=583489, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299194328887619, DisplayPresentTime=0, 
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(17842): show(ime(), fromIme=true)
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(17842): show(ime(), fromIme=true)
+D/InsetsController(17842): show(ime(), fromIme=true)
+I/OpenGLRenderer(17842): Davey! duration=9223072817767ms; Flags=0, FrameTimelineVsyncId=22954334, IntendedVsync=299219086978416, Vsync=299219128645081, InputEventId=0, HandleInputStart=299219133151496, AnimationStart=299219133153006, PerformTraversalsStart=299219134248527, DrawStart=299219134347902, FrameDeadline=299219110978415, FrameInterval=299219133147017, FrameStartTime=8333333, SyncQueued=299219134425610, SyncStart=299219134469100, IssueDrawCommandsStart=299219134522277, SwapBuffers=299219134839360, FrameCompleted=9223372036854775807, DequeueBufferDuration=16562, QueueBufferDuration=494791, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299219135575923, DisplayPresentTime=0, 
+I/OpenGLRenderer(17842): Davey! duration=9223072817709ms; Flags=0, FrameTimelineVsyncId=22954351, IntendedVsync=299219145299417, Vsync=299219178632749, InputEventId=0, HandleInputStart=299219180607750, AnimationStart=299219180608844, PerformTraversalsStart=299219181732021, DrawStart=299219181833740, FrameDeadline=299219169299416, FrameInterval=299219180602750, FrameStartTime=8333333, SyncQueued=299219181937646, SyncStart=299219181975876, IssueDrawCommandsStart=299219182023480, SwapBuffers=299219182449886, FrameCompleted=9223372036854775807, DequeueBufferDuration=26458, QueueBufferDuration=544375, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299219183243115, DisplayPresentTime=0, 
+E/StorageException(17842): StorageException has occurred.
+E/StorageException(17842): Object does not exist at location.
+E/StorageException(17842):  Code: -13010 HttpResult: 404
+E/StorageException(17842): The server has terminated the upload session
+E/StorageException(17842): java.io.IOException: The server has terminated the upload session
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.serverStateValid(UploadTask.java:359)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.shouldContinue(UploadTask.java:325)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.run(UploadTask.java:246)
+E/StorageException(17842): 	at com.google.firebase.storage.StorageTask.lambda$getRunnable$7$com-google-firebase-storage-StorageTask(StorageTask.java:1078)
+E/StorageException(17842): 	at com.google.firebase.storage.StorageTask$$ExternalSyntheticLambda1.run(D8$$SyntheticClass:0)
+E/StorageException(17842): 	at com.google.firebase.concurrent.LimitedConcurrencyExecutor.lambda$decorate$0$com-google-firebase-concurrent-LimitedConcurrencyExecutor(LimitedConcurrencyExecutor.java:65)
+E/StorageException(17842): 	at com.google.firebase.concurrent.LimitedConcurrencyExecutor$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+E/StorageException(17842): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+E/StorageException(17842): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+E/StorageException(17842): 	at com.google.firebase.concurrent.CustomThreadFactory.lambda$newThread$0$com-google-firebase-concurrent-CustomThreadFactory(CustomThreadFactory.java:47)
+E/StorageException(17842): 	at com.google.firebase.concurrent.CustomThreadFactory$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+E/StorageException(17842): 	at java.lang.Thread.run(Thread.java:1119)
+E/StorageException(17842): Caused by: java.io.IOException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:415)
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:432)
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:423)
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:265)
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:282)
+E/StorageException(17842): 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
+E/StorageException(17842): 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.sendWithRetry(UploadTask.java:527)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.beginResumableUpload(UploadTask.java:293)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.run(UploadTask.java:241)
+E/StorageException(17842): 	... 9 more
+E/StorageException(17842): StorageException has occurred.
+E/StorageException(17842): Object does not exist at location.
+E/StorageException(17842):  Code: -13010 HttpResult: 404
+E/StorageException(17842): The server has terminated the upload session
+E/StorageException(17842): java.io.IOException: The server has terminated the upload session
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.serverStateValid(UploadTask.java:359)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.shouldContinue(UploadTask.java:325)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.run(UploadTask.java:246)
+E/StorageException(17842): 	at com.google.firebase.storage.StorageTask.lambda$getRunnable$7$com-google-firebase-storage-StorageTask(StorageTask.java:1078)
+E/StorageException(17842): 	at com.google.firebase.storage.StorageTask$$ExternalSyntheticLambda1.run(D8$$SyntheticClass:0)
+E/StorageException(17842): 	at com.google.firebase.concurrent.LimitedConcurrencyExecutor.lambda$decorate$0$com-google-firebase-concurrent-LimitedConcurrencyExecutor(LimitedConcurrencyExecutor.java:65)
+E/StorageException(17842): 	at com.google.firebase.concurrent.LimitedConcurrencyExecutor$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+E/StorageException(17842): 	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1156)
+E/StorageException(17842): 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:651)
+E/StorageException(17842): 	at com.google.firebase.concurrent.CustomThreadFactory.lambda$newThread$0$com-google-firebase-concurrent-CustomThreadFactory(CustomThreadFactory.java:47)
+E/StorageException(17842): 	at com.google.firebase.concurrent.CustomThreadFactory$$ExternalSyntheticLambda0.run(D8$$SyntheticClass:0)
+E/StorageException(17842): 	at java.lang.Thread.run(Thread.java:1119)
+E/StorageException(17842): Caused by: java.io.IOException: {  "error": {    "code": 404,    "message": "Not Found."  }}
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.parseResponse(NetworkRequest.java:415)
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.parseErrorResponse(NetworkRequest.java:432)
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.processResponseStream(NetworkRequest.java:423)
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:265)
+E/StorageException(17842): 	at com.google.firebase.storage.network.NetworkRequest.performRequest(NetworkRequest.java:282)
+E/StorageException(17842): 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:76)
+E/StorageException(17842): 	at com.google.firebase.storage.internal.ExponentialBackoffSender.sendWithExponentialBackoff(ExponentialBackoffSender.java:68)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.sendWithRetry(UploadTask.java:527)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.beginResumableUpload(UploadTask.java:293)
+E/StorageException(17842): 	at com.google.firebase.storage.UploadTask.run(UploadTask.java:241)
+E/StorageException(17842): 	... 9 more
+E/StorageException(17842): StorageException has occurred.
+E/StorageException(17842): The operation was cancelled.
+E/StorageException(17842):  Code: -13040 HttpResult: 0
+Another exception was thrown: Duplicate GlobalKey detected in widget tree.
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(17842): show(ime(), fromIme=true)
+I/OpenGLRenderer(17842): Davey! duration=9223072780731ms; Flags=0, FrameTimelineVsyncId=22955653, IntendedVsync=299256123306317, Vsync=299256148306316, InputEventId=0, HandleInputStart=299256153927319, AnimationStart=299256153928725, PerformTraversalsStart=299256154867528, DrawStart=299256154963986, FrameDeadline=299256138972983, FrameInterval=299256153923048, FrameStartTime=8333333, SyncQueued=299256155044455, SyncStart=299256155093934, IssueDrawCommandsStart=299256155144038, SwapBuffers=299256155445080, FrameCompleted=9223372036854775807, DequeueBufferDuration=16510, QueueBufferDuration=497031, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299256156165132, DisplayPresentTime=0, 
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(17842): show(ime(), fromIme=true)
+D/InsetsController(17842): show(ime(), fromIme=true)
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(17842): show(ime(), fromIme=true)
+D/InputMethodManager(17842): showSoftInput() view=io.flutter.embedding.android.FlutterView{9f56783 VFED..... .F...... 0,0-1080,2326 #1 aid=1073741824} flags=0 reason=SHOW_SOFT_INPUT
+D/InsetsController(17842): show(ime(), fromIme=true)
+I/OpenGLRenderer(17842): Davey! duration=9223072702589ms; Flags=1, FrameTimelineVsyncId=22957777, IntendedVsync=299334264845148, Vsync=299334264845148, InputEventId=175928368, HandleInputStart=299334266081455, AnimationStart=299334266083278, PerformTraversalsStart=299334266084996, DrawStart=299334318905262, FrameDeadline=299334298178480, FrameInterval=299334266076871, FrameStartTime=16666666, SyncQueued=299334319024845, SyncStart=299334319144116, IssueDrawCommandsStart=299334319311877, SwapBuffers=299334325398596, FrameCompleted=9223372036854775807, DequeueBufferDuration=5399480, QueueBufferDuration=1392969, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299334327124482, DisplayPresentTime=0, 
+I/OpenGLRenderer(17842): Davey! duration=9223072702472ms; Flags=0, FrameTimelineVsyncId=22957802, IntendedVsync=299334382495332, Vsync=299334382495332, InputEventId=0, HandleInputStart=299334382873914, AnimationStart=299334382875008, PerformTraversalsStart=299334382876050, DrawStart=299334383016831, FrameDeadline=299334406495331, FrameInterval=299334382869279, FrameStartTime=8333333, SyncQueued=299334383052977, SyncStart=299334383122248, IssueDrawCommandsStart=299334383192508, SwapBuffers=299334393145894, FrameCompleted=9223372036854775807, DequeueBufferDuration=9053438, QueueBufferDuration=816198, GpuCompleted=9223372036854775807, SwapBuffersCompleted=299334394261728, DisplayPresentTime=0, 
+Lost connection to device.

@@ -21,6 +21,10 @@ import 'package:herosoffaith/src/features/search/presentation/screens/search_scr
 import 'package:herosoffaith/src/features/api_test/api_test_screen.dart';
 // Import the FavoritesScreen
 import 'package:herosoffaith/src/features/favorites/presentation/screens/favorites_screen.dart';
+// Import the ContributionsScreen
+import 'package:herosoffaith/src/features/contributions/presentation/screens/contributions_screen.dart';
+// Import the ApprovalQueueScreen
+import 'package:herosoffaith/src/features/admin/presentation/screens/approval_queue_screen.dart';
 // Import the Missionary model
 import 'package:herosoffaith/models/missionary.dart';
 
@@ -70,6 +74,18 @@ class AppRoutes {
 
       case '/favorites':
         return MaterialPageRoute(builder: (_) => const FavoritesScreen());
+
+      case RouteNames.contributions:
+        final args = settings.arguments as Map<String, String>?;
+        return MaterialPageRoute(
+          builder: (_) => ContributionsScreen(
+            missionaryId: args?['missionaryId'],
+            missionaryName: args?['missionaryName'],
+          ),
+        );
+
+      case RouteNames.approvalQueue:
+        return MaterialPageRoute(builder: (_) => const ApprovalQueueScreen());
 
       default:
         return MaterialPageRoute(
