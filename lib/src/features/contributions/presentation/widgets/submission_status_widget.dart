@@ -144,7 +144,7 @@ class SubmissionStatusWidget extends StatelessWidget {
                 const SizedBox(height: 16),
                 ...contributions.map((doc) {
                   final data = doc.data() as Map<String, dynamic>;
-                  return _buildContributionSummary(context, data);
+                  return _buildContributionSummary(context, data, doc);
                 }).toList(),
                 const SizedBox(height: 16),
                 ElevatedButton.icon(
@@ -166,7 +166,7 @@ class SubmissionStatusWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildContributionSummary(BuildContext context, Map<String, dynamic> data) {
+  Widget _buildContributionSummary(BuildContext context, Map<String, dynamic> data, DocumentSnapshot doc) {
     final isPhoto = data['type'] == 'photo';
     final status = data['status'] ?? 'pending';
     final submittedAt = (data['submittedAt'] as Timestamp?)?.toDate();
@@ -228,6 +228,29 @@ class SubmissionStatusWidget extends StatelessWidget {
             ),
           ),
           _buildStatusBadge(status),
+          const SizedBox(width: 8),
+          // Add delete button for pending contributions
+          if (status == 'pending')
+            PopupMenuButton<String>(
+              icon: Icon(Icons.more_vert, size: 16, color: Colors.grey[600]),
+              onSelected: (value) {
+                if (value == 'delete') {
+                  _showDeleteConfirmation(context, doc.id, data['title'] ?? 'contribution');
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'delete',
+                  child: Row(
+                    children: [
+                      Icon(Icons.delete_outline, size: 16, color: Colors.red),
+                      SizedBox(width: 8),
+                      Text('Delete', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
         ],
       ),
     );
@@ -287,6 +310,100 @@ class SubmissionStatusWidget extends StatelessWidget {
         builder: (context) => _AllContributionsScreen(userId: userId),
       ),
     );
+  }
+
+  void _showDeleteConfirmation(BuildContext context, String contributionId, String title) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: const Row(
+            children: [
+              Icon(Icons.delete_forever, color: Colors.red, size: 28),
+              SizedBox(width: 8),
+              Text('Delete Contribution?', style: TextStyle(color: Colors.red)),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Are you sure you want to delete "$title"?'),
+              const SizedBox(height: 12),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.orange[50],
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.orange[200]!),
+                ),
+                child: const Row(
+                  children: [
+                    Icon(Icons.warning_amber, color: Colors.orange, size: 20),
+                    SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        'This action cannot be undone. Consider editing instead of deleting.',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                Navigator.of(context).pop();
+                await _deleteContribution(contributionId);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _deleteContribution(String contributionId) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('contributions')
+          .doc(contributionId)
+          .delete();
+      
+      // Show success message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('✅ Contribution deleted successfully'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      // Show error message
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('❌ Failed to delete: $e'),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 3),
+          ),
+        );
+      }
+    }
   }
 
   String _formatDate(DateTime date) {

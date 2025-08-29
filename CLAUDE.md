@@ -71,6 +71,15 @@ The app follows a feature-based clean architecture pattern with some legacy path
 - Route constants defined in `lib/src/core/routes/route_names.dart`
 - Uses Flutter's named routing with `onGenerateRoute`
 
+**Current Routes** ✅ IMPLEMENTED:
+- `/` - Splash screen (initial route)
+- `/login` - Authentication screen  
+- `/home` - Main dashboard with admin badges
+- `/missionaries` - Missionary directory listing
+- `/contributions` - User contribution submission form
+- `/approval-queue` - Admin approval queue (role-restricted)
+- `/favorites` - User favorites management
+
 #### Theme System  
 - Centralized theming in `lib/src/core/theme/app_theme.dart`
 - Uses Google Fonts (Lato) and Material Design principles
@@ -91,16 +100,22 @@ Each feature follows this structure:
 
 #### Current Features
 - **Authentication** (`lib/src/features/auth/`) - Login and signup screens at `presentation/screens/`
-- **Home** (`lib/src/features/home/`) - Main dashboard at `presentation/screens/home_screen.dart`
-- **Common** (`lib/src/features/common/`) - Shared components including splash screen
+- **Home** (`lib/src/features/home/`) - Main dashboard at `presentation/screens/home_screen.dart` with admin notification badges
+- **Common** (`lib/src/features/common/`) - Shared components including splash screen and loading widgets
 - **Missionary Directory** (legacy location `lib/features/missionaries/`) - Browse missionaries at `presentation/missionary_list_screen.dart`
+- **User Contributions** (`lib/src/features/contributions/`) - ✅ COMPLETE
+  - ContributionsScreen: Dual-tab interface for Sacred Images and Stories of Faith
+  - SubmissionStatusWidget: User contribution tracking and status display
+  - Admin notification integration with real-time badge updates
+- **Admin Console** (`lib/src/features/admin/`) - ✅ COMPLETE
+  - ApprovalQueueScreen: Three-tab workflow (Pending/Blessed/Declined)
+  - Role-based access control with real-time Firebase streams
+  - Base64 image display for photo contribution review
 
 #### Planned Features (per PRD)
 - **Missionary Profile** - Individual missionary details with timeline and media
 - **Donations** - Payment processing with Razorpay integration
-- **Favorites** - User favorites management
-- **Admin** - Administrative functions and content approval
-- **User Contributions** - Photo and anecdote submissions
+- **Favorites** - User favorites management (backend ready)
 
 ### Data Models
 
@@ -114,19 +129,55 @@ Based on the Product Requirements Document:
 **timelineEvents/{eventId}** (Planned)
 - `missionaryId` (FK), `dateISO`, `title`, `desc`, `latLng` (optional)
 
-**media/{mediaId}** (Planned)
-- `missionaryId` (FK), `type` (image/anecdote), `storageUrl`, `text`, `caption`, `year`, `contributedBy` (uid), `status` (pending/approved/rejected)
+**contributions/{contributionId}** ✅ IMPLEMENTED
+- `type` (photo/anecdote), `missionaryId`, `missionaryName`, `contributedBy` (uid), `status` (pending/approved/rejected)
+- `title`, `caption`/`content`, `contributorName`, `contributorEmail`
+- `imageData` (base64), `localImagePath`, `fileName`, `originalFileName` (for photos)
+- `submittedAt`, `createdAt`, `reviewedAt`, `securityValidated`
+
+**admin_notifications/{notificationId}** ✅ IMPLEMENTED  
+- `type` (new_contribution), `contributionType`, `missionaryName`, `contributorName`
+- `message`, `timestamp`, `read` (boolean)
+
+**user_notifications/{notificationId}** ✅ IMPLEMENTED
+- `userId`, `contributionId`, `type` (contribution_status_change)
+- `title`, `message`, `contributionType`, `missionaryName`, `status`, `rejectionReason`
+- `timestamp`, `read` (boolean)
 
 **users/{uid}**
 - `role` (user/curator/admin), `displayName`, `email`
 
-**favorites/{uid}/items/{mid}** (Planned)
+**favorites/{uid}/items/{mid}** (Backend ready)
 - User's favorited missionaries
 
 #### Current Implementation
 - Missionary model located in `lib/models/missionary.dart`
 - Firestore integration with `fromFirestore()` factory
 - Uses nullable fields for optional data
+
+### Core Services
+
+#### Security Services ✅ IMPLEMENTED
+- **InputValidator** (`lib/src/core/security/input_validator.dart`)
+  - Multi-layer validation against XSS, SQL injection, command injection
+  - HTML entity escaping and dangerous pattern detection
+  - Base64 image validation with file signature verification
+  - Content sanitization with user feedback
+
+#### Notification Services ✅ IMPLEMENTED  
+- **AdminNotificationService** (`lib/src/core/services/admin_notification_service.dart`)
+  - Real-time admin notification badges and counts
+  - Contribution status tracking and role-based access
+  - Firebase stream integration for live updates
+- **UserNotificationService** (`lib/src/core/services/user_notification_service.dart`) 
+  - User feedback system for contribution status changes
+  - In-app notification dialogs with resubmission guidance
+
+#### Image Storage Services ✅ IMPLEMENTED
+- **GitHubImageService** (`lib/src/core/services/github_image_service.dart`)
+  - Base64 image encoding and compression for Firestore storage
+  - Local backup storage in app documents directory
+  - Metadata tracking with user attribution
 
 ### Dependencies
 
@@ -138,6 +189,9 @@ Key packages:
 - `google_fonts` - Typography
 - `provider` - State management
 - `intl` - Internationalization support
+- `image_picker` - Camera and gallery image selection
+- `path_provider` - File system access for local storage
+- `path` - Cross-platform path manipulation
 
 ### Development Notes
 

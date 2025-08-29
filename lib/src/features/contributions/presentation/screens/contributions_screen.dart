@@ -7,6 +7,7 @@ import '../../../../core/constants/spiritual_strings.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/services/github_image_service.dart';
 import '../../../../core/services/admin_notification_service.dart';
+import '../../../../core/security/input_validator.dart';
 import '../../../common/presentation/widgets/loading_widget.dart';
 
 class ContributionsScreen extends StatefulWidget {
@@ -122,6 +123,16 @@ class _ContributionsScreenState extends State<ContributionsScreen>
         return;
       }
 
+      // Validate and sanitize all text inputs
+      final titleValidation = InputValidator.validateTitle(_titleController.text);
+      final captionValidation = InputValidator.validateCaption(_captionController.text);
+      
+      if (!titleValidation.isValid || !captionValidation.isValid) {
+        final allErrors = [...titleValidation.errors, ...captionValidation.errors];
+        _showErrorSnackBar('🛡️ Security validation failed: ${allErrors.join(', ')}');
+        return;
+      }
+
       // Save image with base64 encoding for admin review  
       final imageData = await GitHubImageService.saveImageToGitHub(
         imageFile: _selectedImage!,
@@ -130,24 +141,39 @@ class _ContributionsScreenState extends State<ContributionsScreen>
         contributionType: 'photo',
       );
 
-      // Save contribution to Firestore with base64 image for admin review
+      // Validate base64 image data
+      if (!InputValidator.isValidBase64Image(imageData['base64Image']!)) {
+        _showErrorSnackBar('🛡️ Invalid image format detected. Please select a valid image.');
+        return;
+      }
+
+      // Save contribution to Firestore with sanitized inputs
       await FirebaseFirestore.instance.collection('contributions').add({
         'type': 'photo',
         'missionaryId': _selectedMissionaryId,
         'missionaryName': _selectedMissionaryName,
-        'imageData': imageData['base64Image'], // Base64 for admin review
+        'imageData': imageData['base64Image'], // Validated base64
         'localImagePath': imageData['localPath'], // Local backup
         'fileName': imageData['fileName'],
         'originalFileName': _selectedImage!.path.split('/').last,
-        'caption': _captionController.text.trim(),
-        'title': _titleController.text.trim(),
+        'caption': captionValidation.cleanedInput, // Sanitized caption
+        'title': titleValidation.cleanedInput, // Sanitized title
         'contributedBy': user.uid,
         'contributorName': _isAnonymous ? 'Anonymous' : (user.displayName ?? 'A faithful servant'),
         'contributorEmail': user.email,
         'status': 'pending',
         'submittedAt': FieldValue.serverTimestamp(),
         'createdAt': FieldValue.serverTimestamp(),
+        'securityValidated': true, // Mark as security validated
       });
+      
+      // Show warnings if content was sanitized
+      if (titleValidation.hasWarnings) {
+        _showWarningSnackBar('Title: ${titleValidation.warningMessage}');
+      }
+      if (captionValidation.hasWarnings) {
+        _showWarningSnackBar('Caption: ${captionValidation.warningMessage}');
+      }
 
       // Notify admins of new contribution
       AdminNotificationService.notifyAdminsOfNewContribution(
@@ -184,20 +210,39 @@ class _ContributionsScreenState extends State<ContributionsScreen>
         return;
       }
 
-      // Save contribution to Firestore
+      // Validate and sanitize all text inputs
+      final titleValidation = InputValidator.validateTitle(_titleController.text);
+      final contentValidation = InputValidator.validateContributionText(_anecdoteController.text);
+      
+      if (!titleValidation.isValid || !contentValidation.isValid) {
+        final allErrors = [...titleValidation.errors, ...contentValidation.errors];
+        _showErrorSnackBar('🛡️ Security validation failed: ${allErrors.join(', ')}');
+        return;
+      }
+
+      // Save contribution to Firestore with sanitized inputs
       await FirebaseFirestore.instance.collection('contributions').add({
         'type': 'anecdote',
         'missionaryId': _selectedMissionaryId,
         'missionaryName': _selectedMissionaryName,
-        'content': _anecdoteController.text.trim(),
-        'title': _titleController.text.trim(),
+        'content': contentValidation.cleanedInput, // Sanitized content
+        'title': titleValidation.cleanedInput, // Sanitized title
         'contributedBy': user.uid,
         'contributorName': _isAnonymous ? 'Anonymous' : (user.displayName ?? 'A faithful servant'),
         'contributorEmail': user.email,
         'status': 'pending',
         'submittedAt': FieldValue.serverTimestamp(),
         'createdAt': FieldValue.serverTimestamp(),
+        'securityValidated': true, // Mark as security validated
       });
+      
+      // Show warnings if content was sanitized
+      if (titleValidation.hasWarnings) {
+        _showWarningSnackBar('Title: ${titleValidation.warningMessage}');
+      }
+      if (contentValidation.hasWarnings) {
+        _showWarningSnackBar('Story: ${contentValidation.warningMessage}');
+      }
 
       // Notify admins of new contribution
       AdminNotificationService.notifyAdminsOfNewContribution(
@@ -245,6 +290,23 @@ class _ContributionsScreenState extends State<ContributionsScreen>
       SnackBar(
         content: Text(message),
         backgroundColor: Colors.red[600],
+        duration: const Duration(seconds: 4),
+      ),
+    );
+  }
+
+  void _showWarningSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.security, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Expanded(child: Text(message)),
+          ],
+        ),
+        backgroundColor: Colors.orange[600],
+        behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 4),
       ),
     );
