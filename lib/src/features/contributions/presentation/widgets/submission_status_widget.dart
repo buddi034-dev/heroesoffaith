@@ -361,7 +361,7 @@ class SubmissionStatusWidget extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 Navigator.of(context).pop();
-                await _deleteContribution(contributionId);
+                await _deleteContribution(contributionId, context);
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.red,
@@ -375,7 +375,7 @@ class SubmissionStatusWidget extends StatelessWidget {
     );
   }
 
-  Future<void> _deleteContribution(String contributionId) async {
+  Future<void> _deleteContribution(String contributionId, BuildContext context) async {
     try {
       await FirebaseFirestore.instance
           .collection('contributions')
@@ -383,7 +383,7 @@ class SubmissionStatusWidget extends StatelessWidget {
           .delete();
       
       // Show success message
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('✅ Contribution deleted successfully'),
@@ -394,7 +394,7 @@ class SubmissionStatusWidget extends StatelessWidget {
       }
     } catch (e) {
       // Show error message
-      if (mounted) {
+      if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('❌ Failed to delete: $e'),

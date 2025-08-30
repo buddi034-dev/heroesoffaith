@@ -45,6 +45,10 @@ class _ContributionsScreenState extends State<ContributionsScreen>
   // Available missionaries for selection
   List<Map<String, String>> _missionaries = [];
   bool _loadingMissionaries = true;
+  
+  // User contribution tracking
+  int _userContributionCount = 0;
+  static const int _maxContributions = 5;
 
   @override
   void initState() {
@@ -53,6 +57,7 @@ class _ContributionsScreenState extends State<ContributionsScreen>
     _selectedMissionaryId = widget.missionaryId ?? '';
     _selectedMissionaryName = widget.missionaryName ?? '';
     _loadMissionaries();
+    _checkUserContributionCount();
   }
 
   @override
@@ -62,6 +67,26 @@ class _ContributionsScreenState extends State<ContributionsScreen>
     _captionController.dispose();
     _titleController.dispose();
     super.dispose();
+  }
+
+  Future<void> _checkUserContributionCount() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final querySnapshot = await FirebaseFirestore.instance
+            .collection('contributions')
+            .where('contributedBy', isEqualTo: user.uid)
+            .get();
+        
+        setState(() {
+          _userContributionCount = querySnapshot.docs.length;
+        });
+        
+        debugPrint('🔢 User has $_userContributionCount/$_maxContributions contributions');
+      }
+    } catch (e) {
+      debugPrint('Error checking user contribution count: $e');
+    }
   }
 
   Future<void> _loadMissionaries() async {
@@ -109,6 +134,12 @@ class _ContributionsScreenState extends State<ContributionsScreen>
   }
 
   Future<void> _submitPhotoContribution() async {
+    // Check contribution limit first
+    if (_userContributionCount >= _maxContributions) {
+      _showErrorSnackBar('🛡️ You have reached the maximum of $_maxContributions contributions. Please wait for admin approval or delete existing contributions.');
+      return;
+    }
+
     if (!_photoFormKey.currentState!.validate() || _selectedImage == null) {
       _showErrorSnackBar('Please select an image and provide a caption');
       return;
@@ -184,6 +215,7 @@ class _ContributionsScreenState extends State<ContributionsScreen>
 
       _showSuccessSnackBar('${SpiritualStrings.wellDone} Your photo has been submitted for blessing');
       _resetPhotoForm();
+      _checkUserContributionCount(); // Update count after submission
     } catch (e) {
       String errorMessage = '${SpiritualStrings.errorOccurred}';
       if (e.toString().contains('too large') || e.toString().contains('document too large')) {
@@ -199,6 +231,12 @@ class _ContributionsScreenState extends State<ContributionsScreen>
   }
 
   Future<void> _submitAnecdoteContribution() async {
+    // Check contribution limit first
+    if (_userContributionCount >= _maxContributions) {
+      _showErrorSnackBar('🛡️ You have reached the maximum of $_maxContributions contributions. Please wait for admin approval or delete existing contributions.');
+      return;
+    }
+
     if (!_anecdoteFormKey.currentState!.validate()) return;
 
     setState(() => _isSubmitting = true);
@@ -253,6 +291,7 @@ class _ContributionsScreenState extends State<ContributionsScreen>
 
       _showSuccessSnackBar('${SpiritualStrings.wellDone} Your story has been submitted for blessing');
       _resetAnecdoteForm();
+      _checkUserContributionCount(); // Update count after submission
     } catch (e) {
       _showErrorSnackBar('${SpiritualStrings.errorOccurred}: $e');
     } finally {
@@ -316,8 +355,22 @@ class _ContributionsScreenState extends State<ContributionsScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Share Sacred Testimonies'),
-        backgroundColor: AppColors.primaryColor,
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Share Sacred Testimonies'),
+            Text(
+              'Contributions: $_userContributionCount/$_maxContributions',
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w300,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: _userContributionCount >= _maxContributions 
+            ? Colors.orange[800] 
+            : AppColors.primaryColor,
         foregroundColor: Colors.white,
         bottom: TabBar(
           controller: _tabController,
@@ -446,7 +499,9 @@ class _ContributionsScreenState extends State<ContributionsScreen>
             
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: _isSubmitting ? null : _submitPhotoContribution,
+              onPressed: (_isSubmitting || _userContributionCount >= _maxContributions) 
+                  ? null 
+                  : _submitPhotoContribution,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
                 foregroundColor: Colors.white,
@@ -461,9 +516,11 @@ class _ContributionsScreenState extends State<ContributionsScreen>
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
-                  : const Text(
-                      'Submit Sacred Image',
-                      style: TextStyle(fontSize: 16),
+                  : Text(
+                      _userContributionCount >= _maxContributions
+                          ? 'Limit Reached ($_userContributionCount/$_maxContributions)'
+                          : 'Submit Sacred Image',
+                      style: const TextStyle(fontSize: 16),
                     ),
             ),
           ],
@@ -572,7 +629,9 @@ class _ContributionsScreenState extends State<ContributionsScreen>
             
             const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: _isSubmitting ? null : _submitAnecdoteContribution,
+              onPressed: (_isSubmitting || _userContributionCount >= _maxContributions) 
+                  ? null 
+                  : _submitAnecdoteContribution,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryColor,
                 foregroundColor: Colors.white,
@@ -587,9 +646,11 @@ class _ContributionsScreenState extends State<ContributionsScreen>
                         valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                       ),
                     )
-                  : const Text(
-                      'Submit Story of Faith',
-                      style: TextStyle(fontSize: 16),
+                  : Text(
+                      _userContributionCount >= _maxContributions
+                          ? 'Limit Reached ($_userContributionCount/$_maxContributions)'
+                          : 'Submit Story of Faith',
+                      style: const TextStyle(fontSize: 16),
                     ),
             ),
           ],

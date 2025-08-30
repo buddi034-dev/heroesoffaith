@@ -278,6 +278,23 @@ class JsonDataUploader {
     return tags.toSet().toList(); // Remove duplicates
   }
 
+  /// Determine century from a date string
+  String _determineCentury(String dateStr) {
+    try {
+      // Try to extract year from various date formats
+      final regex = RegExp(r'(\d{4})');
+      final match = regex.firstMatch(dateStr);
+      if (match != null) {
+        final year = int.parse(match.group(1)!);
+        final century = ((year - 1) ~/ 100) + 1;
+        return '${century}th Century';
+      }
+    } catch (e) {
+      debugPrint('Error determining century from date: $dateStr, error: $e');
+    }
+    return 'Unknown Century';
+  }
+
   /// Batch upload for better performance with large datasets
   Future<UploadResult> batchUploadFromJsonString(String jsonString, {int batchSize = 10}) async {
     int uploadedCount = 0;

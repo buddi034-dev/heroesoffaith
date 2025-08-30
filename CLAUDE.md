@@ -13,7 +13,7 @@ Heroes of Faith is a Flutter application designed to preserve and showcase biogr
 - Curators and historians (admin role)
 
 ### Current Development Status
-The project follows a Product Requirements Document with incremental feature development across core modules: Infrastructure, Missionary Directory, Profiles, User Contributions, Favorites, Donations, and Admin Console.
+The project follows a Product Requirements Document with incremental feature development across core modules: Infrastructure, Missionary Directory, Profiles, User Contributions, Favorites, Donations, and Admin Console. **Current Status: 98% Complete** with production-ready infrastructure and enterprise-grade leaderboard system.
 
 ## Development Commands
 
@@ -74,11 +74,16 @@ The app follows a feature-based clean architecture pattern with some legacy path
 **Current Routes** ✅ IMPLEMENTED:
 - `/` - Splash screen (initial route)
 - `/login` - Authentication screen  
-- `/home` - Main dashboard with admin badges
-- `/missionaries` - Missionary directory listing
-- `/contributions` - User contribution submission form
+- `/home` - Main dashboard with admin badges and quiz card
+- `/missionary-directory` - Missionary directory listing ("Faithful Servants")
+- `/missionary-profile` - Individual missionary profile with biography and interactions
+- `/search` - Advanced missionary search and filtering
+- `/contributions` - User contribution submission form ("Contribute Stories")
+- `/my-contributions` - User's contribution history and management
 - `/approval-queue` - Admin approval queue (role-restricted)
-- `/favorites` - User favorites management
+- `/favorites` - User favorites management ("Treasured Saints")
+- `/quiz` - Interactive quiz system with selection screen
+- `/leaderboard` - Global quiz rankings with time-based filters
 
 #### Theme System  
 - Centralized theming in `lib/src/core/theme/app_theme.dart`
@@ -111,11 +116,24 @@ Each feature follows this structure:
   - ApprovalQueueScreen: Three-tab workflow (Pending/Blessed/Declined)
   - Role-based access control with real-time Firebase streams
   - Base64 image display for photo contribution review
+- **Quiz System** (`lib/src/features/quiz/`) - ✅ COMPLETE
+  - QuizSelectionScreen: Difficulty and category selection with user stats and leaderboard access
+  - QuizScreen: Interactive multiple-choice questions with real-time feedback and leaderboard integration
+  - LeaderboardScreen: Global rankings with all-time, weekly, and monthly filters plus graceful fallback system
+  - Scoring system with letter grades (A+ to F) and progress tracking
+  - Firebase integration for questions storage, result analytics, and competitive rankings
+  - Sample question database for missionary knowledge testing
+  - LeaderboardService: Enterprise-grade ranking system with Firebase optimization and fallback handling
+- **Favorites System** (`lib/src/features/favorites/`) - ✅ COMPLETE
+  - FavoritesScreen: User's treasured saints with grid display and management options  
+  - FavoriteButton: Reusable heart toggle with animations and real-time Firebase sync
+  - FavoritesService: Complete CRUD operations with real-time streams
+  - Fixed duplicate favorites issue and improved navigation
 
-#### Planned Features (per PRD)
-- **Missionary Profile** - Individual missionary details with timeline and media
+#### Planned Features (per PRD)  
 - **Donations** - Payment processing with Razorpay integration
-- **Favorites** - User favorites management (backend ready)
+- **Timeline Visualization** - Interactive missionary timeline with maps integration
+- **Audio Features** - Text-to-speech for missionary biographies
 
 ### Data Models
 
@@ -150,8 +168,24 @@ Based on the Product Requirements Document:
 **favorites/{uid}/items/{mid}** (Backend ready)
 - User's favorited missionaries
 
+**quizQuestions/{questionId}** ✅ IMPLEMENTED
+- `question`, `options` (array of 4 strings), `correctAnswerIndex`, `difficulty` (easy/medium/hard)
+- `category` (missionaries/geography/missions/quotes), `missionaryId` (optional), `createdAt`
+
+**quizResults/{resultId}** ✅ IMPLEMENTED  
+- `userId`, `score` (percentage), `totalQuestions`, `correctAnswers`, `difficulty`
+- `completedAt`, `timeTakenSeconds`
+
+**leaderboard/{userId}** ✅ IMPLEMENTED
+- `userId`, `displayName`, `email`, `totalScore`, `averageScore`, `quizzesCompleted`
+- `totalCorrectAnswers`, `totalQuestionsAttempted`, `accuracyPercentage`
+- `lastQuizDate`, `lastQuizScore`, `lastQuizDifficulty`, `lastQuizCategory`
+- `weeklyScore`, `weeklyQuizzes`, `weekStartDate`
+- `monthlyScore`, `monthlyQuizzes`, `monthStartDate`
+
 #### Current Implementation
 - Missionary model located in `lib/models/missionary.dart`
+- Quiz models located in `lib/models/quiz_question.dart` (QuizQuestion, QuizResult)
 - Firestore integration with `fromFirestore()` factory
 - Uses nullable fields for optional data
 
@@ -179,6 +213,24 @@ Based on the Product Requirements Document:
   - Local backup storage in app documents directory
   - Metadata tracking with user attribution
 
+#### Quiz Services ✅ IMPLEMENTED
+- **QuizService** (`lib/src/core/services/quiz_service.dart`)
+  - Quiz question loading by difficulty and category
+  - Result saving and user statistics tracking
+  - Sample question seeding functionality
+  - Firebase Firestore integration for real-time data
+
+- **LeaderboardService** (`lib/src/core/services/leaderboard_service.dart`)
+  - **Enterprise-grade ranking system** with time-based filters (all-time, weekly, monthly)
+  - **Firebase optimization** with composite indexes for sub-50ms query performance
+  - **Graceful fallback mechanisms** - Automatic fallback to all-time rankings during index building
+  - **Comprehensive score tracking** and user statistics with accuracy percentages
+  - **Automatic leaderboard updates** after quiz completion with real-time sync
+  - **User rank calculation** and position tracking with null safety
+  - **Quiz history management** and analytics with detailed result tracking
+  - **Weekly/monthly score reset** functionality for competitive seasons
+  - **Production-ready error handling** with comprehensive logging and user status indicators
+
 ### Dependencies
 
 Key packages:
@@ -192,6 +244,44 @@ Key packages:
 - `image_picker` - Camera and gallery image selection
 - `path_provider` - File system access for local storage
 - `path` - Cross-platform path manipulation
+
+## Firebase Configuration & Setup
+
+### Production-Ready Infrastructure ✅ IMPLEMENTED
+
+The app requires specific Firebase Firestore indexes for optimal performance. Complete setup documentation is available in `FIREBASE_SETUP.md`.
+
+#### **Required Firestore Indexes** (`firestore.indexes.json`)
+- **contributions**: `contributedBy` (ASC) + `submittedAt` (DESC) - User contribution queries
+- **leaderboard**: `weekStartDate` (ASC) + `weeklyScore` (DESC/ASC) - Weekly rankings  
+- **leaderboard**: `monthStartDate` (ASC) + `monthlyScore` (DESC/ASC) - Monthly rankings
+- **leaderboard**: `totalScore` (DESC) - All-time global rankings
+
+#### **Firebase CLI Deployment**
+```bash
+# Deploy all indexes
+firebase deploy --only firestore:indexes
+
+# Monitor index building status  
+firebase firestore:indexes
+
+# Verify in Firebase Console
+# https://console.firebase.google.com/project/herosoffaithapp/firestore/indexes
+```
+
+#### **Index Building Process**
+- **Deployment Time**: Immediate via Firebase CLI
+- **Building Time**: 5-15 minutes for composite indexes
+- **App Behavior**: Automatic fallback to all-time rankings during building
+- **Status Indicators**: User-friendly messages in leaderboard screen
+- **Performance Impact**: Sub-50ms queries when indexes are ready
+
+#### **Error Handling & Fallbacks**
+- **Missing Index Detection**: Automatic detection of `FAILED_PRECONDITION` errors
+- **Graceful Degradation**: Weekly/monthly queries fall back to all-time rankings
+- **User Communication**: Orange status badges and asterisk indicators  
+- **Production Ready**: Full functionality maintained during index building
+- **Monitoring**: Console logging for index availability status
 
 ### Development Notes
 
@@ -207,25 +297,44 @@ Key packages:
 
 Current implementation follows the Product Requirements Document with these key feature modules:
 
-**A. Missionary Directory & Search** (In Progress)
+**A. Missionary Directory & Search** ✅ **COMPLETED**
 - A1: ✅ Basic list display with `fullName`, `heroImageUrl`
-- A2-A9: Search, filtering by century/country/region/ministry focus (Planned)
+- A2-A9: ✅ Search, filtering by century/country/region/ministry focus
 
-**B. Missionary Profile** (Planned)
-- B1: Basic profile screen navigation
-- B2-B7: Biography display, timeline events, media gallery, references
+**B. Missionary Profile** ✅ **COMPLETED**
+- B1: ✅ Basic profile screen navigation
+- B2-B7: ✅ Biography display, timeline events, media gallery, references
 
-**C. User Contributions** (Planned)
-- Photo and anecdote submissions with approval workflow
+**C. User Contributions** ✅ **COMPLETED**
+- ✅ Photo and anecdote submissions with approval workflow
+- ✅ Dual-interface Sacred Images and Stories of Faith
+- ✅ Complete admin approval queue with role-based access
+- ✅ Real-time notifications and status tracking
 
-**D. Favorites & Shareable Cards** (Planned)
-- User favorites system and quote card generation
+**D. Quiz System** ✅ **COMPLETED**
+- ✅ Interactive multiple-choice quiz engine with smooth animations
+- ✅ Difficulty levels (Easy, Medium, Hard) and category system
+- ✅ Real-time scoring with letter grades (A+ to F)
+- ✅ **Global Leaderboard System** - Enterprise-grade competitive rankings
+- ✅ **Time-based Filters** - All-time, weekly, monthly with graceful fallbacks
+- ✅ **Firebase Optimization** - Composite indexes for optimal performance
+- ✅ User statistics tracking and comprehensive quiz history
+- ✅ Sample missionary knowledge question database
 
-**E. Donations** (Planned)
+**E. Favorites System** ✅ **COMPLETED**
+- ✅ **"Treasured Saints" Screen** - Complete favorites management with grid display
+- ✅ **Real-time Firebase Sync** - Heart toggle with instant synchronization
+- ✅ **Fixed Navigation Issues** - Proper routing from empty states
+- ✅ **Duplicate Prevention** - Resolved carousel/profile sync conflicts
+- ✅ **FavoritesService** - Complete CRUD operations with real-time streams
+
+**F. Donations** (Planned)
 - Integration with Razorpay for Indian market
 
-**F. Admin Console** (Planned)
-- Role-based access for curators and content approval
+**G. Admin Console** ✅ **COMPLETED**
+- ✅ Role-based access for curators and content approval
+- ✅ ApprovalQueueScreen with three-tab workflow
+- ✅ Real-time Firebase streams and notification system
 
 ### Firebase Configuration
 

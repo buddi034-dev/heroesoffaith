@@ -23,10 +23,14 @@ import 'package:herosoffaith/src/features/api_test/api_test_screen.dart';
 import 'package:herosoffaith/src/features/favorites/presentation/screens/favorites_screen.dart';
 // Import the ContributionsScreen
 import 'package:herosoffaith/src/features/contributions/presentation/screens/contributions_screen.dart';
+// Import the MyContributionsScreen
+import 'package:herosoffaith/src/features/contributions/presentation/screens/my_contributions_screen.dart';
 // Import the ApprovalQueueScreen
 import 'package:herosoffaith/src/features/admin/presentation/screens/approval_queue_screen.dart';
-// Import the Missionary model
-import 'package:herosoffaith/models/missionary.dart';
+// Import the QuizSelectionScreen
+import 'package:herosoffaith/src/features/quiz/presentation/screens/quiz_selection_screen.dart';
+// Import the LeaderboardScreen
+import 'package:herosoffaith/src/features/quiz/presentation/screens/leaderboard_screen.dart';
 
 
 class AppRoutes {
@@ -72,7 +76,7 @@ class AppRoutes {
       case '/api-test':
         return MaterialPageRoute(builder: (_) => const ApiTestScreen());
 
-      case '/favorites':
+      case RouteNames.favorites:
         return MaterialPageRoute(builder: (_) => const FavoritesScreen());
 
       case RouteNames.contributions:
@@ -84,8 +88,17 @@ class AppRoutes {
           ),
         );
 
+      case RouteNames.myContributions:
+        return MaterialPageRoute(builder: (_) => const MyContributionsScreen());
+
       case RouteNames.approvalQueue:
         return MaterialPageRoute(builder: (_) => const ApprovalQueueScreen());
+
+      case RouteNames.quiz:
+        return MaterialPageRoute(builder: (_) => const QuizSelectionScreen());
+
+      case RouteNames.leaderboard:
+        return MaterialPageRoute(builder: (_) => const LeaderboardScreen());
 
       default:
         return MaterialPageRoute(

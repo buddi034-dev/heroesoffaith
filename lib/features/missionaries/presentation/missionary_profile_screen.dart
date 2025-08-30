@@ -3,11 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import '../../../models/enhanced_missionary.dart';
 import '../../../src/core/services/missionary_api_service.dart';
 import '../../../src/core/constants/spiritual_strings.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import '../../../src/features/favorites/presentation/widgets/favorite_button.dart';
 
 class MissionaryProfileScreen extends StatefulWidget {
   final String missionaryId;
@@ -27,7 +26,6 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
   late AnimationController _fadeController;
   late AnimationController _timelineAnimationController;
   bool _isScrolled = false;
-  bool _isFavorited = false;
   bool _isAudioPlaying = false;
   int _selectedTimelineIndex = 0;
   PageController _galleryController = PageController();
@@ -61,7 +59,6 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
     });
     
     _loadMissionaryProfile();
-    _checkFavoriteStatus();
     _timelineAnimationController.forward();
   }
 
@@ -87,23 +84,6 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
     });
   }
 
-  Future<void> _checkFavoriteStatus() async {
-    if (_missionary == null) return;
-    
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final doc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('favorites')
-          .doc(_missionary!.name)
-          .get();
-      
-      setState(() {
-        _isFavorited = doc.exists;
-      });
-    }
-  }
 
   @override
   void dispose() {
@@ -506,51 +486,17 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
                           ),
                         ],
                       ),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => _handleBookmark(),
-                        icon: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          child: Icon(
-                            _isFavorited ? Icons.bookmark : Icons.bookmark_border,
-                            color: _isFavorited ? const Color(0xFF667eea) : Colors.black87,
-                            key: ValueKey(_isFavorited),
-                          ),
+                      child: Center(
+                        child: FavoriteButton(
+                          missionaryId: widget.missionaryId,
+                          missionaryName: _missionary?.name ?? '',
+                          heroImageUrl: _missionary?.image,
+                          bio: _missionary?.summary ?? _missionary?.biography?.first.content,
+                          size: 18,
+                          favoriteColor: Colors.red,
+                          unfavoriteColor: Colors.black87,
+                          showTooltip: false,
                         ),
-                        iconSize: 18,
-                      ),
-                    ),
-                    Container(
-                      width: 36,
-                      height: 36,
-                      margin: const EdgeInsets.only(right: 8),
-                      decoration: BoxDecoration(
-                        color: _isAudioPlaying 
-                            ? const Color(0xFF667eea).withValues(alpha: 0.2)
-                            : Colors.white.withValues(alpha: 0.9),
-                        borderRadius: BorderRadius.circular(18),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
-                            blurRadius: 6,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: IconButton(
-                        padding: EdgeInsets.zero,
-                        onPressed: () => _toggleAudioNarration(),
-                        icon: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          child: Icon(
-                            _isAudioPlaying ? Icons.pause : Icons.play_arrow,
-                            color: _isAudioPlaying 
-                                ? const Color(0xFF667eea) 
-                                : Colors.black87,
-                            key: ValueKey(_isAudioPlaying),
-                          ),
-                        ),
-                        iconSize: 18,
                       ),
                     ),
                     Container(
@@ -570,15 +516,16 @@ class _MissionaryProfileScreenState extends State<MissionaryProfileScreen>
                       ),
                       child: IconButton(
                         padding: EdgeInsets.zero,
-                        onPressed: _handleBookmark,
-                        icon: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          child: Icon(
-                            _isFavorited ? Icons.favorite : Icons.favorite_border,
-                            color: _isFavorited ? Colors.red : Colors.black87,
-                            key: ValueKey(_isFavorited),
-                          ),
-                        ),
+                        onPressed: () {
+                          // TODO: Implement audio functionality later
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Audio feature coming soon!'),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        },
+                        icon: const Icon(Icons.volume_up, color: Colors.black87),
                         iconSize: 18,
                       ),
                     ),
@@ -1143,107 +1090,6 @@ ${_missionary!.biography.isNotEmpty ?
     );
   }
 
-  Future<void> _handleBookmark() async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please sign in to bookmark missionaries'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    try {
-      final favoritesRef = FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .collection('favorites')
-          .doc(_missionary!.name);
-
-      if (_isFavorited) {
-        // Remove from favorites
-        await favoritesRef.delete();
-        setState(() {
-          _isFavorited = false;
-        });
-        
-        HapticFeedback.lightImpact();
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Removed ${_missionary!.name} from favorites'),
-              backgroundColor: Colors.grey[600],
-              duration: const Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-              dismissDirection: DismissDirection.horizontal,
-            ),
-          );
-        }
-      } else {
-        // Add to favorites
-        print('📝 Adding ${_missionary!.name} to favorites...');
-        await favoritesRef.set({
-          'missionaryId': widget.missionaryId,
-          'missionaryName': _missionary!.name,
-          'heroImageUrl': _missionary!.image,
-          'summary': _getBiographyText(_missionary!.biography).length > 100 ? '${_getBiographyText(_missionary!.biography).substring(0, 100)}...' : _getBiographyText(_missionary!.biography),
-          'categories': _missionary!.categories,
-          'dates': _missionary!.dates.display,
-          'addedAt': FieldValue.serverTimestamp(),
-        });
-        
-        setState(() {
-          _isFavorited = true;
-        });
-        
-        print('✅ Successfully added ${_missionary!.name} to favorites');
-        
-        HapticFeedback.mediumImpact();
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text('Added ${_missionary!.name} to favorites'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                      Navigator.pushNamed(context, '/favorites');
-                    },
-                    child: const Text(
-                      'VIEW',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              backgroundColor: const Color(0xFF667eea),
-              duration: const Duration(seconds: 3),
-              dismissDirection: DismissDirection.horizontal,
-              behavior: SnackBarBehavior.floating,
-            ),
-          );
-        }
-      }
-    } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Error updating favorites: ${e.toString()}'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    }
-  }
 
 
   void _toggleAudioNarration() {

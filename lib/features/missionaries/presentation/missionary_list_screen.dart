@@ -11,6 +11,7 @@ import '../../../src/core/services/missionary_api_service.dart';
 import '../../../src/core/services/cache_service.dart';
 import '../../../src/core/constants/spiritual_strings.dart';
 import '../../../src/core/widgets/missionary_image.dart';
+import '../../../src/features/favorites/presentation/widgets/favorite_button.dart';
 
 class MissionaryListScreen extends StatefulWidget {
   const MissionaryListScreen({super.key});
@@ -1079,12 +1080,38 @@ class _MissionaryListScreenState extends State<MissionaryListScreen> {
                 topLeft: Radius.circular(16),
                 topRight: Radius.circular(16),
               ),
-              child: MissionaryImage(
-                primaryImageUrl: profile.image,
-                missionaryId: profile.id,
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
+              child: Stack(
+                children: [
+                  MissionaryImage(
+                    primaryImageUrl: profile.image,
+                    missionaryId: profile.id,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                  // Favorite button overlay
+                  Positioned(
+                    top: 8,
+                    right: 8,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.3),
+                        shape: BoxShape.circle,
+                      ),
+                      child: FavoriteButton(
+                        missionaryId: profile.id,
+                        missionaryName: profile.name,
+                        heroImageUrl: profile.image,
+                        bio: profile.summary,
+                        size: 20,
+                        favoriteColor: Colors.red[400],
+                        unfavoriteColor: Colors.white.withValues(alpha: 0.8),
+                        showTooltip: false,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

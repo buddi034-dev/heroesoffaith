@@ -567,5 +567,273 @@
       "The world is my parish."
     ],
     "legacy": "Founded Methodism; inspired global revival movements."
+  },
+
+  "quizQuestions": {
+    "sampleQuestions": {
+      "williamCareyEasy": {
+        "question": "Which country did William Carey primarily serve as a missionary?",
+        "options": ["China", "India", "Africa", "Japan"],
+        "correctAnswerIndex": 1,
+        "difficulty": "easy",
+        "category": "missionaries",
+        "missionaryId": "williamCarey",
+        "explanation": "William Carey, known as the 'Father of Modern Missions', served primarily in India, founding Serampore College.",
+        "createdAt": "2025-08-29T00:00:00Z"
+      },
+      "amyCarmichaelMedium": {
+        "question": "What organization did Amy Carmichael found in India?",
+        "options": ["Salvation Army", "Dohnavur Fellowship", "Mukti Mission", "Christian Medical College"],
+        "correctAnswerIndex": 1,
+        "difficulty": "medium",
+        "category": "missionaries",
+        "missionaryId": "amyCarmichael",
+        "explanation": "Amy Carmichael founded the Dohnavur Fellowship, rescuing children from temple prostitution in Tamil Nadu.",
+        "createdAt": "2025-08-29T00:00:00Z"
+      },
+      "indiaGeographyEasy": {
+        "question": "In which Indian state did Amy Carmichael primarily work?",
+        "options": ["Kerala", "Tamil Nadu", "Maharashtra", "West Bengal"],
+        "correctAnswerIndex": 1,
+        "difficulty": "easy",
+        "category": "geography",
+        "explanation": "Amy Carmichael worked primarily in Tamil Nadu, South India, where she established the Dohnavur Fellowship.",
+        "createdAt": "2025-08-29T00:00:00Z"
+      },
+      "missionQuoteHard": {
+        "question": "Who said: 'Expect great things from God; attempt great things for God'?",
+        "options": ["Hudson Taylor", "William Carey", "Amy Carmichael", "Mother Teresa"],
+        "correctAnswerIndex": 1,
+        "difficulty": "hard",
+        "category": "quotes",
+        "missionaryId": "williamCarey",
+        "explanation": "This famous quote by William Carey became a rallying cry for the modern missionary movement.",
+        "createdAt": "2025-08-29T00:00:00Z"
+      },
+      "christianMissionsMedium": {
+        "question": "What was the primary focus of Ida Scudder's missionary work?",
+        "options": ["Bible Translation", "Medical Ministry", "Orphan Care", "Women's Education"],
+        "correctAnswerIndex": 1,
+        "difficulty": "medium",
+        "category": "missions",
+        "missionaryId": "idaScudder",
+        "explanation": "Dr. Ida Scudder focused on medical ministry, founding the Christian Medical College in Vellore.",
+        "createdAt": "2025-08-29T00:00:00Z"
+      }
+    }
+  },
+
+  "leaderboardSchema": {
+    "userLeaderboardEntry": {
+      "userId": "string - Firebase Auth UID",
+      "displayName": "string - User's display name",
+      "email": "string - User's email address",
+      "totalScore": "number - Cumulative score across all quizzes",
+      "averageScore": "number - Average score per quiz",
+      "quizzesCompleted": "number - Total number of quizzes completed",
+      "totalCorrectAnswers": "number - Total correct answers across all quizzes",
+      "totalQuestionsAttempted": "number - Total questions attempted",
+      "accuracyPercentage": "number - Overall accuracy percentage",
+      "lastQuizDate": "timestamp - Date of last quiz completion",
+      "lastQuizScore": "number - Score of most recent quiz",
+      "lastQuizDifficulty": "string - Difficulty of last quiz (easy/medium/hard)",
+      "lastQuizCategory": "string - Category of last quiz",
+      "weeklyScore": "number - Score for current week",
+      "weeklyQuizzes": "number - Quizzes completed this week",
+      "weekStartDate": "string - ISO date of week start (Monday)",
+      "monthlyScore": "number - Score for current month", 
+      "monthlyQuizzes": "number - Quizzes completed this month",
+      "monthStartDate": "string - ISO date of month start",
+      "updatedAt": "timestamp - Last update timestamp"
+    }
+  },
+
+  "quizResultsSchema": {
+    "individualQuizResult": {
+      "userId": "string - Firebase Auth UID",
+      "score": "number - Quiz score (0-100)",
+      "difficulty": "string - easy/medium/hard",
+      "category": "string - all/missionaries/geography/missions/quotes",
+      "correctAnswers": "number - Number of correct answers",
+      "totalQuestions": "number - Total questions in quiz",
+      "accuracyPercentage": "number - Percentage of correct answers",
+      "completedAt": "timestamp - Quiz completion time",
+      "displayName": "string - User's display name at time of quiz"
+    }
+  },
+
+  "firebaseIndexes": {
+    "requiredIndexes": [
+      {
+        "collection": "leaderboard",
+        "fields": [
+          {"field": "totalScore", "order": "descending"}
+        ],
+        "description": "All-time leaderboard rankings"
+      },
+      {
+        "collection": "leaderboard", 
+        "fields": [
+          {"field": "weekStartDate", "order": "ascending"},
+          {"field": "weeklyScore", "order": "descending"}
+        ],
+        "description": "Weekly leaderboard rankings"
+      },
+      {
+        "collection": "leaderboard",
+        "fields": [
+          {"field": "monthStartDate", "order": "ascending"},
+          {"field": "monthlyScore", "order": "descending"}
+        ],
+        "description": "Monthly leaderboard rankings"
+      },
+      {
+        "collection": "contributions",
+        "fields": [
+          {"field": "contributedBy", "order": "ascending"},
+          {"field": "submittedAt", "order": "descending"}
+        ],
+        "description": "User contributions query"
+      },
+      {
+        "collection": "quizResults",
+        "fields": [
+          {"field": "userId", "order": "ascending"},
+          {"field": "completedAt", "order": "descending"}
+        ],
+        "description": "User quiz history"
+      }
+    ]
+  },
+
+  "dataModelDocumentation": {
+    "collections": {
+      "missionaries": {
+        "description": "Core missionary profile data with biographical information",
+        "fields": {
+          "fullName": "string - Full name of missionary",
+          "bio": "string - Biographical summary",
+          "countryOfService": "array - Countries where they served",
+          "fieldOfService": "array - Areas of ministry focus",
+          "heroImageUrl": "string - Profile image URL",
+          "birthDate": "string - Birth date (YYYY-MM-DD)",
+          "deathDate": "string - Death date (YYYY-MM-DD)",
+          "placesOfWork": "array - Specific locations of service",
+          "quotes": "array - Famous quotes or sayings",
+          "legacy": "string - Summary of lasting impact"
+        }
+      },
+      "users": {
+        "description": "User authentication and profile data",
+        "fields": {
+          "role": "string - user/curator/admin",
+          "displayName": "string - User's display name",
+          "email": "string - User's email address",
+          "createdAt": "timestamp - Account creation date",
+          "preferences": "object - User preferences and settings"
+        }
+      },
+      "favorites": {
+        "description": "User's favorite missionaries (subcollection: favorites/{uid}/items/{missionaryId})",
+        "fields": {
+          "addedAt": "timestamp - When favorite was added",
+          "missionaryId": "string - Reference to missionary document",
+          "missionaryName": "string - Name for quick reference"
+        }
+      },
+      "contributions": {
+        "description": "User-submitted photos and stories for missionaries",
+        "fields": {
+          "type": "string - photo/anecdote",
+          "missionaryId": "string - Reference to missionary",
+          "missionaryName": "string - Missionary name",
+          "contributedBy": "string - User UID",
+          "status": "string - pending/approved/rejected",
+          "title": "string - Contribution title",
+          "content": "string - Text content or caption",
+          "imageData": "string - Base64 image data (for photos)",
+          "contributorName": "string - Contributor's display name",
+          "contributorEmail": "string - Contributor's email",
+          "submittedAt": "timestamp - Submission date",
+          "reviewedAt": "timestamp - Review date",
+          "securityValidated": "boolean - Security check passed"
+        }
+      },
+      "quizQuestions": {
+        "description": "Quiz questions database with multiple choice format",
+        "fields": {
+          "question": "string - The quiz question text",
+          "options": "array - 4 multiple choice options",
+          "correctAnswerIndex": "number - Index of correct answer (0-3)",
+          "difficulty": "string - easy/medium/hard",
+          "category": "string - missionaries/geography/missions/quotes",
+          "missionaryId": "string - Optional reference to specific missionary",
+          "explanation": "string - Explanation of the correct answer",
+          "createdAt": "timestamp - Question creation date"
+        }
+      },
+      "leaderboard": {
+        "description": "Global quiz leaderboard with time-based scoring",
+        "fields": {
+          "userId": "string - Firebase Auth UID",
+          "displayName": "string - User's display name", 
+          "email": "string - User's email",
+          "totalScore": "number - All-time cumulative score",
+          "averageScore": "number - Average score per quiz",
+          "quizzesCompleted": "number - Total quizzes completed",
+          "totalCorrectAnswers": "number - Total correct answers",
+          "totalQuestionsAttempted": "number - Total questions attempted",
+          "accuracyPercentage": "number - Overall accuracy percentage",
+          "weeklyScore": "number - Current week score",
+          "weeklyQuizzes": "number - Quizzes this week",
+          "weekStartDate": "string - Week start date (YYYY-MM-DD)",
+          "monthlyScore": "number - Current month score",
+          "monthlyQuizzes": "number - Quizzes this month", 
+          "monthStartDate": "string - Month start date (YYYY-MM-DD)",
+          "lastQuizDate": "timestamp - Most recent quiz",
+          "lastQuizScore": "number - Most recent quiz score",
+          "updatedAt": "timestamp - Last update"
+        }
+      },
+      "quizResults": {
+        "description": "Individual quiz completion records for history tracking",
+        "fields": {
+          "userId": "string - Firebase Auth UID",
+          "score": "number - Quiz score (0-100)",
+          "difficulty": "string - easy/medium/hard",
+          "category": "string - Quiz category",
+          "correctAnswers": "number - Correct answers count",
+          "totalQuestions": "number - Total questions in quiz",
+          "accuracyPercentage": "number - Accuracy percentage",
+          "completedAt": "timestamp - Completion timestamp",
+          "displayName": "string - User's name at completion time"
+        }
+      },
+      "admin_notifications": {
+        "description": "Real-time notifications for admin users",
+        "fields": {
+          "type": "string - new_contribution/etc",
+          "contributionType": "string - photo/anecdote",
+          "missionaryName": "string - Related missionary",
+          "contributorName": "string - Contributor name",
+          "message": "string - Notification message",
+          "timestamp": "timestamp - Notification time",
+          "read": "boolean - Read status"
+        }
+      },
+      "user_notifications": {
+        "description": "User feedback notifications for contribution status",
+        "fields": {
+          "userId": "string - Target user UID",
+          "contributionId": "string - Related contribution",
+          "type": "string - contribution_status_change",
+          "title": "string - Notification title",
+          "message": "string - Notification message",
+          "status": "string - approved/rejected",
+          "timestamp": "timestamp - Notification time",
+          "read": "boolean - Read status"
+        }
+      }
+    }
   }
 }

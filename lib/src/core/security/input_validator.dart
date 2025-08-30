@@ -36,7 +36,7 @@ class InputValidator {
   ];
 
   // Characters that should be escaped or removed
-  static final RegExp _htmlSpecialChars = RegExp(r'[<>&"\'`]');
+  static final RegExp _htmlSpecialChars = RegExp(r'''[<>&"'`]''');
   static final RegExp _controlChars = RegExp(r'[\x00-\x08\x0B\x0C\x0E-\x1F\x7F-\x9F]');
   
   /// Validate and sanitize user input for contributions
@@ -144,7 +144,7 @@ class InputValidator {
   /// Check if string contains only safe characters for display
   static bool isSafeForDisplay(String input) {
     // Allow letters, numbers, common punctuation, and basic formatting
-    final safePattern = RegExp(r'^[a-zA-Z0-9\s.,!?;:()\[\]{}"\'`\-_+=@#$%^&*~/\\|\r\n]*$');
+    final safePattern = RegExp(r'''^[a-zA-Z0-9\s.,!?;:()\[\]{}"'`\-_+=@#$%^&*~/\\|\r\n]*$''');
     return safePattern.hasMatch(input) && !_containsDangerousPatterns(input);
   }
   

@@ -8,7 +8,6 @@ import 'package:herosoffaith/src/features/common/presentation/widgets/animated_a
 import 'package:herosoffaith/src/core/utils/direct_uploader.dart';
 import 'package:herosoffaith/src/core/utils/file_uploader.dart';
 import 'package:herosoffaith/src/core/utils/image_url_validator.dart';
-import '../../../contributions/presentation/widgets/submission_status_widget.dart';
 import '../../../../core/services/admin_notification_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -195,22 +194,15 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 20),
                         
                         // Services grid
-                        SizedBox(
-                          height: 400, // Fixed height for the grid
-                          child: GridView.count(
-                            physics: const NeverScrollableScrollPhysics(),
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 16,
-                            crossAxisSpacing: 16,
-                            childAspectRatio: 1.0,
-                            children: _buildServiceCards(),
-                          ),
+                        GridView.count(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(), // Allow scrolling within parent
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12,
+                          crossAxisSpacing: 12,
+                          childAspectRatio: 0.9,
+                          children: _buildServiceCards(),
                         ),
-                        
-                        const SizedBox(height: 20),
-                        
-                        // Submission status widget
-                        const SubmissionStatusWidget(),
                         
                         const SizedBox(height: 20),
                       ],
@@ -299,10 +291,16 @@ class _HomeScreenState extends State<HomeScreen> {
         () => Navigator.pushNamed(context, '/favorites'),
       ),
       _buildServiceCard(
-        'Share Sacred\nTestimonies',
-        FontAwesomeIcons.camera,
-        const Color(0xFFFF7043),
-        () => Navigator.pushNamed(context, RouteNames.contributions),
+        'My\nContributions',
+        FontAwesomeIcons.fileLines,
+        const Color(0xFF42A5F5),
+        () => Navigator.pushNamed(context, RouteNames.myContributions),
+      ),
+      _buildServiceCard(
+        'Knowledge\nQuiz',
+        FontAwesomeIcons.brain,
+        const Color(0xFFFF6B35),
+        () => Navigator.pushNamed(context, RouteNames.quiz),
       ),
     ];
 
