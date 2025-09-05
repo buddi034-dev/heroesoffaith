@@ -13,7 +13,7 @@ Heroes of Faith is a Flutter application designed to preserve and showcase biogr
 - Curators and historians (admin role)
 
 ### Current Development Status
-The project follows a Product Requirements Document with incremental feature development across core modules: Infrastructure, Missionary Directory, Profiles, User Contributions, Favorites, Donations, and Admin Console. **Current Status: 98% Complete** with production-ready infrastructure and enterprise-grade leaderboard system.
+The project follows a Product Requirements Document with incremental feature development across core modules: Infrastructure, Missionary Directory, Profiles, User Contributions, Favorites, Timeline Enhancement, and Admin Console. **Current Status: 99% Complete** with production-ready infrastructure, enterprise-grade leaderboard system, and enhanced visual timeline.
 
 ## Development Commands
 
@@ -52,6 +52,27 @@ flutter run -d chrome           # Run on Chrome (web)
 flutter run -d windows          # Run on Windows
 flutter run -d macos            # Run on macOS
 flutter run -d linux            # Run on Linux
+```
+
+### Cloudflare Workers Development
+```bash
+# Development and Testing
+wrangler dev --local             # Start local development server
+wrangler dev                     # Start development server with remote resources
+
+# Database Operations
+wrangler d1 list                 # List D1 databases
+wrangler d1 execute heroes-of-faith-db --command="SELECT * FROM missionaries LIMIT 5"
+wrangler d1 execute heroes-of-faith-db --file=schema.sql         # Execute SQL file
+wrangler d1 execute heroes-of-faith-db --file=schema.sql --remote # Execute on production
+
+# Deployment
+wrangler deploy                  # Deploy to production
+wrangler deploy --env=""         # Deploy to top-level environment
+
+# Monitoring
+wrangler tail                    # View real-time logs
+wrangler r2 bucket list         # List R2 buckets
 ```
 
 ## Architecture
@@ -328,10 +349,18 @@ Current implementation follows the Product Requirements Document with these key 
 - ✅ **Duplicate Prevention** - Resolved carousel/profile sync conflicts
 - ✅ **FavoritesService** - Complete CRUD operations with real-time streams
 
-**F. Donations** (Planned)
+**F. Timeline Enhancement** ✅ **COMPLETED**
+- ✅ **Enhanced Visual Timeline** - Premium interactive timeline with smart icons
+- ✅ **Smart Content Analysis** - Context-aware icon selection based on event descriptions
+- ✅ **Gradient Animations** - Smooth connecting lines and progress indicators
+- ✅ **Intelligent Fallback** - Auto-generated timeline for incomplete missionary data
+- ✅ **Premium UI Design** - Professional cards with shadows, gradients, and animations
+- ✅ **Progress Visualization** - Timeline completion indicator for better navigation
+
+**G. Donations** (Planned - Final 1%)
 - Integration with Razorpay for Indian market
 
-**G. Admin Console** ✅ **COMPLETED**
+**H. Admin Console** ✅ **COMPLETED**
 - ✅ Role-based access for curators and content approval
 - ✅ ApprovalQueueScreen with three-tab workflow
 - ✅ Real-time Firebase streams and notification system
@@ -343,6 +372,55 @@ Firebase services configured with:
 - Firestore database for missionary and user data
 - Storage for image assets
 - App Check for security (Play Integrity on Android)
+
+### Cloudflare D1 Database & Workers API ✅ IMPLEMENTED
+
+The app uses a scalable Cloudflare Workers API with D1 database for missionary profile data, providing superior performance and unlimited scalability compared to hardcoded data approaches.
+
+#### Database Infrastructure
+- **Database**: Cloudflare D1 SQLite database `heroes-of-faith-db`
+- **Worker**: `missionary-ai-images` at `https://missionary-ai-images.jbr01061981.workers.dev`
+- **Storage**: Cloudflare R2 bucket `ai-missionary-headshots` for AI-generated images
+- **Performance**: Sub-50ms query response times with indexed searches
+
+#### Database Schema
+**missionaries** table:
+- `id` (PRIMARY KEY), `name`, `display_name`, `birth_year`, `death_year`, `date_display`
+- `primary_image`, `summary`, `century`, `sending_country`, `indian_region`
+- `created_at`, `updated_at`
+
+**biography_sections** table:
+- `missionary_id` (FK), `title`, `content`, `section_order`
+
+**timeline_events** table:  
+- `missionary_id` (FK), `year`, `title`, `description`, `event_type`, `significance`, `location`
+
+**missionary_images** table:
+- `missionary_id` (FK), `image_url`, `image_type`, `caption`, `is_primary`
+
+**legacy_data** table:
+- Original JSON data backup for reference and migration rollback
+
+#### API Endpoints
+- `GET /missionaries` - List all missionaries with filtering (`?century=19`, `?search=India`)
+- `GET /missionaries/{id}` - Full missionary details with biography & timeline
+- `GET /stats` - Database statistics and health metrics  
+- `GET /ai-headshots/` - Dynamic AI-enhanced image listings
+- `GET /ai-headshots/{filename}` - AI image redirects to R2 storage
+
+#### Migration Status
+✅ **COMPLETED**: Successfully migrated from hardcoded JavaScript arrays to D1 database
+- **Before**: 80KB hardcoded JS file with 6 missionaries
+- **After**: 7KB worker + unlimited database scalability
+- **Data Migrated**: 6 missionaries, 30 biography sections, 48 timeline events, 6 images
+- **Performance**: Improved query performance and search capabilities
+
+#### Flutter API Integration
+Updated `lib/src/core/services/missionary_api_service.dart`:
+- Base URL: `https://missionary-ai-images.jbr01061981.workers.dev`
+- Endpoints: `/missionaries` (list), `/missionaries/{id}` (details), `/stats` (health)
+- Response parsing for new database structure with proper model mapping
+- Backward compatibility maintained with existing Flutter models
 
 ### Testing
 

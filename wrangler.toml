@@ -1,0 +1,24 @@
+name = "missionary-ai-images"
+main = "src/worker.js"
+compatibility_date = "2023-12-01"
+
+# D1 Database binding
+[[d1_databases]]
+binding = "DB"
+database_name = "heroes-of-faith-db"
+database_id = "012a3362-511a-4c9a-8c27-b2098b11931d"
+
+# R2 bucket binding
+[[r2_buckets]]
+binding = "AI_IMAGES_BUCKET"
+bucket_name = "ai-missionary-headshots"
+
+[env.production]
+name = "missionary-ai-images"
+route = "https://missionary-profiles-api.jbr01061981.workers.dev/*"
+
+# Enable KV for storing image metadata if needed
+# [[kv_namespaces]]
+# binding = "AI_IMAGES"
+# id = "your-kv-namespace-id"
+# preview_id = "your-preview-kv-namespace-id"

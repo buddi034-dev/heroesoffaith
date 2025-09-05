@@ -11,11 +11,20 @@ class MissionaryApiService {
   MissionaryApiService._internal();
 
   late final Dio _dio;
-  final String _baseUrl = 'https://missionary-profiles-api.jbr01061981.workers.dev';
+  final String _baseUrl = 'https://missionary-ai-images.jbr01061981.workers.dev';
   final String _githubFallbackUrl = 'https://raw.githubusercontent.com/jbr01061981/missionary-profiles/main/fallback';
   
   // Test flag to simulate Cloudflare being down
   bool _simulateCloudflareDown = false;
+  
+  // Check if Dio is initialized
+  bool _isDioInitialized() {
+    try {
+      return _dio.options.baseUrl.isNotEmpty;
+    } catch (e) {
+      return false;
+    }
+  }
 
   /// Initialize the service
   void initialize() {
@@ -84,7 +93,7 @@ class MissionaryApiService {
         return ApiResult.failure('Cloudflare API disabled for testing');
       }
 
-      final response = await _dio.get('/health');
+      final response = await _dio.get('/stats');
       
       if (response.statusCode == 200) {
         return ApiResult.success(response.data);
@@ -127,10 +136,10 @@ class MissionaryApiService {
         return ApiResult.failure('Cloudflare API disabled for testing');
       }
       
-      final response = await _dio.get('/api/profile/$id');
+      final response = await _dio.get('/missionaries/$id');
       
       if (response.statusCode == 200) {
-        final missionary = EnhancedMissionary.fromJson(response.data);
+        final missionary = _parseEnhancedMissionaryFromDatabase(response.data);
         
         // Cache the profile for offline use
         await CacheService().cacheProfile(missionary);
@@ -234,10 +243,18 @@ class MissionaryApiService {
     String category = 'all',
   }) async {
     try {
+      // Ensure service is initialized
+      if (!_isDioInitialized()) {
+        print('⚠️  MissionaryApiService not initialized, initializing now...');
+        initialize();
+      }
+
       if (!await _hasNetworkConnection()) {
         return await _getOfflineProfiles(limit, offset, category);
       }
 
+      print('🌐 Getting profiles: limit=$limit, offset=$offset, category=$category');
+      
       // Try primary Cloudflare Workers API
       final primaryResult = await _tryCloudflareProfiles(limit, offset, category);
       if (primaryResult.isSuccess) {
@@ -262,6 +279,8 @@ class MissionaryApiService {
         return ApiResult.failure('Test mode: Cloudflare simulated as down');
       }
 
+      print('🔄 Trying Cloudflare API: /api/profiles?limit=$limit&offset=$offset&category=$category');
+
       final queryParameters = {
         'limit': limit.toString(),
         'offset': offset.toString(),
@@ -269,21 +288,58 @@ class MissionaryApiService {
       };
 
       final response = await _dio.get(
-        '/api/profiles',
+        '/missionaries',
         queryParameters: queryParameters,
       );
       
+      print('✅ Cloudflare API response: ${response.statusCode}');
+      
       if (response.statusCode == 200) {
-        final profilesList = ProfilesListResponse.fromJson(response.data);
+        // New API structure: { "message": "...", "count": N, "missionaries": [...] }
+        final responseData = response.data;
+        final missionariesList = responseData['missionaries'] as List<dynamic>? ?? [];
+        
+        // Convert to expected ProfileSummary format
+        final profiles = missionariesList.map((missionary) {
+          return ProfileSummary(
+            id: missionary['id'] ?? '',
+            name: missionary['name'] ?? '',
+            displayName: missionary['display_name'] ?? missionary['name'] ?? '',
+            summary: missionary['summary'] ?? '',
+            image: missionary['primary_image'] ?? '',
+            dates: MissionaryDates(
+              birth: missionary['birth_year'],
+              death: missionary['death_year'],
+              display: missionary['date_display'] ?? '',
+            ),
+            categories: [], // TODO: Add categories from new schema if available
+            source: 'database',
+            sourceUrl: 'cloudflare-d1',
+            lastModified: missionary['updated_at'] ?? DateTime.now().toIso8601String(),
+          );
+        }).toList();
+        
+        final profilesList = ProfilesListResponse(
+          profiles: profiles,
+          pagination: Pagination(
+            total: responseData['count'] ?? profiles.length,
+            offset: offset,
+            limit: limit,
+            hasMore: (responseData['count'] ?? profiles.length) > (offset + limit),
+          ),
+          category: category,
+        );
         
         // Cache the profiles list for offline use
         await CacheService().cacheProfilesList(profilesList, limit, offset, category);
         
         return ApiResult.success(profilesList);
       } else {
+        print('❌ Cloudflare API failed: ${response.statusCode}');
         return ApiResult.failure('Cloudflare API failed: ${response.statusCode}');
       }
     } catch (e) {
+      print('❌ Cloudflare API error: $e');
       return ApiResult.failure('Cloudflare API error: $e');
     }
   }
@@ -412,18 +468,37 @@ class MissionaryApiService {
 
       final queryParameters = {
         'limit': limit.toString(),
+        'search': query,
       };
 
       final response = await _dio.get(
-        '/api/search/${Uri.encodeComponent(query)}',
+        '/missionaries',
         queryParameters: queryParameters,
       );
       
       if (response.statusCode == 200) {
         final searchData = response.data;
-        final results = (searchData['results'] as List<dynamic>?)
-            ?.map((e) => ProfileSummary.fromJson(e))
-            .toList() ?? [];
+        final missionariesList = searchData['missionaries'] as List<dynamic>? ?? [];
+        
+        // Convert to ProfileSummary format
+        final results = missionariesList.map((missionary) {
+          return ProfileSummary(
+            id: missionary['id'] ?? '',
+            name: missionary['name'] ?? '',
+            displayName: missionary['display_name'] ?? missionary['name'] ?? '',
+            summary: missionary['summary'] ?? '',
+            image: missionary['primary_image'] ?? '',
+            dates: MissionaryDates(
+              birth: missionary['birth_year'],
+              death: missionary['death_year'],
+              display: missionary['date_display'] ?? '',
+            ),
+            categories: [],
+            source: 'database',
+            sourceUrl: 'cloudflare-d1',
+            lastModified: missionary['updated_at'] ?? DateTime.now().toIso8601String(),
+          );
+        }).toList();
         
         return ApiResult.success(results);
       } else {
@@ -514,6 +589,48 @@ class MissionaryApiService {
   void disableFallbackTest() {
     _simulateCloudflareDown = false;
     print('✅ Cloudflare API re-enabled');
+  }
+
+  /// Parse enhanced missionary from new database API structure
+  EnhancedMissionary _parseEnhancedMissionaryFromDatabase(Map<String, dynamic> data) {
+    return EnhancedMissionary(
+      id: data['id'] ?? '',
+      name: data['name'] ?? '',
+      displayName: data['display_name'] ?? data['name'] ?? '',
+      dates: MissionaryDates(
+        birth: data['birth_year'],
+        death: data['death_year'],
+        display: data['date_display'] ?? '',
+      ),
+      image: data['primary_image'],
+      images: data['images'] != null 
+          ? (data['images'] as List<dynamic>).map((img) => 
+              img is Map<String, dynamic> ? img['image_url'] as String : img.toString()
+            ).toList()
+          : [data['primary_image']].where((img) => img != null).cast<String>().toList(),
+      summary: data['summary'] ?? '',
+      biography: data['biography'] != null 
+          ? (data['biography'] as List<dynamic>).map((bio) => BiographySection(
+              title: bio['title'] ?? '',
+              content: bio['content'] ?? '',
+            )).toList()
+          : [],
+      timeline: data['timeline'] != null
+          ? (data['timeline'] as List<dynamic>).map((event) => TimelineEvent(
+              year: event['year'] ?? 0,
+              event: event['title'] ?? '',
+              description: event['description'] ?? '',
+            )).toList()
+          : [],
+      locations: [], // TODO: Parse locations from new structure if needed
+      categories: [], // TODO: Add categories from database if available
+      quiz: [], // TODO: Parse quiz questions if available
+      achievements: [], // TODO: Parse achievements if available
+      source: 'database',
+      sourceUrl: 'cloudflare-d1',
+      attribution: 'Heroes of Faith Database',
+      lastModified: data['updated_at'] ?? DateTime.now().toIso8601String(),
+    );
   }
 }
 
@@ -634,7 +751,7 @@ class MissionaryAtLocation {
 
 /// API service configuration
 class ApiConfig {
-  static const String baseUrl = 'https://missionary-profiles-api.jbr01061981.workers.dev';
+  static const String baseUrl = 'https://missionary-ai-images.jbr01061981.workers.dev';
   static const Duration connectionTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 30);
   static const Duration sendTimeout = Duration(seconds: 15);
