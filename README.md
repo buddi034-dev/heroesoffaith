@@ -1,4 +1,4 @@
-# Heroes of Faith - Missionary Profiles App
+HoF # Heroes of Faith - Missionary Profiles App
 
 ![Development Status](https://img.shields.io/badge/Development-99%25%20Complete-brightgreen)
 ![Platform](https://img.shields.io/badge/Platform-Flutter-blue)
