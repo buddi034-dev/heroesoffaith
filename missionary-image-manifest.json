@@ -1,0 +1,193 @@
+{
+  "downloaded": [
+    {
+      "filename": "william-carey.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/William_Carey.jpg/250px-William_Carey.jpg",
+      "localPath": "assets\\images\\missionaries\\william-carey.jpg",
+      "fallbackPath": "missionary-images-backup\\william-carey.jpg",
+      "size": 34127,
+      "duration": 2,
+      "status": "success",
+      "id": "william-carey",
+      "name": "William Carey",
+      "githubUrl": "https://raw.githubusercontent.com/jbr01061981/herosoffaith/main/assets/images/missionaries/william-carey.jpg"
+    },
+    {
+      "filename": "hudson-taylor.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/HudsonTaylorin1893.jpg/250px-HudsonTaylorin1893.jpg",
+      "localPath": "assets\\images\\missionaries\\hudson-taylor.jpg",
+      "fallbackPath": "missionary-images-backup\\hudson-taylor.jpg",
+      "size": 16761,
+      "duration": 10,
+      "status": "success",
+      "id": "hudson-taylor",
+      "name": "James Hudson Taylor",
+      "githubUrl": "https://raw.githubusercontent.com/jbr01061981/herosoffaith/main/assets/images/missionaries/hudson-taylor.jpg"
+    },
+    {
+      "filename": "amy-carmichael.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Amy_Carmichael_with_children2.jpg/250px-Amy_Carmichael_with_children2.jpg",
+      "localPath": "assets\\images\\missionaries\\amy-carmichael.jpg",
+      "fallbackPath": "missionary-images-backup\\amy-carmichael.jpg",
+      "size": 26757,
+      "duration": 9,
+      "status": "success",
+      "id": "amy-carmichael",
+      "name": "Amy Carmichael",
+      "githubUrl": "https://raw.githubusercontent.com/jbr01061981/herosoffaith/main/assets/images/missionaries/amy-carmichael.jpg"
+    },
+    {
+      "filename": "ida-scudder.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Ida_S._Scudder_1899.jpg",
+      "localPath": "assets\\images\\missionaries\\ida-scudder.jpg",
+      "fallbackPath": "missionary-images-backup\\ida-scudder.jpg",
+      "size": 22318,
+      "duration": 10,
+      "status": "success",
+      "id": "ida-scudder",
+      "name": "Ida Sophia Scudder",
+      "githubUrl": "https://raw.githubusercontent.com/jbr01061981/herosoffaith/main/assets/images/missionaries/ida-scudder.jpg"
+    },
+    {
+      "filename": "alexander-duff.jpeg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/en/4/44/Alexduff.jpeg",
+      "localPath": "assets\\images\\missionaries\\alexander-duff.jpeg",
+      "fallbackPath": "missionary-images-backup\\alexander-duff.jpeg",
+      "size": 46693,
+      "duration": 1,
+      "status": "success",
+      "id": "alexander-duff",
+      "name": "Alexander Duff",
+      "githubUrl": "https://raw.githubusercontent.com/jbr01061981/herosoffaith/main/assets/images/missionaries/alexander-duff.jpeg"
+    },
+    {
+      "filename": "john-scudder-sr.jpg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Ida_S._Scudder_1899.jpg/250px-Ida_S._Scudder_1899.jpg",
+      "localPath": "assets\\images\\missionaries\\john-scudder-sr.jpg",
+      "fallbackPath": "missionary-images-backup\\john-scudder-sr.jpg",
+      "size": 12310,
+      "duration": 1,
+      "status": "success",
+      "id": "john-scudder-sr",
+      "name": "John Scudder Sr.",
+      "githubUrl": "https://raw.githubusercontent.com/jbr01061981/herosoffaith/main/assets/images/missionaries/john-scudder-sr.jpg"
+    }
+  ],
+  "failed": [
+    {
+      "id": "narayan-vaman-tilak",
+      "name": "Narayan Vaman Tilak",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Narayan_Vaman_Tilak.jpg/250px-Narayan_Vaman_Tilak.jpg",
+      "filename": "narayan-vaman-tilak.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "sadhu-sundar-singh",
+      "name": "Sadhu Sundar Singh",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Sadhu_Sundar_Singh.jpg/250px-Sadhu_Sundar_Singh.jpg",
+      "filename": "sadhu-sundar-singh.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "pandita-ramabai",
+      "name": "Pandita Ramabai Saraswati",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Pandita_Ramabai.jpg/250px-Pandita_Ramabai.jpg",
+      "filename": "pandita-ramabai.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "bakht-singh",
+      "name": "Bakht Singh",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Bakht_Singh.jpg/250px-Bakht_Singh.jpg",
+      "filename": "bakht-singh.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "vedanayagam-samuel-azariah",
+      "name": "V. S. Azariah",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/94/Vedanayagam_Samuel_Azariah.jpg/250px-Vedanayagam_Samuel_Azariah.jpg",
+      "filename": "vedanayagam-samuel-azariah.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "devasahayam-pillai",
+      "name": "Devasahayam Pillai",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Saint_Devasahayam.jpg/250px-Saint_Devasahayam.jpg",
+      "filename": "devasahayam-pillai.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "krishna-mohan-banerjea",
+      "name": "Krishna Mohan Banerjea",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Krishna_Mohan_Banerjea.jpg/250px-Krishna_Mohan_Banerjea.jpg",
+      "filename": "krishna-mohan-banerjea.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "nehemiah-goreh",
+      "name": "Nehemiah Goreh",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Nehemiah_Goreh.jpg/250px-Nehemiah_Goreh.jpg",
+      "filename": "nehemiah-goreh.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "roberto-de-nobili",
+      "name": "Roberto de Nobili",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Robert_de_Nobili.jpg/250px-Robert_de_Nobili.jpg",
+      "filename": "roberto-de-nobili.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "bartholomaus-ziegenbalg",
+      "name": "Bartholomäus Ziegenbalg",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Bartholomaeus_Ziegenbalg.jpg/250px-Bartholomaeus_Ziegenbalg.jpg",
+      "filename": "bartholomaus-ziegenbalg.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "constantine-joseph-beschi",
+      "name": "Costantino Giuseppe Beschi",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Constantine_Joseph_Beschi.jpg/250px-Constantine_Joseph_Beschi.jpg",
+      "filename": "constantine-joseph-beschi.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    },
+    {
+      "id": "k-t-paul",
+      "name": "Kanakarayan Tirumalai Paul",
+      "originalUrl": "kt-paul.jpg",
+      "filename": "k-t-paul.jpg",
+      "error": "Invalid URL",
+      "status": "failed"
+    },
+    {
+      "id": "stanley-jones",
+      "name": "E. Stanley Jones",
+      "originalUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/E._Stanley_Jones.jpg/250px-E._Stanley_Jones.jpg",
+      "filename": "stanley-jones.jpg",
+      "error": "Max retries exceeded",
+      "status": "failed"
+    }
+  ],
+  "total": 20,
+  "startTime": "2025-09-07T08:29:12.480Z",
+  "endTime": "2025-09-07T08:31:57.125Z",
+  "config": {
+    "baseDir": "./assets/images/missionaries",
+    "fallbackDir": "./missionary-images-backup",
+    "manifestFile": "./missionary-image-manifest.json",
+    "timeout": 30000,
+    "maxRetries": 3,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
+  }
+}
